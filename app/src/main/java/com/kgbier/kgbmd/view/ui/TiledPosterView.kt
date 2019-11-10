@@ -11,14 +11,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kgbier.kgbmd.data.parse.HotListItem
 import com.kgbier.kgbmd.util.dp
 
-private const val COLUMNS = 3
-
 class TiledPosterView(context: Context) : RecyclerView(context) {
     val posterAdapter = TiledPosterAdapter()
 
+    companion object {
+        const val DESIRED_POSTER_WIDTH_DP = 120
+    }
+
+    fun estimateColumns(): Int {
+        with(resources.displayMetrics) {
+            return ((widthPixels / density) / DESIRED_POSTER_WIDTH_DP).toInt()
+        }
+    }
+
     init {
         adapter = TiledPosterLoadingAdapter()
-        layoutManager = GridLayoutManager(context, COLUMNS)
+        layoutManager = GridLayoutManager(context, estimateColumns())
         setPadding(dp(8))
         clipToPadding = false
         addItemDecoration(InsetItemDecoration(dp(8)))

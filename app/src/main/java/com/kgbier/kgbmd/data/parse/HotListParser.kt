@@ -77,7 +77,7 @@ class HotListParser(private val source: BufferedSource) {
         const val NAME_LOWER = ">"
         const val NAME_UPPER = "<"
 
-        const val DYNAMIC_IMAGE_SIZE_DELIMITER = "@._V1"
+        const val DYNAMIC_IMAGE_SIZE_DELIMITER = "._V1"
         const val DYNAMIC_IMAGE_THUMBNAIL = "._SX40_CR0,0,40,54_.jpg"
         const val DYNAMIC_IMAGE_MEDIUM = "_UX182_CR0,0,182,268_AL_.jpg"
         const val DYNAMIC_IMAGE_LARGE = "_SX640_CR0,0,640,999_AL_.jpg"

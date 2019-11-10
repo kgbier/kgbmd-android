@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
+import com.kgbier.kgbmd.view.animation.ElevateCardViewStateListAnimator
 
 class PosterView(context: Context) : CardView(context) {
     private val imageViewPoster: ImageView
@@ -30,6 +31,8 @@ class PosterView(context: Context) : CardView(context) {
             foreground = ResourcesCompat.getDrawable(resources, it, context.theme)
             isClickable = true
         }
+
+        stateListAnimator = ElevateCardViewStateListAnimator(context)
 
         ConstraintLayout(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
