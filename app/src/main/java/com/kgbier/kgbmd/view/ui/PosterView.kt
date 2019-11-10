@@ -18,6 +18,7 @@ import com.kgbier.kgbmd.util.resolveAttribute
 
 class PosterView(context: Context) : CardView(context) {
     private val imageViewPoster: ImageView
+    private val viewBottomScrim: View
     private val textViewTitle: TextView
     private val viewCornerScrim: View
     private val textViewRating: TextView
@@ -36,6 +37,7 @@ class PosterView(context: Context) : CardView(context) {
             imageViewPoster = ImageView(context).apply {
                 id = generateViewId()
                 scaleType = ImageView.ScaleType.CENTER_CROP
+                setImageResource(R.drawable.shimmer)
             }.also(::addView)
 
             ConstraintSet().apply {
@@ -47,15 +49,15 @@ class PosterView(context: Context) : CardView(context) {
                 setDimensionRatio(imageViewPoster.id, "10:16")
             }.applyTo(this)
 
-            val viewBottomScrim = View(context).apply {
+            viewBottomScrim = View(context).apply {
                 id = generateViewId()
-
+                visibility = View.INVISIBLE
                 setBackgroundResource(R.drawable.scrim_overlay_bottom)
             }.also(::addView)
 
             textViewTitle = TextView(context).apply {
                 id = generateViewId()
-
+                visibility = View.INVISIBLE
                 setTextColor(Color.WHITE)
                 textAlignment = TextView.TEXT_ALIGNMENT_VIEW_END
             }.also(::addView)
@@ -66,13 +68,12 @@ class PosterView(context: Context) : CardView(context) {
 
             viewCornerScrim = View(context).apply {
                 id = generateViewId()
-
+                visibility = View.INVISIBLE
                 setBackgroundResource(R.drawable.scrim_overlay_corner)
             }.also(::addView)
 
             textViewRating = TextView(context).apply {
                 id = generateViewId()
-
                 setCompoundDrawablesRelativeWithIntrinsicBounds(
                     null,
                     null,
@@ -81,12 +82,14 @@ class PosterView(context: Context) : CardView(context) {
                 )
                 setTextColor(Color.WHITE)
             }.also(::addView)
+            textViewRating.visibility = View.INVISIBLE
 
             val spaceRatingStart = Space(context).apply {
                 id = generateViewId()
             }.also(::addView)
 
             ConstraintSet().apply {
+                setVisibility(textViewTitle.id, GONE)
                 constrainHeight(textViewTitle.id, WRAP_CONTENT)
 
                 setMargin(textViewTitle.id, START, dp(4))
@@ -105,6 +108,7 @@ class PosterView(context: Context) : CardView(context) {
             }.applyTo(this)
 
             ConstraintSet().apply {
+                setVisibility(textViewRating.id, GONE)
                 constrainWidth(textViewRating.id, WRAP_CONTENT)
                 constrainHeight(textViewRating.id, WRAP_CONTENT)
 
@@ -121,6 +125,8 @@ class PosterView(context: Context) : CardView(context) {
             }.applyTo(this)
 
             ConstraintSet().apply {
+                setVisibility(viewBottomScrim.id, GONE)
+
                 connect(viewBottomScrim.id, START, PARENT_ID, START)
                 connect(viewBottomScrim.id, END, PARENT_ID, END)
                 connect(viewBottomScrim.id, TOP, spaceTitleTop.id, TOP)
@@ -128,6 +134,8 @@ class PosterView(context: Context) : CardView(context) {
             }.applyTo(this)
 
             ConstraintSet().apply {
+                setVisibility(viewCornerScrim.id, GONE)
+
                 connect(viewCornerScrim.id, START, spaceRatingStart.id, START)
                 connect(viewCornerScrim.id, END, PARENT_ID, END)
                 connect(viewCornerScrim.id, TOP, PARENT_ID, TOP)
@@ -138,18 +146,19 @@ class PosterView(context: Context) : CardView(context) {
         }.also(::addView)
     }
 
-    fun setRating(rating: String?) {
-        rating?.let {
-            viewCornerScrim.visibility = View.VISIBLE
-            textViewRating.visibility = View.VISIBLE
-            textViewRating.text = rating
-        } ?: run {
-            viewCornerScrim.visibility = View.GONE
-            textViewRating.visibility = View.GONE
-        }
+    fun setRating(rating: String?) = rating?.let {
+        viewCornerScrim.visibility = View.VISIBLE
+        textViewRating.visibility = View.VISIBLE
+        textViewRating.text = rating
+    } ?: run {
+        viewCornerScrim.visibility = View.GONE
+        textViewRating.visibility = View.GONE
     }
 
+
     fun setTitle(title: String) {
+        viewBottomScrim.visibility = View.VISIBLE
+        textViewTitle.visibility = View.VISIBLE
         textViewTitle.text = title
     }
 
@@ -160,7 +169,7 @@ class PosterView(context: Context) : CardView(context) {
                 Glide.with(this)
                     .load(thumbnailUrl)
             )
-            .placeholder(R.drawable.film)
+            .placeholder(R.drawable.shimmer)
             .into(imageViewPoster)
     }
 }

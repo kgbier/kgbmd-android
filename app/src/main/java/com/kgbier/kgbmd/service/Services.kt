@@ -6,5 +6,5 @@ import okhttp3.OkHttpClient
 
 object Services {
     val client: OkHttpClient by lazy { OkHttpClient() }
-    val moshi by lazy { Moshi.Builder().add(KotlinJsonAdapterFactory()).build() }
+    val moshi: Moshi by lazy { Moshi.Builder().add(KotlinJsonAdapterFactory()).build() }
 }

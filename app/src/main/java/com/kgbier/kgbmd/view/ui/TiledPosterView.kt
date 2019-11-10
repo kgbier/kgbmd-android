@@ -4,7 +4,9 @@ import android.content.Context
 import android.graphics.Rect
 import android.view.ViewGroup
 import androidx.core.view.setPadding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kgbier.kgbmd.data.parse.HotListItem
 import com.kgbier.kgbmd.util.dp
@@ -12,10 +14,10 @@ import com.kgbier.kgbmd.util.dp
 private const val COLUMNS = 3
 
 class TiledPosterView(context: Context) : RecyclerView(context) {
-    val viewAdapter = TiledPosterAdapter()
+    val posterAdapter = TiledPosterAdapter()
 
     init {
-        adapter = viewAdapter
+        adapter = TiledPosterLoadingAdapter()
         layoutManager = GridLayoutManager(context, COLUMNS)
         setPadding(dp(8))
         clipToPadding = false
@@ -23,36 +25,60 @@ class TiledPosterView(context: Context) : RecyclerView(context) {
     }
 
     fun setMovies(hotMovies: List<HotListItem>) {
-        viewAdapter.setData(hotMovies)
+        posterAdapter.submitList(hotMovies)
+        if (adapter is TiledPosterLoadingAdapter) {
+            swapAdapter(posterAdapter, true)
+        }
     }
 }
 
 class TiledPosterViewHolder(val view: PosterView) : RecyclerView.ViewHolder(view)
 
-class TiledPosterAdapter : RecyclerView.Adapter<TiledPosterViewHolder>() {
-    private var movies: List<HotListItem> = emptyList()
-
-    fun setData(list: List<HotListItem>) {
-        movies = list
-        notifyDataSetChanged()
+class TiledPosterLoadingAdapter : RecyclerView.Adapter<TiledPosterViewHolder>() {
+    companion object {
+        private const val LOADING_COUNT = 29
     }
 
-    override fun getItemCount(): Int = movies.size
+    override fun getItemCount(): Int = LOADING_COUNT
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TiledPosterViewHolder {
-        return TiledPosterViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TiledPosterViewHolder =
+        TiledPosterViewHolder(
             PosterView(
                 parent.context
-            ).apply {
-                layoutParams
-            })
+            )
+        )
+
+    override fun onBindViewHolder(holder: TiledPosterViewHolder, position: Int) = Unit
+}
+
+class TiledPosterAdapter : ListAdapter<HotListItem, TiledPosterViewHolder>(DIFF_CALLBACK) {
+
+    companion object {
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<HotListItem> =
+            object : DiffUtil.ItemCallback<HotListItem>() {
+                override fun areItemsTheSame(
+                    oldItem: HotListItem, newItem: HotListItem
+                ): Boolean = oldItem.hashCode() == newItem.hashCode()
+
+                override fun areContentsTheSame(
+                    oldItem: HotListItem, newItem: HotListItem
+                ): Boolean = oldItem.hashCode() == newItem.hashCode()
+            }
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TiledPosterViewHolder =
+        TiledPosterViewHolder(
+            PosterView(
+                parent.context
+            )
+        )
+
     override fun onBindViewHolder(holder: TiledPosterViewHolder, position: Int) {
-        val movie = movies[position]
-        holder.view.setTitle(movie.name)
-        holder.view.setRating(movie.rating)
-        holder.view.setPoster(movie.thumbnailUrl, movie.posterUrl)
+        with(getItem(position)) {
+            holder.view.setTitle(name)
+            holder.view.setRating(rating)
+            holder.view.setPoster(thumbnailUrl, posterUrl)
+        }
     }
 }
 
