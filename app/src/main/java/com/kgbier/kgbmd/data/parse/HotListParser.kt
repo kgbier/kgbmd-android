@@ -78,7 +78,7 @@ class HotListParser(private val source: BufferedSource) {
         const val NAME_UPPER = "<"
 
         const val DYNAMIC_IMAGE_SIZE_DELIMITER = "._V1"
-        const val DYNAMIC_IMAGE_THUMBNAIL = "._SX40_CR0,0,40,54_.jpg"
+        const val DYNAMIC_IMAGE_THUMBNAIL = "_UY67_CR0,0,45,67_AL_.jpg"
         const val DYNAMIC_IMAGE_MEDIUM = "_UX182_CR0,0,182,268_AL_.jpg"
         const val DYNAMIC_IMAGE_LARGE = "_SX640_CR0,0,640,999_AL_.jpg"
     }
@@ -97,8 +97,7 @@ class HotListParser(private val source: BufferedSource) {
         val rating = extractFromBounds(ratingLine, RATING_LOWER, RATING_UPPER)
 
         val posterImageLine = findImage() ?: return null
-        val thumbnailUrl =
-            extractFromBounds(posterImageLine, POSTER_IMAGE_LOWER, POSTER_IMAGE_UPPER)
+        val imageUrl = extractFromBounds(posterImageLine, POSTER_IMAGE_LOWER, POSTER_IMAGE_UPPER)
 
         findTitleSection()
         val titleLinkLine = findAnchor() ?: return null
@@ -108,12 +107,16 @@ class HotListParser(private val source: BufferedSource) {
         val name = extractFromBounds(titleTextLine, NAME_LOWER, NAME_UPPER)
 
         val validatedRating = rating.takeUnless { it == "0.0" }
-        val posterUrl = generatePosterUrl(thumbnailUrl)
-        return HotListItem(ttid, name, validatedRating, posterUrl, thumbnailUrl)
+        val posterUrl = generatePosterUrl(imageUrl, DYNAMIC_IMAGE_MEDIUM)
+
+        return HotListItem(ttid, name, validatedRating, posterUrl, imageUrl)
     }
 
-    private fun generatePosterUrl(thumbnailUrl: String): String {
-        return thumbnailUrl.replaceAfter(DYNAMIC_IMAGE_SIZE_DELIMITER, DYNAMIC_IMAGE_MEDIUM)
+    private fun generatePosterUrl(
+        thumbnailUrl: String,
+        size: String = DYNAMIC_IMAGE_MEDIUM
+    ): String {
+        return thumbnailUrl.replaceAfter(DYNAMIC_IMAGE_SIZE_DELIMITER, size)
     }
 
     private var matchBuffer: String? = null

@@ -49,7 +49,7 @@ class PosterView(context: Context) : CardView(context) {
                 connect(imageViewPoster.id, TOP, PARENT_ID, TOP)
                 connect(imageViewPoster.id, BOTTOM, PARENT_ID, BOTTOM)
 
-                setDimensionRatio(imageViewPoster.id, "10:16")
+                setDimensionRatio(imageViewPoster.id, "100:148")
             }.applyTo(this)
 
             viewBottomScrim = View(context).apply {
