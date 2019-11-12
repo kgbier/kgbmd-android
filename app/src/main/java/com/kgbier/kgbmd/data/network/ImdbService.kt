@@ -17,24 +17,22 @@ object ImdbService {
     private const val METER_TV = "https://www.imdb.com/chart/tvmeter"
 
     // https://v2.sg.media-imdb.com/suggestion/d/dark_knight.json
-    private val SuggestionUrlBuilder: HttpUrl.Builder by lazy {
-        HttpUrl.Builder()
-            .scheme("https")
-            .host("v2.sg.media-imdb.com")
-            .addPathSegment("suggestion")
-    }
+    private fun buildSuggestionUrl(query: String) = HttpUrl.Builder()
+        .scheme("https")
+        .host("v2.sg.media-imdb.com")
+        .addPathSegment("suggestion")
+        .addPathSegment(query.first().toString())
+        .addPathSegment("$query.json").build()
 
     // https://p.media-imdb.com/static-content/documents/v1/title/tt0468569/ratings%3Fjsonp=imdb.rating.run:imdb.api.title.ratings/data.json
-    private val RatingUrlBuilder: HttpUrl.Builder by lazy {
-        HttpUrl.Builder()
-            .scheme("https")
-            .host("p.media-imdb.com")
-            .addPathSegments("static-content/documents/v1/title")
-    }
+    private fun buildRatingUrl(ttid: String) = HttpUrl.Builder()
+        .scheme("https")
+        .host("p.media-imdb.com")
+        .addPathSegments("static-content/documents/v1/title")
+        .addPathSegment(ttid)
+        .addEncodedPathSegment("ratings%3Fjsonp=imdb.rating.run:imdb.api.title.ratings/data.json")
+        .build()
 
-    private fun HttpUrl.Builder.buildRatingUrl() =
-        addEncodedPathSegment("ratings%3Fjsonp=imdb.rating.run:imdb.api.title.ratings/data.json")
-            .build()
 
     suspend fun getHotMovies(): List<HotListItem> = withContext(Dispatchers.IO) {
         val request = Request.Builder()
@@ -53,20 +51,18 @@ object ImdbService {
 
             if (validatedQuery.isEmpty()) return@withContext emptyList<SuggestionResponse.Result>()
 
-            val url = SuggestionUrlBuilder
-                .addPathSegment(validatedQuery.first().toString())
-                .addPathSegment("$validatedQuery.json").build()
+            val url = buildSuggestionUrl(validatedQuery)
 
             val request = Request.Builder().url(url).build()
             val response = Services.client.newCall(request).execute()
 
-            Services.moshi.adapter(SuggestionResponse::class.java).fromJson(response.body?.string()!!)!!.data
+
+            val body = response.body?.string()!!
+            Services.moshi.adapter(SuggestionResponse::class.java).fromJson(body)!!.data
         }
 
     suspend fun getRating(ttid: String): RatingResponse.RatingInfo = withContext(Dispatchers.IO) {
-        val url = RatingUrlBuilder
-            .addPathSegment(ttid)
-            .buildRatingUrl()
+        val url = buildRatingUrl(ttid)
 
         val request = Request.Builder().url(url).build()
         val response = Services.client.newCall(request).execute()
