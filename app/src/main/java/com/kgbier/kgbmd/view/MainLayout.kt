@@ -42,7 +42,7 @@ class MainLayout(context: MainActivity) : FrameLayout(context) {
         }.also(::addView)
 
         tiledPosterView = TiledPosterView(context).apply {
-            setPadding(0, dp(64 + 8), 0, 0)
+            setPadding(dp(8), dp(40 + 24), dp(8), dp(8))
         }
 
         swipeRefreshLayout.addView(tiledPosterView)
