@@ -49,6 +49,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk7", KotlinCompilerVersion.VERSION))
     implementation("androidx.appcompat:appcompat:1.1.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.1.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0")
     kapt("androidx.lifecycle:lifecycle-compiler:2.1.0")
     implementation("androidx.core:core-ktx:1.1.0")
 

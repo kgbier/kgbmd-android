@@ -2,22 +2,22 @@ package com.kgbier.kgbmd.view
 
 import android.annotation.SuppressLint
 import android.widget.FrameLayout
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.util.bind
 import com.kgbier.kgbmd.util.dp
-import com.kgbier.kgbmd.view.ui.SearchBarView
-import com.kgbier.kgbmd.view.ui.TiledPosterView
+import com.kgbier.kgbmd.view.component.SearchBar
+import com.kgbier.kgbmd.view.component.TiledPosterGrid
+import com.kgbier.kgbmd.view.viewmodel.MovieListViewModel
 
 @SuppressLint("ViewConstructor")
 class MainLayout(context: MainActivity) : FrameLayout(context) {
 
-    private val searchBarView: SearchBarView
+    private val searchBar: SearchBar
 
     private val swipeRefreshLayout: SwipeRefreshLayout
-    private val tiledPosterView: TiledPosterView
+    private val tiledPosterGrid: TiledPosterGrid
 
     private var movieListViewModel: MovieListViewModel =
         ViewModelProviders.of(context).get(MovieListViewModel::class.java)
@@ -25,7 +25,7 @@ class MainLayout(context: MainActivity) : FrameLayout(context) {
     init {
 
         // Setup Search Bar
-        searchBarView = SearchBarView(context).apply {
+        searchBar = SearchBar(context).apply {
             layoutParams =
                 MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
                     marginStart = dp(16)
@@ -41,23 +41,14 @@ class MainLayout(context: MainActivity) : FrameLayout(context) {
             setOnRefreshListener { movieListViewModel.load() }
         }.also(::addView)
 
-        tiledPosterView = TiledPosterView(context).apply {
+        tiledPosterGrid = TiledPosterGrid(context).apply {
             setPadding(dp(8), dp(40 + 24), dp(8), dp(8))
         }
 
-        swipeRefreshLayout.addView(tiledPosterView)
+        swipeRefreshLayout.addView(tiledPosterGrid)
 
-        // Start View Models
-        startMovieListViewModelObservers(context)
-    }
-
-    private fun startMovieListViewModelObservers(lifecycleOwner: LifecycleOwner) {
-        movieListViewModel.isLoading.bind(lifecycleOwner) {
+        movieListViewModel.isLoading.bind(context) {
             if (!it) swipeRefreshLayout.isRefreshing = it
-        }
-
-        movieListViewModel.movieList.bind(lifecycleOwner) {
-            tiledPosterView.setMovies(it)
         }
     }
 }
