@@ -16,7 +16,21 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "API_KEY_OMDB", "\"\"")
+
+        buildConfigField("Boolean", "INTERNAL", "false")
+        buildConfigField("String", "API_KEY_OMDB", "\"e6cce6b\"")
+    }
+    flavorDimensions("distribution")
+    productFlavors {
+        create("prod") { setDimension("distribution") }
+        create("internal") {
+            setDimension("distribution")
+
+            applicationIdSuffix = ".internal"
+            versionNameSuffix = "-internal"
+
+            buildConfigField("Boolean", "INTERNAL", "true")
+        }
     }
     buildTypes {
         getByName("release") {
