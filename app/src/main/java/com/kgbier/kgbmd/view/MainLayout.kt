@@ -1,18 +1,19 @@
 package com.kgbier.kgbmd.view
 
 import android.annotation.SuppressLint
-import android.widget.FrameLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.util.bind
 import com.kgbier.kgbmd.util.dp
+import com.kgbier.kgbmd.view.behaviour.ScrollBehaviour
 import com.kgbier.kgbmd.view.component.SearchBar
 import com.kgbier.kgbmd.view.component.TiledPosterGrid
 import com.kgbier.kgbmd.view.viewmodel.MovieListViewModel
 
 @SuppressLint("ViewConstructor")
-class MainLayout(context: MainActivity) : FrameLayout(context) {
+class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
 
     private val searchBar: SearchBar
 
@@ -27,10 +28,11 @@ class MainLayout(context: MainActivity) : FrameLayout(context) {
         // Setup Search Bar
         searchBar = SearchBar(context).apply {
             layoutParams =
-                MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
+                LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
                     marginStart = dp(16)
                     marginEnd = dp(16)
                     topMargin = dp(16)
+                    behavior = ScrollBehaviour<SearchBar>(context)
                 }
         }.also(::addView)
 
