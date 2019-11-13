@@ -36,6 +36,8 @@ class ScrollBehaviour(private val context: Context) :
         dyUnconsumed: Int,
         type: Int
     ) {
+        if (dyConsumed == 0) return
+
         val reachedTop = dyUnconsumed != 0 && dyUnconsumed < 0
         if (reachedTop) {
             child.scrollBehaviourResetPosition()
@@ -44,6 +46,6 @@ class ScrollBehaviour(private val context: Context) :
 
         val goingDown = dyConsumed > 0
         if (goingDown) child.scrollBehaviourScrollDown(dyConsumed)
-        else child.scrollBehaviourScrollUp(dyConsumed)
+        else child.scrollBehaviourScrollUp()
     }
 }

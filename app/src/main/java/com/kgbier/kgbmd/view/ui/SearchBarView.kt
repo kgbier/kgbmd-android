@@ -1,16 +1,15 @@
 package com.kgbier.kgbmd.view.ui
 
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.text.InputType
 import android.view.Gravity
+import android.view.animation.DecelerateInterpolator
 import android.widget.EditText
 import androidx.cardview.widget.CardView
 import androidx.core.view.marginTop
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.util.dp
 import kotlin.math.max
-import kotlin.math.min
 
 private const val HEIGHT = 40
 private const val ELEVATION = 4f
@@ -53,19 +52,24 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
         scrollBehaviourLimitTopTranslation = (measuredHeight + marginTop + dp(8)) * -1f
     }
 
-    var animator: ValueAnimator? = null
+    var isAnimating: Boolean = false
 
     fun scrollBehaviourResetPosition() {
-        if (translationY == 0f) return
-
         translationY = 0f
     }
 
     fun scrollBehaviourScrollDown(distance: Int) {
+        animate().cancel()
+        isAnimating = false
         translationY = max(scrollBehaviourLimitTopTranslation, translationY - distance)
     }
 
-    fun scrollBehaviourScrollUp(distance: Int) {
-        translationY = min(0f, translationY - distance)
+    private val interpolator = DecelerateInterpolator()
+    private val animatorEndAction = Runnable { isAnimating = false }
+    fun scrollBehaviourScrollUp() {
+        if (isAnimating) return
+
+        isAnimating = true
+        animate().setInterpolator(interpolator).translationY(0f).withEndAction(animatorEndAction)
     }
 }
