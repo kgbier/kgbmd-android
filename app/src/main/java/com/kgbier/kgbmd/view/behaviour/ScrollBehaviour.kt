@@ -4,23 +4,22 @@ import android.content.Context
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
-import androidx.core.view.marginTop
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.kgbier.kgbmd.util.dp
-import kotlin.math.max
-import kotlin.math.min
+import com.kgbier.kgbmd.view.ui.SearchBarView
 
+class ScrollBehaviour(private val context: Context) :
+    CoordinatorLayout.Behavior<SearchBarView>() {
 
-class ScrollBehaviour<V : View>(private val context: Context) : CoordinatorLayout.Behavior<V>() {
-
-    var limitTopTranslation = 0f
-
-    override fun layoutDependsOn(parent: CoordinatorLayout, child: V, dependency: View): Boolean =
+    override fun layoutDependsOn(
+        parent: CoordinatorLayout,
+        child: SearchBarView,
+        dependency: View
+    ): Boolean =
         dependency is SwipeRefreshLayout
 
     override fun onStartNestedScroll(
         coordinatorLayout: CoordinatorLayout,
-        child: V,
+        child: SearchBarView,
         directTargetChild: View,
         target: View,
         axes: Int,
@@ -29,7 +28,7 @@ class ScrollBehaviour<V : View>(private val context: Context) : CoordinatorLayou
 
     override fun onNestedScroll(
         coordinatorLayout: CoordinatorLayout,
-        child: V,
+        child: SearchBarView,
         target: View,
         dxConsumed: Int,
         dyConsumed: Int,
@@ -39,25 +38,12 @@ class ScrollBehaviour<V : View>(private val context: Context) : CoordinatorLayou
     ) {
         val reachedTop = dyUnconsumed != 0 && dyUnconsumed < 0
         if (reachedTop) {
-            child.translationY = 0f; return
+            child.scrollBehaviourResetPosition()
+            return
         }
 
         val goingDown = dyConsumed > 0
-
-        val oldTranslation = child.translationY
-        child.translationY = if (goingDown) {
-            max(limitTopTranslation, oldTranslation - dyConsumed)
-        } else {
-            min(0f, oldTranslation - dyConsumed)
-        }
-    }
-
-    override fun onDependentViewChanged(
-        parent: CoordinatorLayout,
-        child: V,
-        dependency: View
-    ): Boolean {
-        limitTopTranslation = (child.measuredHeight + child.marginTop + context.dp(8)) * -1f
-        return false
+        if (goingDown) child.scrollBehaviourScrollDown(dyConsumed)
+        else child.scrollBehaviourScrollUp(dyConsumed)
     }
 }

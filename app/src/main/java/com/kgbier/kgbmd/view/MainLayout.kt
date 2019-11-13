@@ -32,7 +32,7 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
                     marginStart = dp(16)
                     marginEnd = dp(16)
                     topMargin = dp(16)
-                    behavior = ScrollBehaviour<SearchBar>(context)
+                    behavior = ScrollBehaviour(context)
                 }
         }.also(::addView)
 
