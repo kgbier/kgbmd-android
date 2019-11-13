@@ -32,8 +32,8 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
                     LayoutParams.WRAP_CONTENT,
                     Gravity.CENTER_VERTICAL
                 ).apply {
-                    marginStart = dp(8)
-                    marginEnd = dp(8)
+                    marginStart = dp(12)
+                    marginEnd = dp(12)
                 }
         }.also(::addView)
     }
