@@ -2,12 +2,14 @@ package com.kgbier.kgbmd.view.ui
 
 import android.annotation.SuppressLint
 import android.text.InputType
-import android.view.Gravity
 import android.view.animation.DecelerateInterpolator
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
 import androidx.core.view.marginTop
 import com.kgbier.kgbmd.MainActivity
+import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
 import kotlin.math.max
 
@@ -24,25 +26,35 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
         radius = minimumHeight / 2f
         cardElevation = dp(ELEVATION)
 
-        editTextSearch = EditText(context).apply {
-            inputType = InputType.TYPE_CLASS_TEXT
-            isEnabled = false
-            background = null
-            maxLines = 1
-            layoutParams =
-                LayoutParams(
-                    LayoutParams.MATCH_PARENT,
-                    LayoutParams.WRAP_CONTENT,
-                    Gravity.CENTER_VERTICAL
-                ).apply {
-                    marginStart = dp(12)
-                    marginEnd = dp(12)
-                }
-        }.also(::addView)
-    }
+        LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT
+            ).apply {
+                marginStart = dp(12)
+                marginEnd = dp(12)
+            }
 
-    fun setHint(hint: String) {
-        editTextSearch.hint = hint
+            ImageView(context).apply {
+                layoutParams = LayoutParams(
+                    LayoutParams.WRAP_CONTENT,
+                    LayoutParams.MATCH_PARENT
+                )
+                setImageResource(R.drawable.ic_search)
+            }.also(::addView)
+
+            editTextSearch = EditText(context).apply {
+                inputType = InputType.TYPE_CLASS_TEXT
+                background = null
+                maxLines = 1
+                layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    LayoutParams.WRAP_CONTENT,
+                    1f
+                )
+            }.also(::addView)
+        }.also(::addView)
     }
 
     private var isAnimating = false
