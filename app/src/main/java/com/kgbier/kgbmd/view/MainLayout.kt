@@ -44,7 +44,7 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
         }.also(::addView)
 
         tiledPosterGrid = TiledPosterGrid(context).apply {
-            setPadding(dp(8), dp(40 + 24), dp(8), dp(8))
+            setPadding(dp(8), dp(40 + 32), dp(8), dp(8))
         }
 
         swipeRefreshLayout.addView(tiledPosterGrid)

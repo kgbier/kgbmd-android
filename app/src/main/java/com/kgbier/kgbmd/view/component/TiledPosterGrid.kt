@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProviders
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.util.bind
-import com.kgbier.kgbmd.view.viewmodel.MovieListViewModel
 import com.kgbier.kgbmd.view.ui.PosterLoadingAdapter
 import com.kgbier.kgbmd.view.ui.TiledPosterView
+import com.kgbier.kgbmd.view.viewmodel.MovieListViewModel
 
 @SuppressLint("ViewConstructor")
 class TiledPosterGrid(context: MainActivity) : TiledPosterView(context) {

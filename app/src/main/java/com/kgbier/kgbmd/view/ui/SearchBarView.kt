@@ -17,8 +17,6 @@ private const val ELEVATION = 4f
 @SuppressLint("ViewConstructor")
 open class SearchBarView(context: MainActivity) : CardView(context) {
 
-    var scrollBehaviourLimitTopTranslation = 0f
-
     val editTextSearch: EditText
 
     init {
@@ -28,8 +26,8 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
 
         editTextSearch = EditText(context).apply {
             inputType = InputType.TYPE_CLASS_TEXT
+            isEnabled = false
             background = null
-            setPaddingRelative(0, dp(8), 0, dp(8))
             maxLines = 1
             layoutParams =
                 LayoutParams(
@@ -47,12 +45,13 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
         editTextSearch.hint = hint
     }
 
+    private var isAnimating = false
+    private var scrollBehaviourTopTranslationLimit = 0f
+
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        scrollBehaviourLimitTopTranslation = (measuredHeight + marginTop + dp(8)) * -1f
+        scrollBehaviourTopTranslationLimit = (measuredHeight + marginTop + dp(8)) * -1f
     }
-
-    var isAnimating: Boolean = false
 
     fun scrollBehaviourResetPosition() {
         translationY = 0f
@@ -61,11 +60,11 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
     fun scrollBehaviourScrollDown(distance: Int) {
         animate().cancel()
         isAnimating = false
-        translationY = max(scrollBehaviourLimitTopTranslation, translationY - distance)
+        translationY = max(scrollBehaviourTopTranslationLimit, translationY - distance)
     }
 
-    private val interpolator = DecelerateInterpolator()
-    private val animatorEndAction = Runnable { isAnimating = false }
+    private val interpolator by lazy { DecelerateInterpolator() }
+    private val animatorEndAction by lazy { Runnable { isAnimating = false } }
     fun scrollBehaviourScrollUp() {
         if (isAnimating) return
 
