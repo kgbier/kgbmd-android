@@ -42,24 +42,22 @@ object ImdbService {
         HotListParser(response.body?.source()!!).getListItems()
     }
 
-    suspend fun search(query: String): List<SuggestionResponse.Result> =
-        withContext(Dispatchers.IO) {
-            val validatedQuery = query
-                .trim()
-                .toLowerCase(Locale.ROOT)
-                .replace(" ", "_")
+    suspend fun search(query: String): SuggestionResponse? = withContext(Dispatchers.IO) {
+        val validatedQuery = query
+            .trim()
+            .toLowerCase(Locale.ROOT)
+            .replace(" ", "_")
 
-            if (validatedQuery.isEmpty()) return@withContext emptyList<SuggestionResponse.Result>()
+        if (validatedQuery.isEmpty()) return@withContext null
 
-            val url = buildSuggestionUrl(validatedQuery)
+        val url = buildSuggestionUrl(validatedQuery)
 
-            val request = Request.Builder().url(url).build()
-            val response = Services.client.newCall(request).execute()
+        val request = Request.Builder().url(url).build()
+        val response = Services.client.newCall(request).execute()
 
-
-            val body = response.body?.string()!!
-            Services.moshi.adapter(SuggestionResponse::class.java).fromJson(body)!!.data
-        }
+        val body = response.body?.string()!!
+        Services.moshi.adapter(SuggestionResponse::class.java).fromJson(body)!!
+    }
 
     suspend fun getRating(ttid: String): RatingResponse.RatingInfo = withContext(Dispatchers.IO) {
         val url = buildRatingUrl(ttid)
