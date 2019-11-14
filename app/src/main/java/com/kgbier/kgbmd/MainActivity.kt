@@ -8,22 +8,41 @@ import com.kgbier.kgbmd.view.SearchLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import java.util.*
 
-sealed class Navigator {
-    object MainPosterScreen : Navigator()
-    object SearchScreen : Navigator()
+sealed class Route {
+    object MainPosterScreen : Route()
+    object SearchScreen : Route()
 }
 
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), LifecycleOwner {
 
+    private var currentRoute: Route? = null
+    private val backStack = Stack<Route>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        showScreen(Navigator.MainPosterScreen)
+        navigate(Route.MainPosterScreen)
     }
 
-    fun showScreen(navigator: Navigator) = when (navigator) {
-        Navigator.MainPosterScreen -> setContentView(MainLayout(this))
-        Navigator.SearchScreen -> setContentView(SearchLayout(this))
+    fun navigate(route: Route) {
+        if (currentRoute !== null) backStack.push(currentRoute)
+        showScreen(route)
+    }
+
+    private fun showScreen(route: Route) {
+        currentRoute = route
+        when (route) {
+            Route.MainPosterScreen -> setContentView(MainLayout(this))
+            Route.SearchScreen -> setContentView(SearchLayout(this))
+        }
+    }
+
+    override fun onBackPressed() {
+        if (backStack.isEmpty()) {
+            finish(); return
+        }
+        showScreen(backStack.pop())
     }
 
     override fun onDestroy() {

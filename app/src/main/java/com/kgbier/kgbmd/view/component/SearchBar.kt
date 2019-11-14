@@ -3,7 +3,7 @@ package com.kgbier.kgbmd.view.component
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProviders
 import com.kgbier.kgbmd.MainActivity
-import com.kgbier.kgbmd.Navigator
+import com.kgbier.kgbmd.Route
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.resolveAttribute
 import com.kgbier.kgbmd.view.ui.SearchBarView
@@ -25,7 +25,7 @@ class SearchBar(context: MainActivity) : SearchBarView(context) {
             resolveAttribute(R.attr.selectableItemBackground)?.let { context.getDrawable(it) }
 
         setOnClickListener {
-            context.showScreen(Navigator.SearchScreen)
+            context.navigate(Route.SearchScreen)
         }
     }
 }
