@@ -8,14 +8,14 @@ import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.util.bind
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.view.behaviour.ScrollBehaviour
-import com.kgbier.kgbmd.view.component.SearchBar
+import com.kgbier.kgbmd.view.component.ReadOnlySearchBar
 import com.kgbier.kgbmd.view.component.TiledPosterGrid
 import com.kgbier.kgbmd.view.viewmodel.MovieListViewModel
 
 @SuppressLint("ViewConstructor")
 class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
 
-    private val searchBar: SearchBar
+    private val readOnlySearchBar: ReadOnlySearchBar
 
     private val swipeRefreshLayout: SwipeRefreshLayout
     private val tiledPosterGrid: TiledPosterGrid
@@ -24,9 +24,8 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
         ViewModelProviders.of(context).get(MovieListViewModel::class.java)
 
     init {
-
         // Setup Search Bar
-        searchBar = SearchBar(context).apply {
+        readOnlySearchBar = ReadOnlySearchBar(context).apply {
             layoutParams =
                 LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
                     marginStart = dp(16)

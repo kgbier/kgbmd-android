@@ -22,6 +22,9 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
     val editTextSearch: EditText
 
     init {
+        id = R.id.searchBarView
+        isTransitionGroup = true
+
         minimumHeight = dp(HEIGHT)
         radius = minimumHeight / 2f
         cardElevation = dp(ELEVATION)

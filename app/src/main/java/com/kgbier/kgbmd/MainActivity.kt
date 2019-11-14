@@ -1,6 +1,11 @@
 package com.kgbier.kgbmd
 
 import android.os.Bundle
+import android.transition.Scene
+import android.transition.Slide
+import android.transition.TransitionManager
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import com.kgbier.kgbmd.view.MainLayout
@@ -20,6 +25,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
     private var currentRoute: Route? = null
     private val backStack = Stack<Route>()
 
+    private val rootView: ViewGroup
+        get() = window.decorView.findViewById(android.R.id.content)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         navigate(Route.MainPosterScreen)
@@ -34,7 +42,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
         currentRoute = route
         when (route) {
             Route.MainPosterScreen -> setContentView(MainLayout(this))
-            Route.SearchScreen -> setContentView(SearchLayout(this))
+            Route.SearchScreen -> {
+                val newScene = Scene(rootView, SearchLayout(this) as View)
+                val transition = Slide().addTarget(R.id.tilePosterView)
+                TransitionManager.go(newScene, transition)
+            }
         }
     }
 
