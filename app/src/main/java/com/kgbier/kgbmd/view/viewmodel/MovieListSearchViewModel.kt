@@ -10,13 +10,21 @@ import kotlinx.coroutines.launch
 class MovieListSearchViewModel : ViewModel() {
 
     val hint = "Search movies, shows, actors"
-    val resultList: MutableLiveData<List<SearchSuggestion>> = MutableLiveData()
+
+    val isFirstLoad: MutableLiveData<Boolean> = MutableLiveData()
+    val resultList: MutableLiveData<List<SearchSuggestion>?> = MutableLiveData()
 
     fun search(query: String) = viewModelScope.launch {
+        if (!isFirstLoad.value!!) isFirstLoad.postValue(true)
         try {
             val movies = ImdbRepo.getSearchResults(query)
             resultList.postValue(movies)
         } catch (t: Throwable) {
         }
+    }
+
+    fun clear() {
+        resultList.postValue(null)
+        isFirstLoad.postValue(false)
     }
 }

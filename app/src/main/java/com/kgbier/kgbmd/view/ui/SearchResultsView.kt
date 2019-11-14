@@ -1,11 +1,15 @@
 package com.kgbier.kgbmd.view.ui
 
+import android.animation.LayoutTransition
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.Gravity
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.view.setMargins
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -19,18 +23,44 @@ private const val ELEVATION = 4f
 @SuppressLint("ViewConstructor")
 open class SearchResultsView(context: Context) : CardView(context) {
     val resultAdapter = ResultAdapter()
+    val loadingProgressBar: ProgressBar
+    val emptyStateMessage: TextView
 
     init {
         id = R.id.searchResultsView
         isTransitionGroup = true
 
+        layoutTransition = LayoutTransition()
+
         radius = dp(4f)
         cardElevation = dp(ELEVATION)
 
-        RecyclerView(context).apply {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        loadingProgressBar = ProgressBar(context).apply {
+            layoutParams = LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER
+            ).apply {
+                setMargins(dp(16))
+            }
+        }.also(::addView)
 
+        emptyStateMessage = TextView(context).apply {
+            layoutParams = LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER
+            ).apply {
+                setMargins(dp(16))
+                text = "No results"
+            }
+        }.also(::addView)
+
+        RecyclerView(context).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+            setPaddingRelative(dp(12), dp(8), dp(12), dp(8))
             adapter = resultAdapter
+            itemAnimator = null
             layoutManager = LinearLayoutManager(context)
         }.also(::addView)
     }
@@ -46,12 +76,16 @@ class ResultViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
 
 class ResultAdapter : ListAdapter<SearchSuggestion, ResultViewHolder>(DIFF_CALLBACK) {
 
+    init {
+        setHasStableIds(true)
+    }
+
     companion object {
         val DIFF_CALLBACK: DiffUtil.ItemCallback<SearchSuggestion> =
             object : DiffUtil.ItemCallback<SearchSuggestion>() {
                 override fun areItemsTheSame(
                     oldItem: SearchSuggestion, newItem: SearchSuggestion
-                ): Boolean = oldItem.hashCode() == newItem.hashCode()
+                ): Boolean = oldItem.ttid == newItem.ttid
 
                 override fun areContentsTheSame(
                     oldItem: SearchSuggestion, newItem: SearchSuggestion

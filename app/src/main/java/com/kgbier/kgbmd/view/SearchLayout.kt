@@ -36,8 +36,7 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
             layoutParams =
                 LayoutParams(
                     LayoutParams.MATCH_PARENT,
-                    0,
-                    1f
+                    LayoutParams.WRAP_CONTENT
                 ).apply {
                     setMargins(dp(16), dp(8), dp(16), dp(16))
                 }
