@@ -28,7 +28,7 @@ data class SuggestionResponse(
         data class Image(
             val width: Int?,
             val height: Int?,
-            val imageUrl: String?
+            val imageUrl: String
         )
     }
 }

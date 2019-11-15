@@ -6,7 +6,8 @@ data class SearchSuggestion(
     val ttid: String,
     val title: String,
     val year: String?,
-    val tidbit: String?
+    val tidbit: String?,
+    val thumbnailUrl: String?
 )
 
 fun transformSuggestionResult(result: SuggestionResponse.Result) = with(result) {
@@ -14,7 +15,8 @@ fun transformSuggestionResult(result: SuggestionResponse.Result) = with(result) 
         ttid,
         title,
         year,
-        tidbit
+        tidbit,
+        image?.imageUrl
     )
 }
 
