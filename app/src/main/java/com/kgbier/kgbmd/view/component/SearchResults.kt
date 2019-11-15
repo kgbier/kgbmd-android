@@ -29,13 +29,22 @@ class SearchResults(context: MainActivity) : SearchResultsView(context) {
         }
 
         movieListSearchViewModel.resultList.bind(context) {
-            loadingProgressBar.visibility = View.GONE
-            it?.takeIf { it.isNotEmpty() }?.let {
-                resultAdapter.submitList(it)
+
+            if (it == null) {
+                visibility = View.GONE
                 emptyStateMessage.visibility = View.GONE
-            } ?: run {
+                loadingProgressBar.visibility = View.GONE
                 resultAdapter.submitList(null)
+
+                return@bind
+            }
+
+            resultAdapter.submitList(it)
+            loadingProgressBar.visibility = View.GONE
+            if (it.isEmpty()) {
                 emptyStateMessage.visibility = View.VISIBLE
+            } else {
+                emptyStateMessage.visibility = View.GONE
             }
         }
     }

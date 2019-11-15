@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.ConstraintSet.*
+import com.bumptech.glide.Glide
 import com.kgbier.kgbmd.util.dp
 
 class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
@@ -20,11 +21,17 @@ class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
         imageViewThumbnail = ImageView(context).apply {
             id = View.generateViewId()
+
+            scaleType = ImageView.ScaleType.CENTER_CROP
         }.also(::addView)
 
         ConstraintSet().apply {
-            constrainWidth(imageViewThumbnail.id, WRAP_CONTENT)
-            constrainHeight(imageViewThumbnail.id, WRAP_CONTENT)
+            constrainWidth(imageViewThumbnail.id, dp(32))
+            constrainHeight(imageViewThumbnail.id, dp(48))
+
+            setMargin(imageViewThumbnail.id, TOP, dp(2))
+            setMargin(imageViewThumbnail.id, BOTTOM, dp(2))
+
             connect(
                 imageViewThumbnail.id,
                 START,
@@ -37,6 +44,12 @@ class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                 PARENT_ID,
                 TOP
             )
+            connect(
+                imageViewThumbnail.id,
+                BOTTOM,
+                PARENT_ID,
+                BOTTOM
+            )
         }.applyTo(this)
 
         textViewTitle = TextView(context).apply {
@@ -48,11 +61,13 @@ class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
         ConstraintSet().apply {
             constrainWidth(textViewTitle.id, WRAP_CONTENT)
             constrainHeight(textViewTitle.id, WRAP_CONTENT)
+
+            setMargin(textViewTitle.id, START, dp(4))
             connect(
                 textViewTitle.id,
                 START,
                 imageViewThumbnail.id,
-                START
+                END
             )
             connect(
                 textViewTitle.id,
@@ -69,8 +84,12 @@ class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
         }.also(::addView)
 
         ConstraintSet().apply {
-            constrainWidth(textViewTidbit.id, WRAP_CONTENT)
+            constrainWidth(textViewTidbit.id, 0)
             constrainHeight(textViewTidbit.id, WRAP_CONTENT)
+
+            setMargin(textViewTidbit.id, BOTTOM, dp(2))
+            setMargin(textViewTidbit.id, END, dp(4))
+
             connect(
                 textViewTidbit.id,
                 START,
@@ -89,6 +108,12 @@ class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                 PARENT_ID,
                 BOTTOM
             )
+            connect(
+                textViewTidbit.id,
+                END,
+                PARENT_ID,
+                END
+            )
         }.applyTo(this)
 
         textViewYear = TextView(context).apply {
@@ -98,9 +123,12 @@ class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
         }.also(::addView)
 
         ConstraintSet().apply {
-            constrainWidth(textViewYear.id, WRAP_CONTENT)
+            constrainWidth(textViewYear.id, 0)
             constrainHeight(textViewYear.id, WRAP_CONTENT)
+
             setMargin(textViewYear.id, START, dp(4))
+            setMargin(textViewYear.id, END, dp(4))
+
             connect(
                 textViewYear.id,
                 START,
@@ -113,22 +141,36 @@ class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                 textViewTitle.id,
                 BASELINE
             )
+            connect(
+                textViewYear.id,
+                END,
+                PARENT_ID,
+                END
+            )
         }.applyTo(this)
     }
 
-    fun setThumbnail(url: String) {
-
+    fun setThumbnail(url: String?) {
+        Glide.with(this)
+            .load(url)
+            .into(imageViewThumbnail)
     }
 
     fun setTitle(title: String) {
         textViewTitle.text = title
     }
 
-    fun setYear(year: String?) {
-        textViewYear.text = "($year)"
+    fun setYear(year: String?) = year?.let {
+        textViewYear.visibility = View.VISIBLE
+        textViewYear.text = "($it)"
+    } ?: run {
+        textViewYear.visibility = View.GONE
     }
 
-    fun setTidbit(tidbit: String?) {
-        textViewTidbit.text = tidbit
+    fun setTidbit(tidbit: String?) = tidbit?.let {
+        textViewTidbit.visibility = View.VISIBLE
+        textViewTidbit.text = it
+    } ?: run {
+        textViewTidbit.visibility = View.GONE
     }
 }

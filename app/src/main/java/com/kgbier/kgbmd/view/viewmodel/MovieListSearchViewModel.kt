@@ -15,6 +15,10 @@ class MovieListSearchViewModel : ViewModel() {
     val resultList: MutableLiveData<List<SearchSuggestion>?> = MutableLiveData()
 
     fun search(query: String) = viewModelScope.launch {
+        if (query.isBlank()) {
+            clear()
+            return@launch
+        }
         if (!isFirstLoad.value!!) isFirstLoad.postValue(true)
         try {
             val movies = ImdbRepo.getSearchResults(query)

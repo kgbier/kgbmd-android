@@ -1,5 +1,6 @@
 package com.kgbier.kgbmd.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
@@ -8,6 +9,7 @@ import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.view.component.SearchBar
 import com.kgbier.kgbmd.view.component.SearchResults
 
+@SuppressLint("ViewConstructor")
 class SearchLayout(context: MainActivity) : LinearLayout(context) {
 
     private val searchBar: SearchBar

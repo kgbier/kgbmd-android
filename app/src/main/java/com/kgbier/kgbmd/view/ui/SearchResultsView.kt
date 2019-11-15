@@ -10,10 +10,14 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.setMargins
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.domain.SearchSuggestion
 import com.kgbier.kgbmd.util.dp
+import com.kgbier.kgbmd.view.decoration.MiddleDividerItemDecoration
 
 private const val ELEVATION = 4f
 
@@ -54,11 +58,12 @@ open class SearchResultsView(context: Context) : CardView(context) {
 
         RecyclerView(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-            setPaddingRelative(dp(12), dp(8), dp(12), dp(8))
+            setPaddingRelative(dp(4), dp(2), dp(4), dp(2))
+            clipToPadding = false
             adapter = resultAdapter
             itemAnimator = null
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            addItemDecoration(MiddleDividerItemDecoration(context))
         }.also(::addView)
     }
 }
@@ -91,6 +96,7 @@ class ResultAdapter : ListAdapter<SearchSuggestion, ResultViewHolder>(DIFF_CALLB
 
     override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
         with(getItem(position)) {
+            holder.view.setThumbnail(thumbnailUrl)
             holder.view.setTitle(title)
             holder.view.setTidbit(tidbit)
             holder.view.setYear(year)
