@@ -10,10 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.setMargins
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.domain.SearchSuggestion
 import com.kgbier.kgbmd.util.dp
@@ -31,7 +28,6 @@ open class SearchResultsView(context: Context) : CardView(context) {
         isTransitionGroup = true
 
         layoutTransition = LayoutTransition()
-
         radius = dp(4f)
         cardElevation = dp(ELEVATION)
 
@@ -62,23 +58,20 @@ open class SearchResultsView(context: Context) : CardView(context) {
             adapter = resultAdapter
             itemAnimator = null
             layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }.also(::addView)
     }
 }
 
 class ResultViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-    TextView(parent.context).apply {
+    SearchSuggestionView(parent.context).apply {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
     }
 ) {
-    val view: TextView = itemView as TextView
+    val view: SearchSuggestionView = itemView as SearchSuggestionView
 }
 
 class ResultAdapter : ListAdapter<SearchSuggestion, ResultViewHolder>(DIFF_CALLBACK) {
-
-    init {
-        setHasStableIds(true)
-    }
 
     companion object {
         val DIFF_CALLBACK: DiffUtil.ItemCallback<SearchSuggestion> =
@@ -98,7 +91,9 @@ class ResultAdapter : ListAdapter<SearchSuggestion, ResultViewHolder>(DIFF_CALLB
 
     override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
         with(getItem(position)) {
-            holder.view.text = title
+            holder.view.setTitle(title)
+            holder.view.setTidbit(tidbit)
+            holder.view.setYear(year)
         }
     }
 }
