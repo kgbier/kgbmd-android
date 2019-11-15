@@ -13,6 +13,7 @@ import okhttp3.Request
 import java.util.*
 
 object ImdbService {
+
     private const val METER_MOVIE = "https://www.imdb.com/chart/moviemeter"
     private const val METER_TV = "https://www.imdb.com/chart/tvmeter"
 
@@ -42,6 +43,8 @@ object ImdbService {
         HotListParser(response.body?.source()!!).getListItems()
     }
 
+    private const val SEARCH_REQUEST_TAG = 451
+
     suspend fun search(query: String): SuggestionResponse? = withContext(Dispatchers.IO) {
         val validatedQuery = query
             .trim()
@@ -52,7 +55,11 @@ object ImdbService {
 
         val url = buildSuggestionUrl(validatedQuery)
 
-        val request = Request.Builder().url(url).build()
+        Services.client.dispatcher.runningCalls().forEach {
+            if (it.request().tag() == SEARCH_REQUEST_TAG) it.cancel()
+        }
+
+        val request = Request.Builder().tag(SEARCH_REQUEST_TAG).url(url).build()
         val response = Services.client.newCall(request).execute()
 
         val body = response.body?.string()!!
