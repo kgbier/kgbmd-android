@@ -6,6 +6,8 @@ import android.transition.Slide
 import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import com.kgbier.kgbmd.view.MainLayout
@@ -41,10 +43,16 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
     private fun showScreen(route: Route) {
         currentRoute = route
         when (route) {
-            Route.MainPosterScreen -> setContentView(MainLayout(this))
+            Route.MainPosterScreen -> {
+                val newScene = Scene(rootView, MainLayout(this) as View)
+                val transition =
+                    Slide().addTarget(R.id.tilePosterView).setInterpolator(DecelerateInterpolator())
+                TransitionManager.go(newScene, transition)
+            }
             Route.SearchScreen -> {
                 val newScene = Scene(rootView, SearchLayout(this) as View)
-                val transition = Slide().addTarget(R.id.tilePosterView)
+                val transition =
+                    Slide().addTarget(R.id.tilePosterView).setInterpolator(AccelerateInterpolator())
                 TransitionManager.go(newScene, transition)
             }
         }
