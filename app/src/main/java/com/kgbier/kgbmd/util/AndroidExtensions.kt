@@ -20,11 +20,13 @@ fun View.dp(displayPixels: Float): Float =
 fun View.dp(displayPixels: Int): Int =
     (resources.displayMetrics.density * displayPixels).toInt()
 
-fun View.resolveAttribute(@AttrRes resource: Int): Int? = with(TypedValue()) {
-    if (context.theme.resolveAttribute(resource, this, true)) {
+fun Context.resolveAttribute(@AttrRes resource: Int): Int? = with(TypedValue()) {
+    if (theme.resolveAttribute(resource, this, true)) {
         return resourceId
     } else null
 }
+
+fun View.resolveAttribute(@AttrRes resource: Int): Int? = context.resolveAttribute(resource)
 
 inline fun <T> LiveData<T>.bind(
     lifecycleOwner: LifecycleOwner,
