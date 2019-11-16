@@ -16,7 +16,7 @@ class MovieListSearchViewModel : ViewModel() {
 
     fun search(query: String) = viewModelScope.launch {
         if (query.isBlank()) {
-            clear()
+            clearSearchState()
             return@launch
         }
         if (!isFirstLoad.value!!) isFirstLoad.postValue(true)
@@ -27,7 +27,7 @@ class MovieListSearchViewModel : ViewModel() {
         }
     }
 
-    fun clear() {
+    fun clearSearchState() {
         resultList.postValue(null)
         isFirstLoad.postValue(false)
     }

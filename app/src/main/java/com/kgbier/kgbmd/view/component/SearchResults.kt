@@ -18,7 +18,7 @@ class SearchResults(context: MainActivity) : SearchResultsView(context) {
         visibility = View.GONE
         emptyStateMessage.visibility = View.GONE
 
-        movieListSearchViewModel.clear()
+        movieListSearchViewModel.clearSearchState()
 
         movieListSearchViewModel.isFirstLoad.bind(context) {
             if (it) {
