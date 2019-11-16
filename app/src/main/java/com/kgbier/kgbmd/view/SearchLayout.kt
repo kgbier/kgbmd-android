@@ -48,8 +48,9 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
         }.also(::addView)
 
         if (searchBar.editTextSearch.requestFocus()) {
-            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+            with(context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager) {
+                showSoftInput(searchBar.editTextSearch, 0)
+            }
         }
 
         searchResults = SearchResults(context).apply {

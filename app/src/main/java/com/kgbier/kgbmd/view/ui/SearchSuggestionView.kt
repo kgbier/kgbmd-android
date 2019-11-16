@@ -62,7 +62,7 @@ class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
             constrainWidth(textViewTitle.id, WRAP_CONTENT)
             constrainHeight(textViewTitle.id, WRAP_CONTENT)
 
-            setMargin(textViewTitle.id, START, dp(4))
+            setMargin(textViewTitle.id, START, dp(8))
             connect(
                 textViewTitle.id,
                 START,
