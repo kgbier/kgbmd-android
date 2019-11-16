@@ -1,6 +1,6 @@
-package com.kgbier.kgbmd.domain
+package com.kgbier.kgbmd.domain.model
 
-import com.kgbier.kgbmd.data.imdb.SuggestionResponse
+import com.kgbier.kgbmd.data.imdb.model.SuggestionResponse
 
 data class SearchSuggestion(
     val ttid: String,

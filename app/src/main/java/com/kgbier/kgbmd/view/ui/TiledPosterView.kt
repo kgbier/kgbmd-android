@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kgbier.kgbmd.R
-import com.kgbier.kgbmd.domain.MoviePoster
+import com.kgbier.kgbmd.domain.model.MoviePoster
 import com.kgbier.kgbmd.util.dp
 
 open class TiledPosterView(context: Context) : RecyclerView(context) {

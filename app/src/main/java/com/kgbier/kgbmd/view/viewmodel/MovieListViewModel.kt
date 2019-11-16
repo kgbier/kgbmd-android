@@ -3,8 +3,8 @@ package com.kgbier.kgbmd.view.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kgbier.kgbmd.domain.ImdbRepo
-import com.kgbier.kgbmd.domain.MoviePoster
+import com.kgbier.kgbmd.domain.repo.ImdbRepo
+import com.kgbier.kgbmd.domain.model.MoviePoster
 import kotlinx.coroutines.launch
 
 class MovieListViewModel : ViewModel() {

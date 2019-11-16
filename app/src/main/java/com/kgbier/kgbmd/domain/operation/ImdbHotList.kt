@@ -1,4 +1,4 @@
-package com.kgbier.kgbmd.data.parse
+package com.kgbier.kgbmd.domain.operation
 
 import okio.BufferedSource
 
@@ -54,10 +54,10 @@ data class HotListItem(
     val ttId: String,
     val name: String,
     val rating: String?,
-    val thumbnailUrl: String
+    val imageUrl: String
 )
 
-class HotListParser(private val source: BufferedSource) {
+class ImdbHotList(private val source: BufferedSource) {
 
     companion object {
         // <span name="ir" data-value="8.8"></span>
@@ -77,7 +77,7 @@ class HotListParser(private val source: BufferedSource) {
         const val NAME_UPPER = "<"
     }
 
-    fun getListItems(): List<HotListItem> {
+    fun getList(): List<HotListItem> {
         val list = mutableListOf<HotListItem?>()
         while (seekPosterSection() != null) {
             list.add(getNextItem())
@@ -107,8 +107,8 @@ class HotListParser(private val source: BufferedSource) {
 
     private var matchBuffer: String? = null
 
-    private fun seek(token: String, include: String? = matchBuffer): String? {
-        include?.let { if (it.contains(token)) return it }
+    private fun seek(token: String, startWith: String? = matchBuffer): String? {
+        startWith?.let { if (it.contains(token)) return it }
         while (!source.exhausted()) {
             with(source.readUtf8Line()) {
                 if (this != null && contains(token)) {
@@ -124,8 +124,8 @@ class HotListParser(private val source: BufferedSource) {
     private fun findEndAnchor() = seek("""</a""")
     private fun findImage() = seek("""<img """)
 
-    private fun seekPosterSection() = seek("""<td class="posterColumn">""", null)
-    private fun findPosterSection() = seek("""<td class="posterColumn">""")
+    private fun seekPosterSection() = seek("""<td class="posterColumn"""", null)
+    private fun findPosterSection() = seek("""<td class="posterColumn"""")
     private fun findPosterSectionRating() = seek("""<span name="ir"""")
 
     private fun findTitleSection() = seek("""<td class="titleColumn">""")

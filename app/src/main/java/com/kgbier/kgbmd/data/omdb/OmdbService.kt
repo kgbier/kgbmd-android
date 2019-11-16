@@ -1,7 +1,7 @@
-package com.kgbier.kgbmd.data.network
+package com.kgbier.kgbmd.data.omdb
 
 import com.kgbier.kgbmd.BuildConfig
-import com.kgbier.kgbmd.data.Movie
+import com.kgbier.kgbmd.data.omdb.model.Movie
 import com.kgbier.kgbmd.service.Services
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

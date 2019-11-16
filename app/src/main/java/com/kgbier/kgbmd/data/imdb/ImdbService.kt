@@ -1,10 +1,10 @@
-package com.kgbier.kgbmd.data.network
+package com.kgbier.kgbmd.data.imdb
 
-import com.kgbier.kgbmd.data.imdb.RatingResponse
-import com.kgbier.kgbmd.data.imdb.SuggestionResponse
-import com.kgbier.kgbmd.data.parse.HotListItem
-import com.kgbier.kgbmd.data.parse.HotListParser
-import com.kgbier.kgbmd.data.parse.JsonP
+import com.kgbier.kgbmd.data.imdb.model.RatingResponse
+import com.kgbier.kgbmd.data.imdb.model.SuggestionResponse
+import com.kgbier.kgbmd.domain.operation.HotListItem
+import com.kgbier.kgbmd.domain.operation.ImdbHotList
+import com.kgbier.kgbmd.domain.operation.JsonP
 import com.kgbier.kgbmd.service.Services
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -40,7 +40,7 @@ object ImdbService {
             .url(METER_MOVIE).build()
 
         val response = Services.client.newCall(request).execute()
-        HotListParser(response.body?.source()!!).getListItems()
+        ImdbHotList(response.body?.source()!!).getList()
     }
 
     private const val SEARCH_REQUEST_TAG = 451

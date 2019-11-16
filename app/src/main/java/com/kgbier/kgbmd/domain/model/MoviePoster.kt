@@ -1,6 +1,6 @@
-package com.kgbier.kgbmd.domain
+package com.kgbier.kgbmd.domain.model
 
-import com.kgbier.kgbmd.data.parse.HotListItem
+import com.kgbier.kgbmd.domain.operation.HotListItem
 
 data class MoviePoster(
     val ttId: String,
@@ -16,9 +16,15 @@ fun transformHotListItem(item: HotListItem) = with(item) {
         ttId,
         name,
         rating,
-        thumbnailUrl,
-        generatePosterUrl(thumbnailUrl, DYNAMIC_IMAGE_SMALL),
-        generatePosterUrl(thumbnailUrl, DYNAMIC_IMAGE_LARGE)
+        imageUrl,
+        generatePosterUrl(
+            imageUrl,
+            DYNAMIC_IMAGE_SMALL
+        ),
+        generatePosterUrl(
+            imageUrl,
+            DYNAMIC_IMAGE_LARGE
+        )
     )
 }
 

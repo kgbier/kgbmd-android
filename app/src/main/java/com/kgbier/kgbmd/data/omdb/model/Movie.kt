@@ -1,4 +1,4 @@
-package com.kgbier.kgbmd.data
+package com.kgbier.kgbmd.data.omdb.model
 
 import com.squareup.moshi.Json
 

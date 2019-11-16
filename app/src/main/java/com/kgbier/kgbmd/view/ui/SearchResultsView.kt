@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kgbier.kgbmd.R
-import com.kgbier.kgbmd.domain.SearchSuggestion
+import com.kgbier.kgbmd.domain.model.SearchSuggestion
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.view.decoration.MiddleDividerItemDecoration
 

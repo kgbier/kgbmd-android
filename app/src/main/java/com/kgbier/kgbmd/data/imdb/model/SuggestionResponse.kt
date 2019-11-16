@@ -1,4 +1,4 @@
-package com.kgbier.kgbmd.data.imdb
+package com.kgbier.kgbmd.data.imdb.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
