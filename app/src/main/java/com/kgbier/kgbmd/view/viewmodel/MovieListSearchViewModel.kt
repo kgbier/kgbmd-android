@@ -21,8 +21,8 @@ class MovieListSearchViewModel : ViewModel() {
         }
         if (!isFirstLoad.value!!) isFirstLoad.postValue(true)
         try {
-            val movies = ImdbRepo.getSearchResults(query)
-            resultList.postValue(movies)
+            val results = ImdbRepo.getSearchResults(query)
+            resultList.postValue(results)
         } catch (t: Throwable) {
         }
     }

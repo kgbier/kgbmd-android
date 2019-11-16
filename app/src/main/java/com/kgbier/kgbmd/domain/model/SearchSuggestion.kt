@@ -1,6 +1,7 @@
 package com.kgbier.kgbmd.domain.model
 
 import com.kgbier.kgbmd.data.imdb.model.SuggestionResponse
+import com.kgbier.kgbmd.domain.operation.ImdbImageResizer
 
 data class SearchSuggestion(
     val ttid: String,
@@ -16,7 +17,7 @@ fun transformSuggestionResult(result: SuggestionResponse.Result) = with(result) 
         title,
         year,
         tidbit,
-        image?.imageUrl
+        image?.imageUrl?.let { ImdbImageResizer.resize(it, ImdbImageResizer.SIZE_WIDTH_THUMBNAIL) }
     )
 }
 
