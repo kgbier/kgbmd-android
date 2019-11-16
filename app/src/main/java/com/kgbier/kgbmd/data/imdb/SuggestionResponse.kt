@@ -1,7 +1,9 @@
 package com.kgbier.kgbmd.data.imdb
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class SuggestionResponse(
     @Json(name = "d")
     val data: List<Result>?,
@@ -10,6 +12,7 @@ data class SuggestionResponse(
     @Json(name = "v")
     val version: Int
 ) {
+    @JsonClass(generateAdapter = true)
     data class Result(
         @Json(name = "id")
         val ttid: String,
@@ -25,6 +28,7 @@ data class SuggestionResponse(
         @Json(name = "y")
         val year: String?
     ) {
+        @JsonClass(generateAdapter = true)
         data class Image(
             val width: Int?,
             val height: Int?,

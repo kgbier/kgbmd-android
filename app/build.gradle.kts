@@ -50,7 +50,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.1.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.1.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0")
-    kapt("androidx.lifecycle:lifecycle-compiler:2.1.0")
+    kapt("androidx.lifecycle:lifecycle-common-java8:2.1.0")
     implementation("androidx.core:core-ktx:1.1.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
@@ -64,6 +64,7 @@ dependencies {
 
     implementation("com.squareup.moshi:moshi:1.9.1")
     implementation("com.squareup.moshi:moshi-kotlin:1.9.1")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.1")
 
     implementation("com.github.bumptech.glide:glide:4.9.0")
     kapt("com.github.bumptech.glide:compiler:4.9.0")
