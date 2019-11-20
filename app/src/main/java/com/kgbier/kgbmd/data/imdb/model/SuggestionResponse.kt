@@ -15,7 +15,7 @@ data class SuggestionResponse(
     @JsonClass(generateAdapter = true)
     data class Result(
         @Json(name = "id")
-        val ttid: String,
+        val id: String,
         @Json(name = "l")
         val title: String,
         @Json(name = "i")

@@ -1,10 +1,12 @@
 package com.kgbier.kgbmd.view.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kgbier.kgbmd.domain.model.Suggestion
+import com.kgbier.kgbmd.domain.model.SearchSuggestionType
 import com.kgbier.kgbmd.domain.repo.ImdbRepo
-import com.kgbier.kgbmd.domain.model.SearchSuggestion
 import kotlinx.coroutines.launch
 
 class MovieListSearchViewModel : ViewModel() {
@@ -12,7 +14,21 @@ class MovieListSearchViewModel : ViewModel() {
     val hint = "Search movies, shows, actors"
 
     val isFirstLoad: MutableLiveData<Boolean> = MutableLiveData()
-    val resultList: MutableLiveData<List<SearchSuggestion>?> = MutableLiveData()
+    val resultList: MutableLiveData<List<Suggestion>?> = MutableLiveData()
+
+    private val ratingResults = mapOf<String, MutableLiveData<String>>()
+
+    fun liveRatingResult(id: String, type: SearchSuggestionType?): LiveData<String>? =
+        when (type) {
+            SearchSuggestionType.MOVIE -> {
+                val liveData = ratingResults[id] ?: MutableLiveData()
+                viewModelScope.launch {
+                    liveData.postValue(ImdbRepo.getRating(id))
+                }
+                liveData
+            }
+            else -> null
+        }
 
     fun search(query: String) = viewModelScope.launch {
         if (query.isBlank()) {

@@ -66,14 +66,14 @@ object ImdbService {
         Services.moshi.adapter(SuggestionResponse::class.java).fromJson(body)!!
     }
 
-    suspend fun getRating(ttid: String): RatingResponse.RatingInfo = withContext(Dispatchers.IO) {
+    suspend fun getRating(ttid: String): RatingResponse = withContext(Dispatchers.IO) {
         val url = buildRatingUrl(ttid)
 
         val request = Request.Builder().url(url).build()
         val response = Services.client.newCall(request).execute()
 
         val validatedJson = JsonP.toJson(response.body?.string()!!)
-        Services.moshi.adapter(RatingResponse::class.java).fromJson(validatedJson)!!.ratingInfo
+        Services.moshi.adapter(RatingResponse::class.java).fromJson(validatedJson)!!
     }
 }
 

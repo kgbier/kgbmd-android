@@ -10,12 +10,13 @@ import androidx.constraintlayout.widget.ConstraintSet.*
 import com.bumptech.glide.Glide
 import com.kgbier.kgbmd.util.dp
 
-class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
+open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
     val imageViewThumbnail: ImageView
     val textViewTitle: TextView
     val textViewTidbit: TextView
     val textViewYear: TextView
+    val textViewRating: TextView
 
     init {
 
@@ -119,7 +120,16 @@ class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
         textViewYear = TextView(context).apply {
             id = View.generateViewId()
 
+            setLines(1)
             textSize = 12f
+        }.also(::addView)
+
+
+        textViewRating = TextView(context).apply {
+            id = View.generateViewId()
+
+            setLines(1)
+            textSize = 16f
         }.also(::addView)
 
         ConstraintSet().apply {
@@ -143,6 +153,26 @@ class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
             )
             connect(
                 textViewYear.id,
+                END,
+                textViewRating.id,
+                START
+            )
+        }.applyTo(this)
+
+        ConstraintSet().apply {
+            constrainWidth(textViewRating.id, WRAP_CONTENT)
+            constrainHeight(textViewRating.id, WRAP_CONTENT)
+
+            setMargin(textViewRating.id, END, dp(4))
+
+            connect(
+                textViewRating.id,
+                BASELINE,
+                textViewTitle.id,
+                BASELINE
+            )
+            connect(
+                textViewRating.id,
                 END,
                 PARENT_ID,
                 END
@@ -172,5 +202,12 @@ class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
         textViewTidbit.text = it
     } ?: run {
         textViewTidbit.visibility = View.GONE
+    }
+
+    fun setRating(rating: String?) = rating?.let {
+        textViewRating.visibility = View.VISIBLE
+        textViewRating.text = it
+    } ?: run {
+        textViewRating.visibility = View.GONE
     }
 }
