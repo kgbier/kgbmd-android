@@ -47,12 +47,6 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
             }
         }.also(::addView)
 
-        if (searchBar.editTextSearch.requestFocus()) {
-            with(context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager) {
-                showSoftInput(searchBar.editTextSearch, 0)
-            }
-        }
-
         searchResults = SearchResults(context).apply {
             layoutParams =
                 LayoutParams(
@@ -62,5 +56,13 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
                     setMargins(WINDOW_MARGIN, dp(8), WINDOW_MARGIN, WINDOW_MARGIN)
                 }
         }.also(::addView)
+    }
+
+    fun onViewShown() {
+        if (searchBar.editTextSearch.requestFocus()) {
+            with(context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager) {
+                showSoftInput(searchBar.editTextSearch, InputMethodManager.SHOW_IMPLICIT)
+            }
+        }
     }
 }

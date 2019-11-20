@@ -54,7 +54,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
                 TransitionManager.go(newScene, transition)
             }
             Route.SearchScreen -> {
-                val newScene = Scene(rootView, SearchLayout(this) as View)
+                val searchLayout = SearchLayout(this)
+                val newScene = Scene(rootView, searchLayout as View).apply {
+                    setEnterAction { searchLayout.onViewShown() }
+                }
                 val transition =
                     Slide().addTarget(R.id.tilePosterView).setInterpolator(AccelerateInterpolator())
                 TransitionManager.go(newScene, transition)
