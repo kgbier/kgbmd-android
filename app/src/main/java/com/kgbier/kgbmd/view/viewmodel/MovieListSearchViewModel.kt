@@ -16,16 +16,16 @@ class MovieListSearchViewModel : ViewModel() {
     val isFirstLoad: MutableLiveData<Boolean> = MutableLiveData()
     val resultList: MutableLiveData<List<Suggestion>?> = MutableLiveData()
 
-    private val ratingResults = mutableMapOf<String, MutableLiveData<String>>()
+    private val ratingResults = mutableMapOf<String, MutableLiveData<String?>>()
 
-    fun liveRatingResult(id: String, type: SearchSuggestionType?): LiveData<String>? =
+    fun liveRatingResult(id: String, type: SearchSuggestionType?): LiveData<String?>? =
         when (type) {
             SearchSuggestionType.MOVIE -> ratingResults[id] ?: fetchNewLiveResult(id)
             else -> null
         }
 
-    private fun fetchNewLiveResult(id: String): LiveData<String>? =
-        MutableLiveData<String>().apply {
+    private fun fetchNewLiveResult(id: String): LiveData<String?>? =
+        MutableLiveData<String?>().apply {
             viewModelScope.launch {
                 postValue(ImdbRepo.getRating(id))
             }

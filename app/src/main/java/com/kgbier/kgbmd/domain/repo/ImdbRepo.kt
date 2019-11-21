@@ -10,6 +10,6 @@ object ImdbRepo {
     suspend fun getSearchResults(query: String): List<Suggestion> =
         ImdbService.search(query).run(::transformSuggestionResponse)
 
-    suspend fun getRating(id: String): String =
+    suspend fun getRating(id: String): String? =
         ImdbService.getRating(id).run(::transformRatingResponse)
 }

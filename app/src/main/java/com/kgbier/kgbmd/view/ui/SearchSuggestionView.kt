@@ -1,8 +1,10 @@
 package com.kgbier.kgbmd.view.ui
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -16,7 +18,7 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
     val textViewTitle: TextView
     val textViewTidbit: TextView
     val textViewYear: TextView
-    val textViewRating: TextView
+    val ratingStarView: RatingStarView
 
     init {
 
@@ -53,28 +55,90 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
             )
         }.applyTo(this)
 
-        textViewTitle = TextView(context).apply {
+        val layoutTitleText = LinearLayout(context).apply {
             id = View.generateViewId()
 
-            textSize = 16f
+            layoutParams = LinearLayout.LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
+            )
+
+            LinearLayout(context).apply {
+                textViewTitle = TextView(context).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT,
+                        1f
+                    )
+                    ellipsize = TextUtils.TruncateAt.END
+                    isSingleLine = true
+                    textSize = 16f
+                }.also(::addView)
+
+                textViewYear = TextView(context).apply {
+                    layoutParams =
+                        LinearLayout.LayoutParams(
+                            LayoutParams.WRAP_CONTENT,
+                            LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            marginStart = dp(4)
+                        }
+                    setLines(1)
+                    textSize = 12f
+                }.also(::addView)
+            }.also(::addView)
+        }.also(::addView)
+
+        ratingStarView = RatingStarView(context).apply {
+            id = View.generateViewId()
+            setTextSize(16f)
         }.also(::addView)
 
         ConstraintSet().apply {
-            constrainWidth(textViewTitle.id, WRAP_CONTENT)
-            constrainHeight(textViewTitle.id, WRAP_CONTENT)
+            constrainWidth(ratingStarView.id, WRAP_CONTENT)
+            constrainHeight(ratingStarView.id, WRAP_CONTENT)
+            setVisibility(ratingStarView.id, ConstraintSet.GONE)
 
-            setMargin(textViewTitle.id, START, dp(8))
+            setMargin(ratingStarView.id, END, dp(4))
+
             connect(
-                textViewTitle.id,
+                ratingStarView.id,
+                TOP,
+                layoutTitleText.id,
+                TOP
+            )
+            connect(
+                ratingStarView.id,
+                END,
+                PARENT_ID,
+                END
+            )
+        }.applyTo(this)
+
+        ConstraintSet().apply {
+            constrainWidth(layoutTitleText.id, 0)
+            constrainHeight(layoutTitleText.id, WRAP_CONTENT)
+
+            setMargin(layoutTitleText.id, START, dp(8))
+            setMargin(layoutTitleText.id, END, dp(4))
+
+            connect(
+                layoutTitleText.id,
+                TOP,
+                imageViewThumbnail.id,
+                TOP
+            )
+            connect(
+                layoutTitleText.id,
                 START,
                 imageViewThumbnail.id,
                 END
             )
             connect(
-                textViewTitle.id,
-                TOP,
-                imageViewThumbnail.id,
-                TOP
+                layoutTitleText.id,
+                END,
+                ratingStarView.id,
+                START
             )
         }.applyTo(this)
 
@@ -94,13 +158,13 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
             connect(
                 textViewTidbit.id,
                 START,
-                textViewTitle.id,
+                layoutTitleText.id,
                 START
             )
             connect(
                 textViewTidbit.id,
                 TOP,
-                textViewTitle.id,
+                layoutTitleText.id,
                 BOTTOM
             )
             connect(
@@ -111,68 +175,6 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
             )
             connect(
                 textViewTidbit.id,
-                END,
-                PARENT_ID,
-                END
-            )
-        }.applyTo(this)
-
-        textViewYear = TextView(context).apply {
-            id = View.generateViewId()
-
-            setLines(1)
-            textSize = 12f
-        }.also(::addView)
-
-
-        textViewRating = TextView(context).apply {
-            id = View.generateViewId()
-
-            setLines(1)
-            textSize = 16f
-        }.also(::addView)
-
-        ConstraintSet().apply {
-            constrainWidth(textViewYear.id, 0)
-            constrainHeight(textViewYear.id, WRAP_CONTENT)
-
-            setMargin(textViewYear.id, START, dp(4))
-            setMargin(textViewYear.id, END, dp(4))
-
-            connect(
-                textViewYear.id,
-                START,
-                textViewTitle.id,
-                END
-            )
-            connect(
-                textViewYear.id,
-                BASELINE,
-                textViewTitle.id,
-                BASELINE
-            )
-            connect(
-                textViewYear.id,
-                END,
-                textViewRating.id,
-                START
-            )
-        }.applyTo(this)
-
-        ConstraintSet().apply {
-            constrainWidth(textViewRating.id, WRAP_CONTENT)
-            constrainHeight(textViewRating.id, WRAP_CONTENT)
-
-            setMargin(textViewRating.id, END, dp(4))
-
-            connect(
-                textViewRating.id,
-                BASELINE,
-                textViewTitle.id,
-                BASELINE
-            )
-            connect(
-                textViewRating.id,
                 END,
                 PARENT_ID,
                 END
@@ -205,9 +207,9 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
     }
 
     fun setRating(rating: String?) = rating?.let {
-        textViewRating.visibility = View.VISIBLE
-        textViewRating.text = it
+        ratingStarView.visibility = View.VISIBLE
+        ratingStarView.textViewRating.text = it
     } ?: run {
-        textViewRating.visibility = View.GONE
+        ratingStarView.visibility = View.GONE
     }
 }

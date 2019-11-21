@@ -13,7 +13,7 @@ data class RatingResponse(
         val id: String,
         val title: String,
         val titleType: String,
-        val year: Int,
+        val year: Int?,
         val bottomRank: Long?,
         val rating: Float?,
         val ratingCount: Long?,
