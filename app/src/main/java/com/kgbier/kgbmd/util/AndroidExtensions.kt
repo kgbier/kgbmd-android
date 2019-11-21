@@ -11,7 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
 /**
- * `dp` to pixel
+ * `dp` to pixels
  */
 
 fun Context.dp(displayPixels: Float): Float =
@@ -25,6 +25,22 @@ fun View.dp(displayPixels: Float): Float =
 
 fun View.dp(displayPixels: Int): Int =
     (resources.displayMetrics.density * displayPixels).toInt()
+
+/**
+ * `sp` to pixels
+ */
+
+fun Context.sp(scaledPixels: Float): Float =
+    resources.displayMetrics.scaledDensity * scaledPixels
+
+fun Context.sp(scaledPixels: Int): Int =
+    (resources.displayMetrics.scaledDensity * scaledPixels).toInt()
+
+fun View.sp(scaledPixels: Float): Float =
+    resources.displayMetrics.scaledDensity * scaledPixels
+
+fun View.sp(scaledPixels: Int): Int =
+    (resources.displayMetrics.scaledDensity * scaledPixels).toInt()
 
 /**
  * Resource attribute (attr) resolution

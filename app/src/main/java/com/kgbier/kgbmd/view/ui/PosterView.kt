@@ -22,7 +22,7 @@ class PosterView(context: Context) : CardView(context) {
     private val viewBottomScrim: View
     private val textViewTitle: TextView
     private val viewCornerScrim: View
-    private val textViewRating: TextView
+    private val ratingStarView: RatingStarView
 
     init {
         layoutParams = MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
@@ -75,17 +75,10 @@ class PosterView(context: Context) : CardView(context) {
                 setBackgroundResource(R.drawable.scrim_overlay_corner)
             }.also(::addView)
 
-            textViewRating = TextView(context).apply {
+            ratingStarView = RatingStarView(context).apply {
                 id = generateViewId()
-                setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    null,
-                    null,
-                    ResourcesCompat.getDrawable(resources, R.drawable.rating_star, null),
-                    null
-                )
-                setTextColor(Color.WHITE)
             }.also(::addView)
-            textViewRating.visibility = View.INVISIBLE
+            ratingStarView.visibility = View.INVISIBLE
 
             val spaceRatingStart = Space(context).apply {
                 id = generateViewId()
@@ -111,19 +104,19 @@ class PosterView(context: Context) : CardView(context) {
             }.applyTo(this)
 
             ConstraintSet().apply {
-                setVisibility(textViewRating.id, GONE)
-                constrainWidth(textViewRating.id, WRAP_CONTENT)
-                constrainHeight(textViewRating.id, WRAP_CONTENT)
+                setVisibility(ratingStarView.id, GONE)
+                constrainWidth(ratingStarView.id, WRAP_CONTENT)
+                constrainHeight(ratingStarView.id, WRAP_CONTENT)
 
-                setMargin(textViewRating.id, TOP, dp(4))
-                setMargin(textViewRating.id, END, dp(4))
+                setMargin(ratingStarView.id, TOP, dp(4))
+                setMargin(ratingStarView.id, END, dp(4))
 
-                connect(textViewRating.id, END, PARENT_ID, END)
-                connect(textViewRating.id, TOP, PARENT_ID, TOP)
+                connect(ratingStarView.id, END, PARENT_ID, END)
+                connect(ratingStarView.id, TOP, PARENT_ID, TOP)
 
                 constrainWidth(spaceRatingStart.id, dp(24))
 
-                connect(spaceRatingStart.id, END, textViewRating.id, START)
+                connect(spaceRatingStart.id, END, ratingStarView.id, START)
                 connect(spaceRatingStart.id, TOP, PARENT_ID, TOP)
             }.applyTo(this)
 
@@ -151,11 +144,11 @@ class PosterView(context: Context) : CardView(context) {
 
     fun setRating(rating: String?) = rating?.let {
         viewCornerScrim.visibility = View.VISIBLE
-        textViewRating.visibility = View.VISIBLE
-        textViewRating.text = rating
+        ratingStarView.visibility = View.VISIBLE
+        ratingStarView.textViewRating.text = rating
     } ?: run {
         viewCornerScrim.visibility = View.GONE
-        textViewRating.visibility = View.GONE
+        ratingStarView.visibility = View.GONE
     }
 
 
