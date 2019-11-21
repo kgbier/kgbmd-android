@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.domain.model.Suggestion
+import com.kgbier.kgbmd.util.LiveDataDisposeBag
 import com.kgbier.kgbmd.util.bind
+import com.kgbier.kgbmd.util.disposeBy
 import com.kgbier.kgbmd.view.ui.SearchResultsView
 import com.kgbier.kgbmd.view.ui.SearchSuggestionView
 import com.kgbier.kgbmd.view.viewmodel.MovieListSearchViewModel
@@ -73,6 +75,8 @@ class ResultViewHolder(parent: ViewGroup, val context: MainActivity) : RecyclerV
     private var movieListSearchViewModel: MovieListSearchViewModel =
         ViewModelProviders.of(context).get(MovieListSearchViewModel::class.java)
 
+    private var disposeBag = LiveDataDisposeBag()
+
     fun onBindData(searchSuggestion: Suggestion) {
         with(searchSuggestion) {
             view.setThumbnail(thumbnailUrl)
@@ -80,13 +84,15 @@ class ResultViewHolder(parent: ViewGroup, val context: MainActivity) : RecyclerV
             view.setTidbit(tidbit)
             view.setYear(year)
         }
+
         movieListSearchViewModel.liveRatingResult(
             searchSuggestion.id, searchSuggestion.type
         )?.bind(context) {
             view.setRating(it)
-        }
+        }?.disposeBy(disposeBag)
     }
 
+    fun onViewRecycled() = disposeBag.dispose()
 }
 
 class ResultAdapter(val context: MainActivity) :
@@ -108,7 +114,8 @@ class ResultAdapter(val context: MainActivity) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder =
         ResultViewHolder(parent, context)
 
-    override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ResultViewHolder, position: Int) =
         holder.onBindData(getItem(position))
-    }
+
+    override fun onViewRecycled(holder: ResultViewHolder) = holder.onViewRecycled()
 }
