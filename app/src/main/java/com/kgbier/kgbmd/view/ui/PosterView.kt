@@ -77,6 +77,7 @@ class PosterView(context: Context) : CardView(context) {
 
             ratingStarView = RatingStarView(context).apply {
                 id = generateViewId()
+                textViewRating.setTextColor(Color.WHITE)
             }.also(::addView)
             ratingStarView.visibility = View.INVISIBLE
 

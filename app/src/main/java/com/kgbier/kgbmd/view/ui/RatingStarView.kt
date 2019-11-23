@@ -1,7 +1,6 @@
 package com.kgbier.kgbmd.view.ui
 
 import android.content.Context
-import android.graphics.Color
 import android.view.Gravity
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
@@ -22,7 +21,6 @@ class RatingStarView(context: Context) : LinearLayout(context) {
 
         textViewRating = TextView(context).apply {
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-            setTextColor(Color.WHITE)
         }.also(::addView)
 
         imageViewStar = ImageView(context).apply {
