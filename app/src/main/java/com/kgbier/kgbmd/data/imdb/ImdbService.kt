@@ -23,7 +23,8 @@ object ImdbService {
         .host("v2.sg.media-imdb.com")
         .addPathSegment("suggestion")
         .addPathSegment(query.first().toString())
-        .addPathSegment("$query.json").build()
+        .addPathSegment("$query.json")
+        .build()
 
     // https://p.media-imdb.com/static-content/documents/v1/title/tt0468569/ratings%3Fjsonp=imdb.rating.run:imdb.api.title.ratings/data.json
     private fun buildRatingUrl(ttid: String) = HttpUrl.Builder()
@@ -34,14 +35,16 @@ object ImdbService {
         .addEncodedPathSegment("ratings%3Fjsonp=imdb.rating.run:imdb.api.title.ratings/data.json")
         .build()
 
-
-    suspend fun getHotMovies(): List<HotListItem> = withContext(Dispatchers.IO) {
+    private suspend fun getHotList(listUrl: String) = withContext(Dispatchers.IO) {
         val request = Request.Builder()
-            .url(METER_MOVIE).build()
+            .url(listUrl).build()
 
         val response = Services.client.newCall(request).execute()
         ImdbHotList(response.body?.source()!!).getList()
     }
+
+    suspend fun getHotMovies(): List<HotListItem> = getHotList(METER_MOVIE)
+    suspend fun getHotShows(): List<HotListItem> = getHotList(METER_TV)
 
     private const val SEARCH_REQUEST_TAG = 451
 
