@@ -9,6 +9,11 @@ import com.kgbier.kgbmd.domain.model.Suggestion
 import com.kgbier.kgbmd.domain.repo.ImdbRepo
 import kotlinx.coroutines.launch
 
+sealed class RatingResult {
+    object Loading : RatingResult()
+    data class Result(val rating: String?) : RatingResult()
+}
+
 class MovieListSearchViewModel : ViewModel() {
 
     val hint = "Search movies, shows, actors"
@@ -16,18 +21,19 @@ class MovieListSearchViewModel : ViewModel() {
     val isFirstLoad: MutableLiveData<Boolean> = MutableLiveData()
     val resultList: MutableLiveData<List<Suggestion>?> = MutableLiveData()
 
-    private val ratingResults = mutableMapOf<String, MutableLiveData<String?>>()
+    private val ratingResults = mutableMapOf<String, MutableLiveData<RatingResult>>()
 
-    fun liveRatingResult(id: String, type: SearchSuggestionType?): LiveData<String?>? =
+    fun liveRatingResult(id: String, type: SearchSuggestionType?): LiveData<RatingResult>? =
         when (type) {
             SearchSuggestionType.MOVIE -> ratingResults[id] ?: fetchNewLiveResult(id)
             else -> null
         }
 
-    private fun fetchNewLiveResult(id: String): LiveData<String?>? =
-        MutableLiveData<String?>().apply {
+    private fun fetchNewLiveResult(id: String): LiveData<RatingResult> =
+        MutableLiveData<RatingResult>().apply {
             viewModelScope.launch {
-                postValue(ImdbRepo.getRating(id))
+                postValue(RatingResult.Loading)
+                postValue(RatingResult.Result(ImdbRepo.getRating(id)))
             }
         }.also { ratingResults[id] = it }
 

@@ -15,6 +15,7 @@ import com.kgbier.kgbmd.util.disposeBy
 import com.kgbier.kgbmd.view.ui.SearchResultsView
 import com.kgbier.kgbmd.view.ui.SearchSuggestionView
 import com.kgbier.kgbmd.view.viewmodel.MovieListSearchViewModel
+import com.kgbier.kgbmd.view.viewmodel.RatingResult
 
 @SuppressLint("ViewConstructor")
 class SearchResults(context: MainActivity) : SearchResultsView(context) {
@@ -23,6 +24,8 @@ class SearchResults(context: MainActivity) : SearchResultsView(context) {
         ViewModelProviders.of(context).get(MovieListSearchViewModel::class.java)
 
     private val resultAdapter = ResultAdapter(context)
+
+    private val disposeBag = LiveDataDisposeBag()
 
     init {
         visibility = View.GONE
@@ -37,7 +40,7 @@ class SearchResults(context: MainActivity) : SearchResultsView(context) {
                 emptyStateMessage.visibility = View.GONE
                 loadingProgressBar.visibility = View.VISIBLE
             }
-        }
+        }.disposeBy(disposeBag)
 
         movieListSearchViewModel.resultList.bind(context) {
 
@@ -57,7 +60,12 @@ class SearchResults(context: MainActivity) : SearchResultsView(context) {
             } else {
                 emptyStateMessage.visibility = View.GONE
             }
-        }
+        }.disposeBy(disposeBag)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        disposeBag.dispose()
     }
 }
 
@@ -88,8 +96,12 @@ class ResultViewHolder(parent: ViewGroup, val context: MainActivity) : RecyclerV
         movieListSearchViewModel.liveRatingResult(
             searchSuggestion.id, searchSuggestion.type
         )?.bind(context) {
-            view.setRating(it)
-        }?.disposeBy(disposeBag)
+            when (it) {
+                RatingResult.Loading -> view.setRating(null, true)
+                is RatingResult.Result -> view.setRating(it.rating, false)
+            }
+
+        }?.disposeBy(disposeBag) ?: view.setRating(null, false)
     }
 
     fun onViewRecycled() = disposeBag.dispose()

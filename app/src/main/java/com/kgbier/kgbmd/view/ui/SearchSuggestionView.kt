@@ -206,10 +206,19 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
         textViewTidbit.visibility = View.GONE
     }
 
-    fun setRating(rating: String?) = rating?.let {
-        ratingStarView.visibility = View.VISIBLE
-        ratingStarView.textViewRating.text = it
-    } ?: run {
-        ratingStarView.visibility = View.GONE
+    fun setRating(rating: String?, loading: Boolean) {
+        if (loading) {
+            ratingStarView.visibility = View.VISIBLE
+            ratingStarView.spin()
+            ratingStarView.textViewRating.text = null
+        } else {
+            ratingStarView.cancelSpin()
+            rating?.let {
+                ratingStarView.visibility = View.VISIBLE
+                ratingStarView.textViewRating.text = it
+            } ?: run {
+                ratingStarView.visibility = View.GONE
+            }
+        }
     }
 }

@@ -8,9 +8,7 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.kgbier.kgbmd.MainActivity
-import com.kgbier.kgbmd.util.bind
-import com.kgbier.kgbmd.util.dp
-import com.kgbier.kgbmd.util.setOnUpdateWithWindowInsetsListener
+import com.kgbier.kgbmd.util.*
 import com.kgbier.kgbmd.view.behaviour.ScrollBehaviour
 import com.kgbier.kgbmd.view.component.ReadOnlySearchBar
 import com.kgbier.kgbmd.view.component.TiledPosterGrid
@@ -18,6 +16,8 @@ import com.kgbier.kgbmd.view.viewmodel.MovieListViewModel
 
 @SuppressLint("ViewConstructor")
 class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
+
+    private val disposeBag = LiveDataDisposeBag()
 
     private val readOnlySearchBar: ReadOnlySearchBar
 
@@ -86,8 +86,12 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
 
         movieListViewModel.isLoading.bind(context) {
             if (!it) swipeRefreshLayout.isRefreshing = it
-        }
+        }.disposeBy(disposeBag)
     }
 
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        disposeBag.dispose()
+    }
 }
 

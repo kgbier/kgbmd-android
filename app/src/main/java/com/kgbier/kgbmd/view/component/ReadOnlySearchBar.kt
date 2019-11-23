@@ -3,8 +3,8 @@ package com.kgbier.kgbmd.view.component
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProviders
 import com.kgbier.kgbmd.MainActivity
-import com.kgbier.kgbmd.Route
 import com.kgbier.kgbmd.R
+import com.kgbier.kgbmd.Route
 import com.kgbier.kgbmd.util.resolveAttribute
 import com.kgbier.kgbmd.view.ui.SearchBarView
 import com.kgbier.kgbmd.view.viewmodel.MovieListSearchViewModel
