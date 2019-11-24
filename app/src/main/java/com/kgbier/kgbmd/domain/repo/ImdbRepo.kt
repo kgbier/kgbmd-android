@@ -14,5 +14,5 @@ object ImdbRepo {
         ImdbService.search(query).run(::transformSuggestionResponse)
 
     suspend fun getRating(id: String): String? =
-        ImdbService.getRating(id).run(::transformRatingResponse)
+        ImdbService.getRating(id)?.run(::transformRatingResponse)
 }
