@@ -1,6 +1,5 @@
 package com.kgbier.kgbmd.domain.model
 
-import com.kgbier.kgbmd.domain.operation.HotListItem
 import com.kgbier.kgbmd.domain.operation.ImdbImageResizer
 
 data class MoviePoster(

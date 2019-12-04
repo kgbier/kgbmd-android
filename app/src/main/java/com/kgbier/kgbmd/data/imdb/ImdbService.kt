@@ -2,7 +2,7 @@ package com.kgbier.kgbmd.data.imdb
 
 import com.kgbier.kgbmd.data.imdb.model.RatingResponse
 import com.kgbier.kgbmd.data.imdb.model.SuggestionResponse
-import com.kgbier.kgbmd.domain.operation.HotListItem
+import com.kgbier.kgbmd.domain.model.HotListItem
 import com.kgbier.kgbmd.domain.operation.ImdbHotList
 import com.kgbier.kgbmd.domain.operation.JsonP
 import com.kgbier.kgbmd.service.Services

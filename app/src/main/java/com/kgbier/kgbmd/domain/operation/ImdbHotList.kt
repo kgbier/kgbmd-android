@@ -1,6 +1,8 @@
 package com.kgbier.kgbmd.domain.operation
 
+import com.kgbier.kgbmd.domain.model.HotListItem
 import okio.BufferedSource
+
 
 /**
 <tr>
@@ -50,16 +52,9 @@ import okio.BufferedSource
 </tr>
  */
 
-data class HotListItem(
-    val ttId: String,
-    val name: String,
-    val rating: String?,
-    val imageUrl: String
-)
-
 class ImdbHotList(private val source: BufferedSource) {
 
-    companion object {
+    private companion object {
         // <span name="ir" data-value="8.8"></span>
         const val RATING_LOWER = "data-value=\""
         const val RATING_UPPER = "\""
@@ -77,12 +72,10 @@ class ImdbHotList(private val source: BufferedSource) {
         const val NAME_UPPER = "<"
     }
 
-    fun getList(): List<HotListItem> {
-        val list = mutableListOf<HotListItem?>()
+    fun getList(): List<HotListItem> = mutableListOf<HotListItem>().apply {
         while (seekPosterSection() != null) {
-            list.add(getNextItem())
+            getNextItem()?.let(::add)
         }
-        return list.filterNotNull()
     }
 
     private fun getNextItem(): HotListItem? {
@@ -102,7 +95,12 @@ class ImdbHotList(private val source: BufferedSource) {
 
         val validatedRating = rating.takeUnless { it == "0.0" }
 
-        return HotListItem(ttid, name, validatedRating, imageUrl)
+        return HotListItem(
+            ttid,
+            name,
+            validatedRating,
+            imageUrl
+        )
     }
 
     private var matchBuffer: String? = null
