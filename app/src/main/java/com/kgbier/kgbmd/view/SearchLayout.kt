@@ -25,18 +25,12 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
 
         // Setup Search Bar
         searchBar = SearchBar(context).apply {
-            layoutParams =
-                LayoutParams(
-                    LayoutParams.MATCH_PARENT,
-                    LayoutParams.WRAP_CONTENT
-                ).apply {
-                    setMargins(
-                        WINDOW_MARGIN,
-                        WINDOW_MARGIN,
-                        WINDOW_MARGIN,
-                        0
-                    )
-                }
+            layoutParams = LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT
+            )
+
+            radius = 0f
 
             setOnUpdateWithWindowInsetsListener { _, insets, _, intendedMargin ->
                 updateLayoutParams<LayoutParams> {
@@ -48,13 +42,12 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
         }.also(::addView)
 
         searchResults = SearchResults(context).apply {
-            layoutParams =
-                LayoutParams(
-                    LayoutParams.MATCH_PARENT,
-                    LayoutParams.WRAP_CONTENT
-                ).apply {
-                    setMargins(WINDOW_MARGIN, dp(8), WINDOW_MARGIN, WINDOW_MARGIN)
-                }
+            layoutParams = LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(WINDOW_MARGIN, dp(8), WINDOW_MARGIN, WINDOW_MARGIN)
+            }
         }.also(::addView)
     }
 

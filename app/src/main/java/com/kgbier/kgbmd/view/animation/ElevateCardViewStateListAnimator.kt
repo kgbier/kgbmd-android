@@ -25,11 +25,12 @@ class ElevateCardViewStateListAnimator(context: Context) : StateListAnimator() {
 
     init {
         this.addState(
-            listOf(
-                android.R.attr.state_enabled,
-                android.R.attr.state_pressed
-            ).toIntArray(), downAnimator
+            listOf(android.R.attr.state_enabled, android.R.attr.state_pressed).toIntArray(),
+            downAnimator
         )
-        this.addState(listOf(android.R.attr.state_enabled).toIntArray(), upAnimator)
+        this.addState(
+            listOf(android.R.attr.state_enabled).toIntArray(),
+            upAnimator
+        )
     }
 }
