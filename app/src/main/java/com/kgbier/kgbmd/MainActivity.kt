@@ -43,6 +43,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
         showScreen(route)
     }
 
+    fun navigateBack() {
+        if (backStack.isEmpty()) {
+            finish(); return
+        }
+        showScreen(backStack.pop())
+    }
+
     private fun showScreen(route: Route) {
         currentRoute = route
         when (route) {
@@ -91,12 +98,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
         }
     }
 
-    override fun onBackPressed() {
-        if (backStack.isEmpty()) {
-            finish(); return
-        }
-        showScreen(backStack.pop())
-    }
+    override fun onBackPressed() = navigateBack()
 
     override fun onDestroy() {
         super.onDestroy()

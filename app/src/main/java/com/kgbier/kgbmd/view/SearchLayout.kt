@@ -6,8 +6,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
+import androidx.core.view.updateMarginsRelative
 import com.kgbier.kgbmd.MainActivity
+import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
+import com.kgbier.kgbmd.util.resolveAttribute
 import com.kgbier.kgbmd.util.setOnUpdateWithWindowInsetsListener
 import com.kgbier.kgbmd.view.component.SearchBar
 import com.kgbier.kgbmd.view.component.SearchResults
@@ -31,6 +34,16 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
             )
 
             radius = 0f
+
+            imageViewKeyIcon.apply {
+                resolveAttribute(R.attr.homeAsUpIndicator)?.let(::setImageResource)
+                resolveAttribute(R.attr.actionBarItemBackground)?.let(::setBackgroundResource)
+                setOnClickListener { context.navigateBack() }
+
+                updateLayoutParams<LayoutParams> {
+                    updateMarginsRelative(end = dp(12))
+                }
+            }
 
             setOnUpdateWithWindowInsetsListener { _, insets, _, intendedMargin ->
                 updateLayoutParams<LayoutParams> {

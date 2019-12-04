@@ -20,6 +20,7 @@ private const val ELEVATION = 4f
 open class SearchBarView(context: MainActivity) : CardView(context) {
 
     val editTextSearch: EditText
+    val imageViewKeyIcon: ImageView
 
     init {
         id = R.id.searchBarView
@@ -39,11 +40,13 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
                 marginEnd = dp(12)
             }
 
-            ImageView(context).apply {
+            imageViewKeyIcon = ImageView(context).apply {
                 layoutParams = LayoutParams(
                     LayoutParams.WRAP_CONTENT,
                     LayoutParams.MATCH_PARENT
-                )
+                ).apply {
+                    marginEnd = dp(4)
+                }
                 setImageResource(R.drawable.ic_search)
             }.also(::addView)
 
