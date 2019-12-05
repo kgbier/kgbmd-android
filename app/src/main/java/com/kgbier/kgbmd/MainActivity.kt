@@ -1,25 +1,14 @@
 package com.kgbier.kgbmd
 
 import android.os.Bundle
-import android.transition.*
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
-import com.kgbier.kgbmd.view.MainLayout
-import com.kgbier.kgbmd.view.SearchLayout
-import com.kgbier.kgbmd.view.animation.CornerRadiusTransition
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import java.util.*
-
-sealed class Route {
-    object MainPosterScreen : Route()
-    object SearchScreen : Route()
-}
 
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), LifecycleOwner {
 
@@ -52,50 +41,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
 
     private fun showScreen(route: Route) {
         currentRoute = route
-        when (route) {
-            Route.MainPosterScreen -> {
-                val newScene = Scene(rootView, MainLayout(this) as View)
-                val transitions = TransitionSet().apply {
-                    Slide()
-                        .addTarget(R.id.tilePosterView)
-                        .setInterpolator(DecelerateInterpolator()).also { addTransition(it) }
-
-                    ChangeBounds()
-                        .addTarget(R.id.searchBarView)
-                        .setInterpolator(DecelerateInterpolator())
-                        .also { addTransition(it) }
-
-                    CornerRadiusTransition()
-                        .addTarget(R.id.searchBarView)
-                        .setInterpolator(DecelerateInterpolator())
-                        .also { addTransition(it) }
-                }
-                TransitionManager.go(newScene, transitions)
-            }
-            Route.SearchScreen -> {
-                val searchLayout = SearchLayout(this)
-                val newScene = Scene(rootView, searchLayout as View).apply {
-                    setEnterAction { searchLayout.onViewShown() }
-                }
-
-                val transitions = TransitionSet().apply {
-                    Slide()
-                        .addTarget(R.id.tilePosterView)
-                        .setInterpolator(AccelerateInterpolator()).also { addTransition(it) }
-
-                    ChangeBounds()
-                        .addTarget(R.id.searchBarView)
-                        .setInterpolator(DecelerateInterpolator())
-                        .also { addTransition(it) }
-
-                    CornerRadiusTransition()
-                        .addTarget(R.id.searchBarView)
-                        .setInterpolator(DecelerateInterpolator())
-                        .also { addTransition(it) }
-                }
-                TransitionManager.go(newScene, transitions)
-            }
-        }
+        Navigation.routeTo(route, rootView, this)
     }
 
     override fun onBackPressed() = navigateBack()
