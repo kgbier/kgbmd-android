@@ -62,12 +62,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
 
                     ChangeBounds()
                         .addTarget(R.id.searchBarView)
-                        .setInterpolator(AccelerateInterpolator())
+                        .setInterpolator(DecelerateInterpolator())
                         .also { addTransition(it) }
 
                     CornerRadiusTransition()
                         .addTarget(R.id.searchBarView)
-                        .setInterpolator(AccelerateInterpolator())
+                        .setInterpolator(DecelerateInterpolator())
                         .also { addTransition(it) }
                 }
                 TransitionManager.go(newScene, transitions)
@@ -85,12 +85,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
 
                     ChangeBounds()
                         .addTarget(R.id.searchBarView)
-                        .setInterpolator(AccelerateInterpolator())
+                        .setInterpolator(DecelerateInterpolator())
                         .also { addTransition(it) }
 
                     CornerRadiusTransition()
                         .addTarget(R.id.searchBarView)
-                        .setInterpolator(AccelerateInterpolator())
+                        .setInterpolator(DecelerateInterpolator())
                         .also { addTransition(it) }
                 }
                 TransitionManager.go(newScene, transitions)

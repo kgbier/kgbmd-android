@@ -13,7 +13,7 @@ import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
 import kotlin.math.max
 
-private const val HEIGHT = 40
+private const val HEIGHT = 48
 private const val ELEVATION = 4f
 
 @SuppressLint("ViewConstructor")
@@ -22,12 +22,13 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
     val editTextSearch: EditText
     val imageViewKeyIcon: ImageView
 
+    private val targetMinimumHeight = dp(HEIGHT)
+
     init {
         id = R.id.searchBarView
         isTransitionGroup = true
 
-        minimumHeight = dp(HEIGHT)
-        radius = minimumHeight / 2f
+        radius = targetMinimumHeight / 2f
         cardElevation = dp(ELEVATION)
 
         LinearLayout(context).apply {
@@ -36,29 +37,29 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT
             ).apply {
-                marginStart = dp(12)
                 marginEnd = dp(12)
             }
 
             imageViewKeyIcon = ImageView(context).apply {
                 layoutParams = LayoutParams(
-                    LayoutParams.WRAP_CONTENT,
-                    LayoutParams.MATCH_PARENT
+                    targetMinimumHeight,
+                    targetMinimumHeight
                 ).apply {
                     marginEnd = dp(4)
                 }
+                scaleType = ImageView.ScaleType.CENTER_INSIDE
                 setImageResource(R.drawable.ic_search)
             }.also(::addView)
 
             editTextSearch = EditText(context).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    LayoutParams.MATCH_PARENT,
+                    1f
+                )
                 inputType = InputType.TYPE_CLASS_TEXT
                 background = null
                 maxLines = 1
-                layoutParams = LinearLayout.LayoutParams(
-                    0,
-                    LayoutParams.WRAP_CONTENT,
-                    1f
-                )
             }.also(::addView)
         }.also(::addView)
     }
@@ -88,5 +89,12 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
 
         isAnimating = true
         animate().setInterpolator(interpolator).translationY(0f).withEndAction(animatorEndAction)
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(
+            widthMeasureSpec,
+            MeasureSpec.makeMeasureSpec(targetMinimumHeight, MeasureSpec.EXACTLY)
+        )
     }
 }
