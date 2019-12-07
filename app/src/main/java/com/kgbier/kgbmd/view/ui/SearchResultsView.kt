@@ -13,8 +13,6 @@ import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.view.decoration.MiddleDividerItemDecoration
 
-private const val ELEVATION = 4f
-
 @SuppressLint("ViewConstructor")
 open class SearchResultsView(context: Context) : FrameLayout(context) {
     val resultRecyclerView: RecyclerView
@@ -48,11 +46,10 @@ open class SearchResultsView(context: Context) : FrameLayout(context) {
 
         resultRecyclerView = RecyclerView(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            setPaddingRelative(dp(4), dp(2), dp(4), dp(2))
             clipToPadding = false
             itemAnimator = null
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(MiddleDividerItemDecoration(context))
+            addItemDecoration(MiddleDividerItemDecoration(context, dp(72)))
         }.also(::addView)
     }
 

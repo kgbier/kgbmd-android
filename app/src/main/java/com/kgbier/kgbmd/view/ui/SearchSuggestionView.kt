@@ -29,11 +29,11 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
         }.also(::addView)
 
         ConstraintSet().apply {
-            constrainWidth(imageViewThumbnail.id, dp(32))
-            constrainHeight(imageViewThumbnail.id, dp(48))
+            constrainWidth(imageViewThumbnail.id, dp(40))
+            constrainHeight(imageViewThumbnail.id, dp(58))
 
-            setMargin(imageViewThumbnail.id, TOP, dp(2))
-            setMargin(imageViewThumbnail.id, BOTTOM, dp(2))
+            setMargin(imageViewThumbnail.id, TOP, dp(8))
+            setMargin(imageViewThumbnail.id, BOTTOM, dp(8))
 
             connect(
                 imageViewThumbnail.id,
@@ -99,8 +99,6 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
             constrainHeight(ratingStarView.id, WRAP_CONTENT)
             setVisibility(ratingStarView.id, ConstraintSet.GONE)
 
-            setMargin(ratingStarView.id, END, dp(4))
-
             connect(
                 ratingStarView.id,
                 TOP,
@@ -112,33 +110,6 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                 END,
                 PARENT_ID,
                 END
-            )
-        }.applyTo(this)
-
-        ConstraintSet().apply {
-            constrainWidth(layoutTitleText.id, 0)
-            constrainHeight(layoutTitleText.id, WRAP_CONTENT)
-
-            setMargin(layoutTitleText.id, START, dp(8))
-            setMargin(layoutTitleText.id, END, dp(8))
-
-            connect(
-                layoutTitleText.id,
-                TOP,
-                imageViewThumbnail.id,
-                TOP
-            )
-            connect(
-                layoutTitleText.id,
-                START,
-                imageViewThumbnail.id,
-                END
-            )
-            connect(
-                layoutTitleText.id,
-                END,
-                ratingStarView.id,
-                START
             )
         }.applyTo(this)
 
@@ -149,29 +120,50 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
         }.also(::addView)
 
         ConstraintSet().apply {
+            createVerticalChain(
+                PARENT_ID,
+                TOP,
+                PARENT_ID,
+                BOTTOM,
+                arrayOf(layoutTitleText.id, textViewTidbit.id).toIntArray(),
+                null,
+                CHAIN_PACKED
+            )
+            setVerticalBias(layoutTitleText.id, 0f)
+
+            // layoutTitleText
+            constrainWidth(layoutTitleText.id, 0)
+            constrainHeight(layoutTitleText.id, WRAP_CONTENT)
+
+            setMargin(layoutTitleText.id, TOP, dp(8))
+            setMargin(layoutTitleText.id, START, dp(16))
+            setMargin(layoutTitleText.id, END, dp(8))
+            setGoneMargin(layoutTitleText.id, END, 0)
+
+            connect(
+                layoutTitleText.id,
+                START,
+                imageViewThumbnail.id,
+                END
+            )
+            connect(
+                layoutTitleText.id,
+                END,
+                ratingStarView.id,
+                START
+            )
+
+            // textViewTidbit
             constrainWidth(textViewTidbit.id, 0)
             constrainHeight(textViewTidbit.id, WRAP_CONTENT)
 
-            setMargin(textViewTidbit.id, BOTTOM, dp(2))
-            setMargin(textViewTidbit.id, END, dp(4))
+            setMargin(textViewTidbit.id, BOTTOM, dp(8))
 
             connect(
                 textViewTidbit.id,
                 START,
                 layoutTitleText.id,
                 START
-            )
-            connect(
-                textViewTidbit.id,
-                TOP,
-                layoutTitleText.id,
-                BOTTOM
-            )
-            connect(
-                textViewTidbit.id,
-                BOTTOM,
-                PARENT_ID,
-                BOTTOM
             )
             connect(
                 textViewTidbit.id,
