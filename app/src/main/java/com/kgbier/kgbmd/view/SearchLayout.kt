@@ -24,6 +24,10 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
     private val WINDOW_MARGIN = dp(16)
 
     init {
+        // Needs to be set when the app is laid out fullscreen. Otherwise when the keyboard is visible
+        // the window does not get padded from the bottom to compensate for the keyboard.
+        fitsSystemWindows = true
+
         orientation = VERTICAL
 
         // Setup Search Bar
@@ -55,12 +59,8 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
         }.also(::addView)
 
         searchResults = SearchResults(context).apply {
-            layoutParams = LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(WINDOW_MARGIN, dp(8), WINDOW_MARGIN, WINDOW_MARGIN)
-            }
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
+            setPaddingRelative(WINDOW_MARGIN, 0, WINDOW_MARGIN, 0)
         }.also(::addView)
     }
 
