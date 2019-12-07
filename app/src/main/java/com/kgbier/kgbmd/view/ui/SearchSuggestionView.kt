@@ -22,6 +22,8 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
     init {
 
+        setPadding(0, dp(8), 0, dp(8))
+
         imageViewThumbnail = ImageView(context).apply {
             id = View.generateViewId()
 
@@ -31,9 +33,6 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
         ConstraintSet().apply {
             constrainWidth(imageViewThumbnail.id, dp(40))
             constrainHeight(imageViewThumbnail.id, dp(58))
-
-            setMargin(imageViewThumbnail.id, TOP, dp(8))
-            setMargin(imageViewThumbnail.id, BOTTOM, dp(8))
 
             connect(
                 imageViewThumbnail.id,
@@ -135,9 +134,9 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
             constrainWidth(layoutTitleText.id, 0)
             constrainHeight(layoutTitleText.id, WRAP_CONTENT)
 
-            setMargin(layoutTitleText.id, TOP, dp(8))
             setMargin(layoutTitleText.id, START, dp(16))
             setMargin(layoutTitleText.id, END, dp(8))
+            setGoneMargin(layoutTitleText.id, START, dp(56))
             setGoneMargin(layoutTitleText.id, END, 0)
 
             connect(
@@ -157,8 +156,6 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
             constrainWidth(textViewTidbit.id, 0)
             constrainHeight(textViewTidbit.id, WRAP_CONTENT)
 
-            setMargin(textViewTidbit.id, BOTTOM, dp(8))
-
             connect(
                 textViewTidbit.id,
                 START,
@@ -175,6 +172,8 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
     }
 
     fun setThumbnail(url: String?) {
+        imageViewThumbnail.visibility = url?.let { View.VISIBLE } ?: View.GONE
+
         Glide.with(this)
             .load(url)
             .into(imageViewThumbnail)
