@@ -87,7 +87,7 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                         ).apply {
                             marginStart = dp(4)
                         }
-                    resolveAttribute(android.R.attr.textColorSecondary)?.let {
+                    resolveAttribute(android.R.attr.textColorTertiary)?.let {
                         setTextColor(ResourcesCompat.getColor(resources, it, context.theme))
                     }
                     setLines(1)

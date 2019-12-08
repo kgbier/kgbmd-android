@@ -49,7 +49,7 @@ open class SearchResultsView(context: Context) : FrameLayout(context) {
             clipToPadding = false
             itemAnimator = null
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(MiddleDividerItemDecoration(context, dp(72)))
+            addItemDecoration(MiddleDividerItemDecoration(context, dp(72), dp(16)))
         }.also(::addView)
     }
 

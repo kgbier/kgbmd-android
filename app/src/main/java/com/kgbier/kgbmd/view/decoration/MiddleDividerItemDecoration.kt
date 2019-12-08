@@ -11,7 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kgbier.kgbmd.util.resolveAttribute
 import kotlin.math.roundToInt
 
-class MiddleDividerItemDecoration(context: Context, val startInset: Int = 0) :
+class MiddleDividerItemDecoration(
+    context: Context,
+    private val startInset: Int = 0,
+    private val endInset: Int = 0
+) :
     RecyclerView.ItemDecoration() {
 
     companion object {
@@ -39,8 +43,10 @@ class MiddleDividerItemDecoration(context: Context, val startInset: Int = 0) :
         when (getLayoutDirection(parent)) {
             ViewCompat.LAYOUT_DIRECTION_LTR -> {
                 leftInset = startInset
+                rightInset = endInset
             }
             ViewCompat.LAYOUT_DIRECTION_RTL -> {
+                leftInset = endInset
                 rightInset = startInset
             }
         }
@@ -64,7 +70,7 @@ class MiddleDividerItemDecoration(context: Context, val startInset: Int = 0) :
             parent.getDecoratedBoundsWithMargins(child, bounds)
             val bottom = bounds.bottom + child.translationY.roundToInt()
             val top = bottom - divider.intrinsicHeight
-            divider.setBounds(left + leftInset, top, right + rightInset, bottom)
+            divider.setBounds(left + leftInset, top, right - rightInset, bottom)
             divider.draw(canvas)
         }
         canvas.restore()
