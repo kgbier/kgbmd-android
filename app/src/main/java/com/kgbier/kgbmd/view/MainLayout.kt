@@ -1,6 +1,11 @@
 package com.kgbier.kgbmd.view
 
 import android.annotation.SuppressLint
+import android.transition.ChangeBounds
+import android.transition.Slide
+import android.transition.Transition
+import android.transition.TransitionSet
+import android.view.animation.DecelerateInterpolator
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
@@ -8,7 +13,10 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProviders
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.kgbier.kgbmd.MainActivity
+import com.kgbier.kgbmd.R
+import com.kgbier.kgbmd.TransitionRoute
 import com.kgbier.kgbmd.util.*
+import com.kgbier.kgbmd.view.animation.CornerRadiusTransition
 import com.kgbier.kgbmd.view.behaviour.ScrollBehaviour
 import com.kgbier.kgbmd.view.component.ReadOnlySearchBar
 import com.kgbier.kgbmd.view.component.TiledPosterGrid
@@ -95,3 +103,21 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
     }
 }
 
+class MainPosterScreenTransitionRoute : TransitionRoute {
+    override fun transition(): Transition = TransitionSet().apply {
+        ChangeBounds()
+            .addTarget(R.id.searchBarView)
+            .setInterpolator(DecelerateInterpolator())
+            .also { addTransition(it) }
+
+        CornerRadiusTransition()
+            .addTarget(R.id.searchBarView)
+            .setInterpolator(DecelerateInterpolator())
+            .also { addTransition(it) }
+
+        Slide()
+            .addTarget(R.id.tilePosterView)
+            .setInterpolator(DecelerateInterpolator()).also { addTransition(it) }
+
+    }
+}

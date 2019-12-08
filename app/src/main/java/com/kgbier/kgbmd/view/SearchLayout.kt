@@ -2,6 +2,11 @@ package com.kgbier.kgbmd.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.transition.*
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.core.view.updateLayoutParams
@@ -9,9 +14,12 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updateMarginsRelative
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
+import com.kgbier.kgbmd.SceneRoute
+import com.kgbier.kgbmd.TransitionRoute
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
 import com.kgbier.kgbmd.util.setOnUpdateWithWindowInsetsListener
+import com.kgbier.kgbmd.view.animation.CornerRadiusTransition
 import com.kgbier.kgbmd.view.component.SearchBar
 import com.kgbier.kgbmd.view.component.SearchResults
 
@@ -70,5 +78,34 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
                 showSoftInput(searchBar.editTextSearch, InputMethodManager.SHOW_IMPLICIT)
             }
         }
+    }
+}
+
+class SearchScreenSceneRoute : SceneRoute {
+    override fun scene(rootView: ViewGroup, layout: View): Scene =
+        Scene(rootView, layout).apply {
+            if (layout is SearchLayout) {
+                setEnterAction {
+                    layout.onViewShown()
+                }
+            }
+        }
+}
+
+class SearchScreenTransitionRoute : TransitionRoute {
+    override fun transition(): Transition = TransitionSet().apply {
+        ChangeBounds()
+            .addTarget(R.id.searchBarView)
+            .setInterpolator(DecelerateInterpolator())
+            .also { addTransition(it) }
+
+        CornerRadiusTransition()
+            .addTarget(R.id.searchBarView)
+            .setInterpolator(DecelerateInterpolator())
+            .also { addTransition(it) }
+
+        Slide()
+            .addTarget(R.id.tilePosterView)
+            .setInterpolator(AccelerateInterpolator()).also { addTransition(it) }
     }
 }

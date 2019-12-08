@@ -9,8 +9,10 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.ConstraintSet.*
+import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.kgbier.kgbmd.util.dp
+import com.kgbier.kgbmd.util.resolveAttribute
 
 open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
@@ -69,6 +71,9 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                         LayoutParams.WRAP_CONTENT,
                         1f
                     )
+                    resolveAttribute(android.R.attr.textColorPrimary)?.let {
+                        setTextColor(ResourcesCompat.getColor(resources, it, context.theme))
+                    }
                     ellipsize = TextUtils.TruncateAt.END
                     isSingleLine = true
                     textSize = 16f
@@ -82,6 +87,9 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                         ).apply {
                             marginStart = dp(4)
                         }
+                    resolveAttribute(android.R.attr.textColorSecondary)?.let {
+                        setTextColor(ResourcesCompat.getColor(resources, it, context.theme))
+                    }
                     setLines(1)
                     textSize = 12f
                 }.also(::addView)
@@ -90,6 +98,9 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
         ratingStarView = RatingStarView(context).apply {
             id = View.generateViewId()
+            resolveAttribute(android.R.attr.textColorPrimary)?.let {
+                textViewRating.setTextColor(ResourcesCompat.getColor(resources, it, context.theme))
+            }
             setTextSize(16f)
         }.also(::addView)
 
@@ -114,7 +125,9 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
         textViewTidbit = TextView(context).apply {
             id = View.generateViewId()
-
+            resolveAttribute(android.R.attr.textColorSecondary)?.let {
+                setTextColor(ResourcesCompat.getColor(resources, it, context.theme))
+            }
             textSize = 14f
         }.also(::addView)
 
