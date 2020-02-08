@@ -1,8 +1,9 @@
 package com.kgbier.kgbmd.view.component
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.kgbier.kgbmd.MainActivity
+import com.kgbier.kgbmd.Route
 import com.kgbier.kgbmd.util.LiveDataDisposeBag
 import com.kgbier.kgbmd.util.bind
 import com.kgbier.kgbmd.util.disposeBy
@@ -16,7 +17,7 @@ class TiledPosterGrid(context: MainActivity) : TiledPosterView(context) {
     private val disposeBag = LiveDataDisposeBag()
 
     private var movieListViewModel: MovieListViewModel =
-        ViewModelProviders.of(context).get(MovieListViewModel::class.java)
+        ViewModelProvider(context)[MovieListViewModel::class.java]
 
     init {
         movieListViewModel.movieList.bind(context) {
@@ -25,6 +26,10 @@ class TiledPosterGrid(context: MainActivity) : TiledPosterView(context) {
                 swapAdapter(posterAdapter, true)
             }
         }.disposeBy(disposeBag)
+
+//        posterAdapter.onItemClickListener = { position ->
+//            context.navigate(Route.DetailScreen)
+//        }
     }
 
     override fun onDetachedFromWindow() {

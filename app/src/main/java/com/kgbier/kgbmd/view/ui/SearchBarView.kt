@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
 import androidx.core.view.marginTop
+import androidx.core.widget.TextViewCompat
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
@@ -52,10 +53,15 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
             }.also(::addView)
 
             editTextSearch = EditText(context).apply {
+                id = generateViewId()
                 layoutParams = LinearLayout.LayoutParams(
                     0,
                     LayoutParams.MATCH_PARENT,
                     1f
+                )
+                TextViewCompat.setTextAppearance(
+                    this,
+                    android.R.style.TextAppearance_Material_Subhead
                 )
                 inputType = InputType.TYPE_CLASS_TEXT
                 background = null

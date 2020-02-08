@@ -2,7 +2,7 @@ package com.kgbier.kgbmd.view.component
 
 import android.annotation.SuppressLint
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.view.ui.SearchBarView
 import com.kgbier.kgbmd.view.viewmodel.MovieListSearchViewModel
@@ -11,7 +11,7 @@ import com.kgbier.kgbmd.view.viewmodel.MovieListSearchViewModel
 class SearchBar(context: MainActivity) : SearchBarView(context) {
 
     private var movieListSearchViewModel: MovieListSearchViewModel =
-        ViewModelProviders.of(context).get(MovieListSearchViewModel::class.java)
+        ViewModelProvider(context)[MovieListSearchViewModel::class.java]
 
     init {
         editTextSearch.hint = movieListSearchViewModel.hint

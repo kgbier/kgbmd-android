@@ -10,6 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.ConstraintSet.*
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.TextViewCompat
 import com.bumptech.glide.Glide
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
@@ -71,12 +72,12 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                         LayoutParams.WRAP_CONTENT,
                         1f
                     )
-                    resolveAttribute(android.R.attr.textColorPrimary)?.let {
-                        setTextColor(ResourcesCompat.getColor(resources, it, context.theme))
-                    }
+                    TextViewCompat.setTextAppearance(
+                        this,
+                        android.R.style.TextAppearance_Material_Body2
+                    )
                     ellipsize = TextUtils.TruncateAt.END
                     isSingleLine = true
-                    textSize = 16f
                 }.also(::addView)
 
                 textViewYear = TextView(context).apply {
@@ -87,21 +88,21 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                         ).apply {
                             marginStart = dp(4)
                         }
-                    resolveAttribute(android.R.attr.textColorTertiary)?.let {
-                        setTextColor(ResourcesCompat.getColor(resources, it, context.theme))
-                    }
+                    TextViewCompat.setTextAppearance(
+                        this,
+                        android.R.style.TextAppearance_Material_Caption
+                    )
                     setLines(1)
-                    textSize = 12f
                 }.also(::addView)
             }.also(::addView)
         }.also(::addView)
 
         ratingStarView = RatingStarView(context).apply {
             id = View.generateViewId()
-            resolveAttribute(android.R.attr.textColorPrimary)?.let {
-                textViewRating.setTextColor(ResourcesCompat.getColor(resources, it, context.theme))
-            }
-            setTextSize(16f)
+            TextViewCompat.setTextAppearance(
+                textViewRating,
+                android.R.style.TextAppearance_Material_Body1
+            )
         }.also(::addView)
 
         ConstraintSet().apply {
@@ -125,10 +126,13 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
         textViewTidbit = TextView(context).apply {
             id = View.generateViewId()
+            TextViewCompat.setTextAppearance(
+                this,
+                android.R.style.TextAppearance_Material_Body1
+            )
             resolveAttribute(android.R.attr.textColorSecondary)?.let {
                 setTextColor(ResourcesCompat.getColor(resources, it, context.theme))
             }
-            textSize = 14f
         }.also(::addView)
 
         ConstraintSet().apply {

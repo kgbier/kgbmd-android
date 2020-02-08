@@ -5,7 +5,11 @@ import android.animation.StateListAnimator
 import android.content.Context
 import com.kgbier.kgbmd.util.dp
 
-class ElevateCardViewStateListAnimator(context: Context) : StateListAnimator() {
+class ElevateCardViewStateListAnimator(
+    context: Context,
+    private val neutralElevation: Float = context.dp(1f),
+    private val activeElevation: Float = context.dp(8f)
+) : StateListAnimator() {
 
     private val animationTime =
         context.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
@@ -14,13 +18,13 @@ class ElevateCardViewStateListAnimator(context: Context) : StateListAnimator() {
     private val downAnimator = ObjectAnimator().apply {
         duration = animationTime
         setPropertyName(elevationPropertyName)
-        setFloatValues(context.dp(8f))
+        setFloatValues(activeElevation)
     }
 
     private val upAnimator = ObjectAnimator().apply {
         duration = animationTime
         setPropertyName(elevationPropertyName)
-        setFloatValues(context.dp(1f))
+        setFloatValues(neutralElevation)
     }
 
     init {

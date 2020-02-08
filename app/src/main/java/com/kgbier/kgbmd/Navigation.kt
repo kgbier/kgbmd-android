@@ -21,7 +21,8 @@ interface TransitionRoute {
 
 enum class RouteId {
     ROUTE_MAIN_POSTER_SCREEN,
-    ROUTE_SEARCH_SCREEN
+    ROUTE_SEARCH_SCREEN,
+    ROUTE_DETAIL_SCREEN
 }
 
 sealed class Route(val id: RouteId) : LayoutRoute {
@@ -30,6 +31,7 @@ sealed class Route(val id: RouteId) : LayoutRoute {
         fun getRoute(routeId: RouteId): Route = when (routeId) {
             RouteId.ROUTE_MAIN_POSTER_SCREEN -> MainPosterScreen
             RouteId.ROUTE_SEARCH_SCREEN -> SearchScreen
+            RouteId.ROUTE_DETAIL_SCREEN -> SearchScreen
         }
     }
 
@@ -41,6 +43,10 @@ sealed class Route(val id: RouteId) : LayoutRoute {
         LayoutRoute by BaseLayoutRoute(::SearchLayout),
         SceneRoute by SearchScreenSceneRoute(),
         TransitionRoute by SearchScreenTransitionRoute()
+
+    object DetailScreen : Route(RouteId.ROUTE_DETAIL_SCREEN),
+        LayoutRoute by BaseLayoutRoute(::DetailLayout),
+        TransitionRoute by DetailScreenTransitionRoute()
 }
 
 class BaseLayoutRoute<T : View>(val provider: (MainActivity) -> T) : LayoutRoute {

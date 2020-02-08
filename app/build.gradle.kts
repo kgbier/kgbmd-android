@@ -20,6 +20,16 @@ android {
         buildConfigField("Boolean", "INTERNAL", "false")
         buildConfigField("String", "API_KEY_OMDB", "\"e6cce6b\"")
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+//    Workaround below (`tasks.withType...`) until `.kts` is less experimental
+//    kotlinOptions {
+//        jvmTarget = JavaVersion.VERSION_1_8.toString()
+//    }
+
     flavorDimensions("distribution")
     productFlavors {
         create("prod") { setDimension("distribution") }
@@ -44,17 +54,22 @@ android {
     }
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+}
+
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(kotlin("stdlib-jdk7", KotlinCompilerVersion.VERSION))
     implementation("androidx.appcompat:appcompat:1.1.0")
-    implementation("androidx.lifecycle:lifecycle-extensions:2.1.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0")
-    kapt("androidx.lifecycle:lifecycle-common-java8:2.1.0")
-    implementation("androidx.core:core-ktx:1.1.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
+    kapt("androidx.lifecycle:lifecycle-common-java8:2.2.0")
+    implementation("androidx.core:core-ktx:1.2.0")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3")
 
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
@@ -62,13 +77,13 @@ dependencies {
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
 
-    implementation("com.google.android.material:material:1.2.0-alpha02")
+    implementation("com.google.android.material:material:1.1.0")
 
-    implementation("com.squareup.okhttp3:okhttp:4.2.1")
+    implementation("com.squareup.okhttp3:okhttp:4.3.1")
 
-    implementation("com.squareup.moshi:moshi:1.9.1")
-    implementation("com.squareup.moshi:moshi-kotlin:1.9.1")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.1")
+    implementation("com.squareup.moshi:moshi:1.9.2")
+    implementation("com.squareup.moshi:moshi-kotlin:1.9.2")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.9.2")
 
     implementation("com.github.bumptech.glide:glide:4.9.0")
     kapt("com.github.bumptech.glide:compiler:4.9.0")

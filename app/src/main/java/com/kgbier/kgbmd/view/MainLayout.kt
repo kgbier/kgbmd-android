@@ -10,7 +10,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
@@ -33,7 +33,7 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
     private val tiledPosterGrid: TiledPosterGrid
 
     private var movieListViewModel: MovieListViewModel =
-        ViewModelProviders.of(context).get(MovieListViewModel::class.java)
+        ViewModelProvider(context)[MovieListViewModel::class.java]
 
     private val WINDOW_MARGIN = dp(16)
     private val GRID_MARGIN_TOP = dp(40 + 32)
@@ -118,6 +118,5 @@ class MainPosterScreenTransitionRoute : TransitionRoute {
         Slide()
             .addTarget(R.id.tilePosterView)
             .setInterpolator(DecelerateInterpolator()).also { addTransition(it) }
-
     }
 }

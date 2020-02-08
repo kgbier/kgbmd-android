@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.ConstraintSet.*
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.TextViewCompat
 import com.bumptech.glide.Glide
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
@@ -61,6 +62,10 @@ class PosterView(context: Context) : CardView(context) {
             textViewTitle = TextView(context).apply {
                 id = generateViewId()
                 visibility = View.INVISIBLE
+                TextViewCompat.setTextAppearance(
+                    this,
+                    android.R.style.TextAppearance_Material_Caption
+                )
                 setTextColor(Color.WHITE)
                 textAlignment = TextView.TEXT_ALIGNMENT_VIEW_END
             }.also(::addView)

@@ -71,6 +71,8 @@ class PosterAdapter : ListAdapter<MoviePoster, PosterViewHolder>(DIFF_CALLBACK) 
             }
     }
 
+    var onItemClickListener: ((position: Int) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PosterViewHolder =
         PosterViewHolder(parent)
 
@@ -79,6 +81,7 @@ class PosterAdapter : ListAdapter<MoviePoster, PosterViewHolder>(DIFF_CALLBACK) 
             holder.view.setTitle(title)
             holder.view.setRating(rating)
             holder.view.setPoster(thumbnailUrl, posterUrlSmall)
+            holder.view.setOnClickListener { onItemClickListener?.invoke(position) }
         }
     }
 }

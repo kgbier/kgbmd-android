@@ -68,7 +68,7 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
 
         searchResults = SearchResults(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
-            setPaddingRelative(WINDOW_MARGIN, 0, WINDOW_MARGIN, 0)
+            setPaddingRelative(WINDOW_MARGIN, dp(8), WINDOW_MARGIN, dp(8))
         }.also(::addView)
     }
 

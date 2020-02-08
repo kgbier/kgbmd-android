@@ -7,8 +7,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.updateLayoutParams
+import androidx.core.widget.TextViewCompat
 import com.kgbier.kgbmd.R
-import com.kgbier.kgbmd.util.sp
+import com.kgbier.kgbmd.util.dp
 
 class RatingStarView(context: Context) : LinearLayout(context) {
 
@@ -21,21 +22,30 @@ class RatingStarView(context: Context) : LinearLayout(context) {
 
         textViewRating = TextView(context).apply {
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+            TextViewCompat.setTextAppearance(
+                this,
+                android.R.style.TextAppearance_Material_Caption
+            )
+            viewTreeObserver.addOnPreDrawListener {
+                processTextSize(textSize)
+                true
+            }
+            includeFontPadding = false
         }.also(::addView)
 
         imageViewStar = ImageView(context).apply {
-            layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT)
+            layoutParams = LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.MATCH_PARENT
+            ).apply { marginStart = dp(2) }
             setImageResource(R.drawable.ic_star)
         }.also(::addView)
-
-        setTextSize(14f)
     }
 
-    fun setTextSize(size: Float) {
-        textViewRating.textSize = size
+    private fun processTextSize(size: Float) {
         imageViewStar.updateLayoutParams {
-            width = sp(size * 1.2f).toInt()
-            height = sp(size * 1.2f).toInt()
+            width = (size * 1.2f).toInt()
+            height = (size * 1.2f).toInt()
         }
     }
 
