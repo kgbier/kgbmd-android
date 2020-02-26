@@ -9,10 +9,20 @@ plugins {
 
 android {
     compileSdkVersion(29)
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     defaultConfig {
         applicationId = "com.kgbier.kgbmd"
         minSdkVersion(21)
         targetSdkVersion(29)
+        buildToolsVersion = "29.0.3"
         versionCode = 1
         versionName = "1.0"
 
@@ -20,15 +30,6 @@ android {
         buildConfigField("Boolean", "INTERNAL", "false")
         buildConfigField("String", "API_KEY_OMDB", "\"e6cce6b\"")
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-//    Workaround below (`tasks.withType...`) until `.kts` is less experimental
-//    kotlinOptions {
-//        jvmTarget = JavaVersion.VERSION_1_8.toString()
-//    }
 
     flavorDimensions("distribution")
     productFlavors {
@@ -51,12 +52,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 
