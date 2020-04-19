@@ -29,7 +29,7 @@ open class SearchResultsView(context: Context) : FrameLayout(context) {
                 LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER
             ).apply {
-                setMargins(dp(16))
+                setMargins(16.dp())
             }
         }.also(::addView)
 
@@ -39,7 +39,7 @@ open class SearchResultsView(context: Context) : FrameLayout(context) {
                 LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER
             ).apply {
-                setMargins(dp(16))
+                setMargins(16.dp())
                 text = "No results"
             }
         }.also(::addView)
@@ -49,7 +49,7 @@ open class SearchResultsView(context: Context) : FrameLayout(context) {
             clipToPadding = false
             itemAnimator = null
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(MiddleDividerItemDecoration(context, dp(72), dp(16)))
+            addItemDecoration(MiddleDividerItemDecoration(context, 72.dp(), 16.dp()))
         }.also(::addView)
     }
 

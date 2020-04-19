@@ -29,7 +29,7 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
     private val searchBar: SearchBar
     private val searchResults: SearchResults
 
-    private val WINDOW_MARGIN = dp(16)
+    private val WINDOW_MARGIN = 16.dp()
 
     init {
         // Needs to be set when the app is laid out fullscreen. Otherwise when the keyboard is visible
@@ -53,7 +53,7 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
                 setOnClickListener { context.navigateBack() }
 
                 updateLayoutParams<LayoutParams> {
-                    updateMarginsRelative(end = dp(12))
+                    updateMarginsRelative(end = 12.dp())
                 }
             }
 
@@ -68,7 +68,7 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
 
         searchResults = SearchResults(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
-            setPaddingRelative(WINDOW_MARGIN, dp(8), WINDOW_MARGIN, dp(8))
+            setPaddingRelative(WINDOW_MARGIN, 8.dp(), WINDOW_MARGIN, 8.dp())
         }.also(::addView)
     }
 

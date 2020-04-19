@@ -25,7 +25,7 @@ class ReadOnlySearchBar(context: MainActivity) : SearchBarView(context) {
 
         foreground =
             resolveAttribute(R.attr.selectableItemBackground)?.let { context.getDrawable(it) }
-        stateListAnimator = ElevateCardViewStateListAnimator(context, dp(4f), dp(8f))
+        stateListAnimator = ElevateCardViewStateListAnimator(context, 4f.dp(), 8f.dp())
 
         setOnClickListener {
             context.navigate(Route.SearchScreen)

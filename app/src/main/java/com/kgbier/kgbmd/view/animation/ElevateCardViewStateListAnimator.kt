@@ -7,8 +7,8 @@ import com.kgbier.kgbmd.util.dp
 
 class ElevateCardViewStateListAnimator(
     context: Context,
-    private val neutralElevation: Float = context.dp(1f),
-    private val activeElevation: Float = context.dp(8f)
+    private val neutralElevation: Float = 1f.dp(),
+    private val activeElevation: Float = 8f.dp()
 ) : StateListAnimator() {
 
     private val animationTime =

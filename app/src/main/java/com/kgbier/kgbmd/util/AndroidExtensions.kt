@@ -1,6 +1,7 @@
 package com.kgbier.kgbmd.util
 
 import android.content.Context
+import android.content.res.Resources
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,12 @@ fun View.dp(displayPixels: Float): Float =
 
 fun View.dp(displayPixels: Int): Int =
     (resources.displayMetrics.density * displayPixels).toInt()
+
+fun Int.dp(): Int =
+    (Resources.getSystem().displayMetrics.density * this).toInt()
+
+fun Float.dp(): Float =
+    (Resources.getSystem().displayMetrics.density * this)
 
 /**
  * `sp` to pixels

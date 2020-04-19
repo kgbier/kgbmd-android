@@ -23,14 +23,14 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
     val editTextSearch: EditText
     val imageViewKeyIcon: ImageView
 
-    private val targetMinimumHeight = dp(HEIGHT)
+    private val targetMinimumHeight = HEIGHT.dp()
 
     init {
         id = R.id.searchBarView
         isTransitionGroup = true
 
         radius = targetMinimumHeight / 2f
-        cardElevation = dp(ELEVATION)
+        cardElevation = ELEVATION.dp()
 
         LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -38,7 +38,7 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT
             ).apply {
-                marginEnd = dp(12)
+                marginEnd = 12.dp()
             }
 
             imageViewKeyIcon = ImageView(context).apply {
@@ -46,7 +46,7 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
                     targetMinimumHeight,
                     targetMinimumHeight
                 ).apply {
-                    marginEnd = dp(4)
+                    marginEnd = 4.dp()
                 }
                 scaleType = ImageView.ScaleType.CENTER_INSIDE
                 setImageResource(R.drawable.ic_search)
@@ -75,7 +75,7 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        scrollBehaviourTopTranslationLimit = (measuredHeight + marginTop + dp(8)) * -1f
+        scrollBehaviourTopTranslationLimit = (measuredHeight + marginTop + 8.dp()) * -1f
     }
 
     fun scrollBehaviourResetPosition() {

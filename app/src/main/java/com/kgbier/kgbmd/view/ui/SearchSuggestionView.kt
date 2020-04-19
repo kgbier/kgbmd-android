@@ -25,7 +25,7 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
     init {
 
-        setPadding(0, dp(8), 0, dp(8))
+        setPadding(0, 8.dp(), 0, 8.dp())
 
         imageViewThumbnail = ImageView(context).apply {
             id = View.generateViewId()
@@ -34,8 +34,8 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
         }.also(::addView)
 
         ConstraintSet().apply {
-            constrainWidth(imageViewThumbnail.id, dp(40))
-            constrainHeight(imageViewThumbnail.id, dp(58))
+            constrainWidth(imageViewThumbnail.id, 40.dp())
+            constrainHeight(imageViewThumbnail.id, 58.dp())
 
             connect(
                 imageViewThumbnail.id,
@@ -86,7 +86,7 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                             LayoutParams.WRAP_CONTENT,
                             LayoutParams.WRAP_CONTENT
                         ).apply {
-                            marginStart = dp(4)
+                            marginStart = 4.dp()
                         }
                     TextViewCompat.setTextAppearance(
                         this,
@@ -151,9 +151,9 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
             constrainWidth(layoutTitleText.id, 0)
             constrainHeight(layoutTitleText.id, WRAP_CONTENT)
 
-            setMargin(layoutTitleText.id, START, dp(16))
-            setMargin(layoutTitleText.id, END, dp(8))
-            setGoneMargin(layoutTitleText.id, START, dp(56))
+            setMargin(layoutTitleText.id, START, 16.dp())
+            setMargin(layoutTitleText.id, END, 8.dp())
+            setGoneMargin(layoutTitleText.id, START, 56.dp())
             setGoneMargin(layoutTitleText.id, END, 0)
 
             connect(
