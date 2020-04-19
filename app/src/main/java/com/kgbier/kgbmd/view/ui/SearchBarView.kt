@@ -2,12 +2,15 @@ package com.kgbier.kgbmd.view.ui
 
 import android.annotation.SuppressLint
 import android.text.InputType
+import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
 import androidx.core.view.marginTop
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updateMarginsRelative
 import androidx.core.widget.TextViewCompat
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
@@ -20,6 +23,7 @@ private const val ELEVATION = 4f
 @SuppressLint("ViewConstructor")
 open class SearchBarView(context: MainActivity) : CardView(context) {
 
+    val layout: LinearLayout
     val editTextSearch: EditText
     val imageViewKeyIcon: ImageView
 
@@ -32,7 +36,7 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
         radius = targetMinimumHeight / 2f
         cardElevation = ELEVATION.dp()
 
-        LinearLayout(context).apply {
+        layout = LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
             layoutParams = LayoutParams(
                 LayoutParams.MATCH_PARENT,
@@ -41,15 +45,10 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
                 marginEnd = 12.dp()
             }
 
-            imageViewKeyIcon = ImageView(context).apply {
-                layoutParams = LayoutParams(
-                    targetMinimumHeight,
-                    targetMinimumHeight
-                ).apply {
-                    marginEnd = 4.dp()
+            imageViewKeyIcon = makeKeyIcon(context).apply {
+                updateLayoutParams<LayoutParams> {
+                    updateMarginsRelative(end = 4.dp())
                 }
-                scaleType = ImageView.ScaleType.CENTER_INSIDE
-                setImageResource(R.drawable.ic_search)
             }.also(::addView)
 
             editTextSearch = EditText(context).apply {
@@ -69,6 +68,28 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
             }.also(::addView)
         }.also(::addView)
     }
+
+    fun makeKeyIcon(context: MainActivity) = ImageView(context).apply {
+        layoutParams = LayoutParams(
+            targetMinimumHeight,
+            targetMinimumHeight
+        )
+        scaleType = ImageView.ScaleType.CENTER_INSIDE
+        setImageResource(R.drawable.ic_search)
+    }
+
+    private var _barAddons: List<View>? = null
+    var barAddons: List<View>
+        set(value) {
+            if (_barAddons != null) throw IllegalStateException("Addons can only be set once.")
+
+            layout.updateLayoutParams<LayoutParams> {
+                updateMarginsRelative(end = 0)
+            }
+            value.forEach { layout.addView(it) }
+            _barAddons = value
+        }
+        get() = _barAddons ?: emptyList()
 
     private var isAnimating = false
     private var scrollBehaviourTopTranslationLimit = 0f

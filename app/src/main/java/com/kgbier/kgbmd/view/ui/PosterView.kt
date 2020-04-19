@@ -157,14 +157,17 @@ class PosterView(context: Context) : CardView(context) {
         ratingStarView.visibility = View.GONE
     }
 
-
-    fun setTitle(title: String) {
+    fun setTitle(title: String?) = title?.let {
         viewBottomScrim.visibility = View.VISIBLE
         textViewTitle.visibility = View.VISIBLE
         textViewTitle.text = title
+    } ?: run {
+        viewBottomScrim.visibility = View.GONE
+        textViewTitle.visibility = View.GONE
+        textViewTitle.text = null
     }
 
-    fun setPoster(thumbnailUrl: String, url: String) {
+    fun setPoster(thumbnailUrl: String?, url: String?) {
         Glide.with(this)
             .load(url)
             .thumbnail(

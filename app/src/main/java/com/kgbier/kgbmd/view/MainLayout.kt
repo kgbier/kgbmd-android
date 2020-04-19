@@ -6,9 +6,11 @@ import android.transition.Slide
 import android.transition.Transition
 import android.transition.TransitionSet
 import android.view.animation.DecelerateInterpolator
+import android.widget.ImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
+import androidx.core.view.updateMarginsRelative
 import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -28,6 +30,7 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
     private val disposeBag = LiveDataDisposeBag()
 
     private val readOnlySearchBar: ReadOnlySearchBar
+    private val titleCategoryToggle: ImageView
 
     private val swipeRefreshLayout: SwipeRefreshLayout
     private val tiledPosterGrid: TiledPosterGrid
@@ -57,13 +60,22 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
                     updateMargins(top = intendedMargin.top + insets.systemWindowInsetTop)
                 }
             }
+
+            titleCategoryToggle = makeKeyIcon(context).apply {
+                updateLayoutParams<MarginLayoutParams> {
+                    updateMarginsRelative(start = 4.dp())
+                }
+                resolveAttribute(R.attr.actionBarItemBackground)?.let(::setBackgroundResource)
+                setOnClickListener { movieListViewModel.toggleTitleCategory() }
+            }
+            barAddons = listOf(titleCategoryToggle)
         }.also(::addView)
 
         // Setup Movie List
         swipeRefreshLayout = SwipeRefreshLayout(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             setProgressViewEndTarget(false, PULLDOWN_END_DISTANCE)
-            setOnRefreshListener { movieListViewModel.load() }
+            setOnRefreshListener { movieListViewModel.reload() }
 
             setOnUpdateWithWindowInsetsListener { _, insets, _, _ ->
                 setProgressViewEndTarget(false, PULLDOWN_END_DISTANCE + insets.systemWindowInsetTop)
@@ -92,9 +104,17 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
 
         swipeRefreshLayout.addView(tiledPosterGrid)
 
-        movieListViewModel.isLoading.bind(context) {
-            if (!it) swipeRefreshLayout.isRefreshing = it
+        movieListViewModel.isSpinnerShown.bind(context) {
+            swipeRefreshLayout.isRefreshing = it
         }.disposeBy(disposeBag)
+
+        movieListViewModel.titleCategory.bind(context) {
+            val icon = when (it) {
+                MovieListViewModel.TitleCategory.MOVIE -> R.drawable.ic_film
+                MovieListViewModel.TitleCategory.TV -> R.drawable.ic_tv
+            }
+            titleCategoryToggle.setImageResource(icon)
+        }
     }
 
     override fun onDetachedFromWindow() {

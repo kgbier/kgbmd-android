@@ -8,7 +8,7 @@ object ImdbRepo {
         ImdbService.getHotMovies().map(::transformHotListItem)
 
     suspend fun getTvShowHotListPosters(): List<MoviePoster> =
-        ImdbService.getHotMovies().map(::transformHotListItem)
+        ImdbService.getHotShows().map(::transformHotListItem)
 
     suspend fun getSearchResults(query: String): List<Suggestion> =
         ImdbService.search(query).run(::transformSuggestionResponse)

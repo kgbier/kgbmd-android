@@ -3,7 +3,6 @@ package com.kgbier.kgbmd.view.component
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import com.kgbier.kgbmd.MainActivity
-import com.kgbier.kgbmd.Route
 import com.kgbier.kgbmd.util.LiveDataDisposeBag
 import com.kgbier.kgbmd.util.bind
 import com.kgbier.kgbmd.util.disposeBy
@@ -20,10 +19,12 @@ class TiledPosterGrid(context: MainActivity) : TiledPosterView(context) {
         ViewModelProvider(context)[MovieListViewModel::class.java]
 
     init {
-        movieListViewModel.movieList.bind(context) {
-            posterAdapter.submitList(it)
-            if (adapter is PosterLoadingAdapter) {
-                swapAdapter(posterAdapter, true)
+        movieListViewModel.titleList.bind(context) {
+            if (it is MovieListViewModel.TitleListState.Loaded) {
+                posterAdapter.submitList(it.items)
+                if (adapter is PosterLoadingAdapter) {
+                    swapAdapter(posterAdapter, true)
+                }
             }
         }.disposeBy(disposeBag)
 
