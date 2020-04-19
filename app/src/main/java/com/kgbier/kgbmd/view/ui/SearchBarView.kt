@@ -3,6 +3,7 @@ package com.kgbier.kgbmd.view.ui
 import android.annotation.SuppressLint
 import android.text.InputType
 import android.view.View
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.animation.DecelerateInterpolator
 import android.widget.EditText
 import android.widget.ImageView
@@ -15,6 +16,7 @@ import androidx.core.widget.TextViewCompat
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
+import com.kgbier.kgbmd.util.resolveAttribute
 import kotlin.math.max
 
 private const val HEIGHT = 48
@@ -41,9 +43,7 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
             layoutParams = LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT
-            ).apply {
-                marginEnd = 12.dp()
-            }
+            )
 
             imageViewKeyIcon = makeKeyIcon(context).apply {
                 updateLayoutParams<LayoutParams> {
@@ -57,7 +57,10 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
                     0,
                     LayoutParams.MATCH_PARENT,
                     1f
-                )
+                ).apply {
+                    marginEnd = 12.dp()
+                }
+
                 TextViewCompat.setTextAppearance(
                     this,
                     android.R.style.TextAppearance_Material_Subhead
@@ -83,10 +86,21 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
         set(value) {
             if (_barAddons != null) throw IllegalStateException("Addons can only be set once.")
 
-            layout.updateLayoutParams<LayoutParams> {
-                updateMarginsRelative(end = 0)
+            editTextSearch.updateLayoutParams<MarginLayoutParams> {
+                updateMarginsRelative(end = 4.dp())
             }
-            value.forEach { layout.addView(it) }
+            value.forEach {
+                View(context).apply {
+                    layoutParams = MarginLayoutParams(
+                        1.dp(),
+                        MATCH_PARENT
+                    ).apply {
+                        updateMarginsRelative(top = 8.dp(), bottom = 8.dp())
+                        resolveAttribute(android.R.attr.colorForeground)?.let(::setBackgroundResource)
+                    }
+                }.also(layout::addView)
+                layout.addView(it)
+            }
             _barAddons = value
         }
         get() = _barAddons ?: emptyList()

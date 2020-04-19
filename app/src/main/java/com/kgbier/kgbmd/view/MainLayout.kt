@@ -10,7 +10,6 @@ import android.widget.ImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
-import androidx.core.view.updateMarginsRelative
 import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -62,9 +61,6 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
             }
 
             titleCategoryToggle = makeKeyIcon(context).apply {
-                updateLayoutParams<MarginLayoutParams> {
-                    updateMarginsRelative(start = 4.dp())
-                }
                 resolveAttribute(R.attr.actionBarItemBackground)?.let(::setBackgroundResource)
                 setOnClickListener { movieListViewModel.toggleTitleCategory() }
             }
