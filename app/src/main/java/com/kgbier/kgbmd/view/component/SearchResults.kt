@@ -3,7 +3,7 @@ package com.kgbier.kgbmd.view.component
 import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,8 +20,7 @@ import com.kgbier.kgbmd.view.viewmodel.RatingResult
 @SuppressLint("ViewConstructor")
 class SearchResults(context: MainActivity) : SearchResultsView(context) {
 
-    private var movieListSearchViewModel: MovieListSearchViewModel =
-        ViewModelProvider(context)[MovieListSearchViewModel::class.java]
+    private val movieListSearchViewModel: MovieListSearchViewModel by context.viewModels()
 
     private val resultAdapter = ResultAdapter(context)
 
@@ -80,8 +79,7 @@ class ResultViewHolder(parent: ViewGroup, val context: MainActivity) : RecyclerV
 
     val view: SearchSuggestionView = itemView as SearchSuggestionView
 
-    private var movieListSearchViewModel: MovieListSearchViewModel =
-        ViewModelProvider(context)[MovieListSearchViewModel::class.java]
+    private val movieListSearchViewModel: MovieListSearchViewModel by context.viewModels()
 
     private var disposeBag = LiveDataDisposeBag()
 

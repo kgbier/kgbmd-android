@@ -1,7 +1,7 @@
 package com.kgbier.kgbmd.view.component
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.Route
@@ -14,8 +14,7 @@ import com.kgbier.kgbmd.view.viewmodel.MovieListSearchViewModel
 @SuppressLint("ViewConstructor")
 class ReadOnlySearchBar(context: MainActivity) : SearchBarView(context) {
 
-    private var movieListSearchViewModel: MovieListSearchViewModel =
-        ViewModelProvider(context)[MovieListSearchViewModel::class.java]
+    private val movieListSearchViewModel: MovieListSearchViewModel by context.viewModels()
 
     init {
         editTextSearch.hint = movieListSearchViewModel.hint
