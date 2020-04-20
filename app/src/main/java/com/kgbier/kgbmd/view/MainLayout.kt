@@ -16,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.TransitionRoute
+import com.kgbier.kgbmd.domain.model.TitleCategory
 import com.kgbier.kgbmd.util.*
 import com.kgbier.kgbmd.view.animation.CornerRadiusTransition
 import com.kgbier.kgbmd.view.behaviour.ScrollBehaviour
@@ -106,8 +107,8 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
 
         movieListViewModel.titleCategory.bind(context) {
             val icon = when (it) {
-                MovieListViewModel.TitleCategory.MOVIE -> R.drawable.ic_film
-                MovieListViewModel.TitleCategory.TV -> R.drawable.ic_tv
+                TitleCategory.MOVIE -> R.drawable.ic_film
+                TitleCategory.TV_SHOW -> R.drawable.ic_tv
             }
             titleCategoryToggle.setImageResource(icon)
         }

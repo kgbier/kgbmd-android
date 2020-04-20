@@ -4,36 +4,34 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kgbier.kgbmd.domain.model.MoviePoster
+import com.kgbier.kgbmd.domain.model.TitleCategory
 import com.kgbier.kgbmd.domain.repo.ImdbRepo
+import com.kgbier.kgbmd.domain.repo.PreferencesRepo
 import kotlinx.coroutines.launch
 
 class MovieListViewModel : ViewModel() {
-
-    enum class TitleCategory {
-        MOVIE,
-        TV
-    }
 
     sealed class TitleListState {
         object Loading : TitleListState()
         data class Loaded(val items: List<MoviePoster>) : TitleListState()
     }
 
-    val titleCategory: MutableLiveData<TitleCategory> = MutableLiveData(TitleCategory.MOVIE)
+    val titleCategory: MutableLiveData<TitleCategory> =
+        MutableLiveData(PreferencesRepo.getSavedTitleCategory())
     val isSpinnerShown: MutableLiveData<Boolean> = MutableLiveData()
     val titleList: MutableLiveData<TitleListState> = MutableLiveData(TitleListState.Loading)
 
     init {
-        load(TitleCategory.MOVIE)
+        load(titleCategory.value!!)
     }
 
     fun reload() = load(titleCategory.value!!)
 
-    fun load(titleCategory: TitleCategory) = viewModelScope.launch {
+    private fun load(titleCategory: TitleCategory) = viewModelScope.launch {
         try {
             when (titleCategory) {
                 TitleCategory.MOVIE -> titleList.postValue(TitleListState.Loaded(ImdbRepo.getMovieHotListPosters()))
-                TitleCategory.TV -> titleList.postValue(TitleListState.Loaded(ImdbRepo.getTvShowHotListPosters()))
+                TitleCategory.TV_SHOW -> titleList.postValue(TitleListState.Loaded(ImdbRepo.getTvShowHotListPosters()))
             }
         } catch (t: Throwable) {
         } finally {
@@ -43,12 +41,15 @@ class MovieListViewModel : ViewModel() {
 
     fun toggleTitleCategory() {
         val newCategory = when (titleCategory.value!!) {
-            TitleCategory.MOVIE -> TitleCategory.TV
-            TitleCategory.TV -> TitleCategory.MOVIE
+            TitleCategory.MOVIE -> TitleCategory.TV_SHOW
+            TitleCategory.TV_SHOW -> TitleCategory.MOVIE
         }
-        isSpinnerShown.postValue(true)
-        titleList.postValue(TitleListState.Loading)
+
+        isSpinnerShown.value = true
+        titleList.value = TitleListState.Loading
         load(newCategory)
+
+        PreferencesRepo.setSavedTitleCategory(newCategory)
         titleCategory.value = newCategory
     }
 }
