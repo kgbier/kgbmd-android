@@ -33,15 +33,13 @@ class MovieListViewModel(private val savedStateHandle: SavedStateHandle) : ViewM
     fun reload() = load(titleCategory.value!!)
 
     private fun load(titleCategory: TitleCategory) = viewModelScope.launch {
-        try {
+        kotlin.runCatching {
             when (titleCategory) {
                 TitleCategory.MOVIE -> titleList.postValue(TitleListState.Loaded(ImdbRepo.getMovieHotListPosters()))
                 TitleCategory.TV_SHOW -> titleList.postValue(TitleListState.Loaded(ImdbRepo.getTvShowHotListPosters()))
             }
-        } catch (t: Throwable) {
-        } finally {
-            isSpinnerShown.postValue(false)
         }
+        isSpinnerShown.postValue(false)
     }
 
     fun toggleTitleCategory() {

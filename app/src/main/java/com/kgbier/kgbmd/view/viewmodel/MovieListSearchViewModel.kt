@@ -51,10 +51,11 @@ class MovieListSearchViewModel(val savedStateHandle: SavedStateHandle) : ViewMod
             return@launch
         }
         if (!isFirstLoad.value!!) isFirstLoad.postValue(true)
-        try {
-            val results = ImdbRepo.getSearchResults(query)
-            resultList.postValue(results)
-        } catch (t: Throwable) {
+
+        kotlin.runCatching {
+            ImdbRepo.getSearchResults(query)
+        }.onSuccess {
+            resultList.postValue(it)
         }
     }
 
