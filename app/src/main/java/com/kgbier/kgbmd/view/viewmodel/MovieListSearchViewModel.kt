@@ -1,9 +1,6 @@
 package com.kgbier.kgbmd.view.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.kgbier.kgbmd.domain.model.SearchSuggestionType
 import com.kgbier.kgbmd.domain.model.Suggestion
 import com.kgbier.kgbmd.domain.repo.ImdbRepo
@@ -14,10 +11,14 @@ sealed class RatingResult {
     data class Result(val rating: String?) : RatingResult()
 }
 
-class MovieListSearchViewModel : ViewModel() {
+class MovieListSearchViewModel(val savedStateHandle: SavedStateHandle) : ViewModel() {
+
+    companion object {
+        const val SEARCH_STRING_HANDLE = "search-string"
+    }
 
     val hint = "Search movies, shows, actors"
-
+    val searchString: MutableLiveData<String> = savedStateHandle.getLiveData(SEARCH_STRING_HANDLE)
     val isFirstLoad: MutableLiveData<Boolean> = MutableLiveData()
     val resultList: MutableLiveData<List<Suggestion>?> = MutableLiveData()
 
@@ -37,7 +38,14 @@ class MovieListSearchViewModel : ViewModel() {
             }
         }.also { ratingResults[id] = it }
 
-    fun search(query: String) = viewModelScope.launch {
+    fun onSearchQueryUpdated(query: String) {
+        if (query != searchString.value) {
+            searchString.value = query
+        }
+        search(query)
+    }
+
+    private fun search(query: String) = viewModelScope.launch {
         if (query.isBlank()) {
             clearSearchState()
             return@launch

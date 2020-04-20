@@ -1,6 +1,7 @@
 package com.kgbier.kgbmd.view.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kgbier.kgbmd.domain.model.MoviePoster
@@ -9,7 +10,11 @@ import com.kgbier.kgbmd.domain.repo.ImdbRepo
 import com.kgbier.kgbmd.domain.repo.PreferencesRepo
 import kotlinx.coroutines.launch
 
-class MovieListViewModel : ViewModel() {
+class MovieListViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
+
+    companion object {
+        const val TITLE_CATEGORY_HANDLE = "title-category"
+    }
 
     sealed class TitleListState {
         object Loading : TitleListState()
@@ -17,7 +22,7 @@ class MovieListViewModel : ViewModel() {
     }
 
     val titleCategory: MutableLiveData<TitleCategory> =
-        MutableLiveData(PreferencesRepo.getSavedTitleCategory())
+        savedStateHandle.getLiveData(TITLE_CATEGORY_HANDLE, PreferencesRepo.getSavedTitleCategory())
     val isSpinnerShown: MutableLiveData<Boolean> = MutableLiveData()
     val titleList: MutableLiveData<TitleListState> = MutableLiveData(TitleListState.Loading)
 
