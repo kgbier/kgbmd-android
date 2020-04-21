@@ -50,7 +50,7 @@ class MovieListSearchViewModel(val savedStateHandle: SavedStateHandle) : ViewMod
             clearSearchState()
             return@launch
         }
-        if (!isFirstLoad.value!!) isFirstLoad.postValue(true)
+        if (isFirstLoad.value != true) isFirstLoad.postValue(true)
 
         kotlin.runCatching {
             ImdbRepo.getSearchResults(query)
@@ -60,6 +60,7 @@ class MovieListSearchViewModel(val savedStateHandle: SavedStateHandle) : ViewMod
     }
 
     fun clearSearchState() {
+        searchString.value = ""
         resultList.postValue(null)
         isFirstLoad.postValue(false)
     }
