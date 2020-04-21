@@ -2,6 +2,7 @@ package com.kgbier.kgbmd.view.ui
 
 import android.content.Context
 import android.view.Gravity
+import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -26,10 +27,13 @@ class RatingStarView(context: Context) : LinearLayout(context) {
                 this,
                 android.R.style.TextAppearance_Material_Caption
             )
-            viewTreeObserver.addOnPreDrawListener {
-                processTextSize(textSize)
-                true
-            }
+            viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+                override fun onPreDraw(): Boolean {
+                    viewTreeObserver.removeOnPreDrawListener(this)
+                    processTextSize(textSize)
+                    return true
+                }
+            })
             includeFontPadding = false
         }.also(::addView)
 
