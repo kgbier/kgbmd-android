@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintSet.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.TextViewCompat
 import com.bumptech.glide.Glide
+import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
 
@@ -25,7 +26,12 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
     init {
 
-        setPadding(0, 8.dp(), 0, 8.dp())
+        setPadding(16.dp(), 8.dp(), 16.dp(), 8.dp())
+
+        resolveAttribute(R.attr.selectableItemBackground)?.let {
+            background = ResourcesCompat.getDrawable(resources, it, context.theme)
+            isClickable = true
+        }
 
         imageViewThumbnail = ImageView(context).apply {
             id = View.generateViewId()

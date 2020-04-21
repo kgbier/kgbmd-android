@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kgbier.kgbmd.MainActivity
+import com.kgbier.kgbmd.Route
 import com.kgbier.kgbmd.domain.model.Suggestion
 import com.kgbier.kgbmd.util.LiveDataDisposeBag
 import com.kgbier.kgbmd.util.bind
 import com.kgbier.kgbmd.util.disposeBy
+import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.view.ui.SearchResultsView
 import com.kgbier.kgbmd.view.ui.SearchSuggestionView
 import com.kgbier.kgbmd.view.viewmodel.MovieListSearchViewModel
@@ -42,7 +44,6 @@ class SearchResults(context: MainActivity) : SearchResultsView(context) {
         }.disposeBy(disposeBag)
 
         movieListSearchViewModel.resultList.bind(context) {
-
             if (it == null) {
                 visibility = View.GONE
                 emptyStateMessage.visibility = View.GONE
@@ -60,6 +61,10 @@ class SearchResults(context: MainActivity) : SearchResultsView(context) {
                 emptyStateMessage.visibility = View.GONE
             }
         }.disposeBy(disposeBag)
+
+        resultAdapter.onItemClickListener = { position ->
+            context.navigate(Route.DetailScreen)
+        }
     }
 
     override fun onDetachedFromWindow() {
@@ -121,11 +126,15 @@ class ResultAdapter(val context: MainActivity) :
             }
     }
 
+    var onItemClickListener: ((position: Int) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder =
         ResultViewHolder(parent, context)
 
-    override fun onBindViewHolder(holder: ResultViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
         holder.onBindData(getItem(position))
+        holder.view.setOnClickListener { onItemClickListener?.invoke(position) }
+    }
 
     override fun onViewRecycled(holder: ResultViewHolder) = holder.onViewRecycled()
 }

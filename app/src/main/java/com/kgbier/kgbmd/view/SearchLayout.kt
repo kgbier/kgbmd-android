@@ -9,6 +9,7 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
+import androidx.activity.viewModels
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updateMarginsRelative
@@ -22,12 +23,15 @@ import com.kgbier.kgbmd.util.setOnUpdateWithWindowInsetsListener
 import com.kgbier.kgbmd.view.animation.CornerRadiusTransition
 import com.kgbier.kgbmd.view.component.SearchBar
 import com.kgbier.kgbmd.view.component.SearchResults
+import com.kgbier.kgbmd.view.viewmodel.MovieListSearchViewModel
 
 @SuppressLint("ViewConstructor")
 class SearchLayout(context: MainActivity) : LinearLayout(context) {
 
     private val searchBar: SearchBar
     private val searchResults: SearchResults
+
+    private val movieListSearchViewModel: MovieListSearchViewModel by context.viewModels()
 
     private val WINDOW_MARGIN = 16.dp()
 
@@ -50,7 +54,10 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
             imageViewKeyIcon.apply {
                 resolveAttribute(R.attr.homeAsUpIndicator)?.let(::setImageResource)
                 resolveAttribute(R.attr.actionBarItemBackground)?.let(::setBackgroundResource)
-                setOnClickListener { context.navigateBack() }
+                setOnClickListener {
+                    movieListSearchViewModel.clearSearchState()
+                    context.navigateBack()
+                }
 
                 updateLayoutParams<LayoutParams> {
                     updateMarginsRelative(end = 12.dp())
@@ -68,7 +75,6 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
 
         searchResults = SearchResults(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
-            setPaddingRelative(WINDOW_MARGIN, 8.dp(), WINDOW_MARGIN, 8.dp())
         }.also(::addView)
     }
 
