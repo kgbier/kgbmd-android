@@ -3,6 +3,7 @@ package com.kgbier.kgbmd.view.component
 import android.annotation.SuppressLint
 import androidx.activity.viewModels
 import com.kgbier.kgbmd.MainActivity
+import com.kgbier.kgbmd.Route
 import com.kgbier.kgbmd.util.LiveDataDisposeBag
 import com.kgbier.kgbmd.util.bind
 import com.kgbier.kgbmd.util.disposeBy
@@ -27,9 +28,9 @@ class TiledPosterGrid(context: MainActivity) : TiledPosterView(context) {
             }
         }.disposeBy(disposeBag)
 
-//        posterAdapter.onItemClickListener = { position ->
-//            context.navigate(Route.DetailScreen)
-//        }
+        posterAdapter.onItemClickListener = { position ->
+            context.navigate(Route.DetailScreen)
+        }
     }
 
     override fun onDetachedFromWindow() {

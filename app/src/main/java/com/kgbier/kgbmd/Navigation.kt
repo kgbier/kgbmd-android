@@ -31,7 +31,7 @@ sealed class Route(val id: RouteId) : LayoutRoute {
         fun getRoute(routeId: RouteId): Route = when (routeId) {
             RouteId.ROUTE_MAIN_POSTER_SCREEN -> MainPosterScreen
             RouteId.ROUTE_SEARCH_SCREEN -> SearchScreen
-            RouteId.ROUTE_DETAIL_SCREEN -> SearchScreen
+            RouteId.ROUTE_DETAIL_SCREEN -> DetailScreen
         }
     }
 

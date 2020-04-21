@@ -92,7 +92,7 @@ package com.kgbier.kgbmd.data.imdb.model
 "worstRating": "1.0",
 "ratingValue": "7.1"
 },
-"duration": "PT2H32M",
+"duration": "PT2H32M", // https://en.wikipedia.org/wiki/ISO_8601
 "review": {
 "@type": "Review",
 "itemReviewed": {
