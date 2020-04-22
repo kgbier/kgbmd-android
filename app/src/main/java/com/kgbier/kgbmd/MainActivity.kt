@@ -30,30 +30,30 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
         rootView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
 
-        savedInstanceState?.getIntArray(KEY_NAV_BACK_STACK)?.map {
-            Route.getRoute(RouteId.values()[it])
+        savedInstanceState?.getParcelableArray(KEY_NAV_BACK_STACK)?.map {
+            Route.getRoute(it as RouteParcel)
         }?.let {
             backStack.addAll(it)
         }
 
-        val route = savedInstanceState?.getInt(KEY_NAV_CURRENT_ROUTE, ROUTE_UNDEFINED)?.takeUnless {
-            it == ROUTE_UNDEFINED
-        }?.let {
-            Route.getRoute(RouteId.values()[it])
-        } ?: Route.MainPosterScreen
+        val route =
+            savedInstanceState?.getParcelable<RouteParcel>(KEY_NAV_CURRENT_ROUTE)
+                ?.let {
+                    Route.getRoute(it)
+                } ?: Route.MainPosterScreen
 
         showScreen(route)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putIntArray(
+        outState.putParcelableArray(
             KEY_NAV_BACK_STACK,
-            backStack.map { it.id.ordinal }.toIntArray()
+            backStack.map { it.parcelled() }.toTypedArray()
         )
-        outState.putInt(
+        outState.putParcelable(
             KEY_NAV_CURRENT_ROUTE,
-            currentRoute?.id?.ordinal ?: ROUTE_UNDEFINED
+            currentRoute?.parcelled()
         )
     }
 

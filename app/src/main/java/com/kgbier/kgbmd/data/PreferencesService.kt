@@ -1,6 +1,7 @@
 package com.kgbier.kgbmd.data
 
 import android.content.Context
+import androidx.core.content.edit
 import com.kgbier.kgbmd.MainApplication
 import com.kgbier.kgbmd.domain.model.TitleCategory
 
@@ -33,6 +34,6 @@ object PreferencesService {
             TitleCategory.MOVIE -> 0
             TitleCategory.TV_SHOW -> 1
         }
-        sharedPreferences.edit().putInt(TITLE_CATEGORY, value).apply()
+        sharedPreferences.edit { putInt(TITLE_CATEGORY, value) }
     }
 }

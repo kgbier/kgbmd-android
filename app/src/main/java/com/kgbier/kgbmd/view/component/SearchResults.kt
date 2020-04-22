@@ -62,7 +62,7 @@ class SearchResults(context: MainActivity) : SearchResultsView(context) {
         }.disposeBy(disposeBag)
 
         resultAdapter.onItemClickListener = { position ->
-            context.navigate(Route.DetailScreen)
+            context.navigate(Route.DetailScreen("tt0076759"))
         }
     }
 

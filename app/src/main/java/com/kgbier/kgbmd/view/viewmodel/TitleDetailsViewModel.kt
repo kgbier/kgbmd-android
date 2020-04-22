@@ -7,7 +7,7 @@ import com.kgbier.kgbmd.domain.model.MovieDetails
 import com.kgbier.kgbmd.domain.repo.ImdbRepo
 import kotlinx.coroutines.launch
 
-class TitleDetailsViewModel : ViewModel() {
+class TitleDetailsViewModel(private val titleId: String) : ViewModel() {
 
     sealed class TitleDetailsState {
         object Loading : TitleDetailsState()
@@ -18,7 +18,7 @@ class TitleDetailsViewModel : ViewModel() {
     val titleDetails: MutableLiveData<TitleDetailsState> = MutableLiveData()
 
     init {
-        load("tt2527336")
+        load(titleId)
     }
 
     private fun load(titleId: String) = viewModelScope.launch {

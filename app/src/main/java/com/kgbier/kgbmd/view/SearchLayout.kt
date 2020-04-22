@@ -13,10 +13,7 @@ import androidx.activity.viewModels
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updateMarginsRelative
-import com.kgbier.kgbmd.MainActivity
-import com.kgbier.kgbmd.R
-import com.kgbier.kgbmd.SceneRoute
-import com.kgbier.kgbmd.TransitionRoute
+import com.kgbier.kgbmd.*
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
 import com.kgbier.kgbmd.util.setOnUpdateWithWindowInsetsListener
@@ -26,7 +23,7 @@ import com.kgbier.kgbmd.view.component.SearchResults
 import com.kgbier.kgbmd.view.viewmodel.MovieListSearchViewModel
 
 @SuppressLint("ViewConstructor")
-class SearchLayout(context: MainActivity) : LinearLayout(context) {
+class SearchLayout(context: MainActivity, route: Route) : LinearLayout(context) {
 
     private val searchBar: SearchBar
     private val searchResults: SearchResults
