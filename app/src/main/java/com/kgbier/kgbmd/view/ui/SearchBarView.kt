@@ -12,11 +12,11 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMarginsRelative
-import androidx.core.widget.TextViewCompat
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
+import com.kgbier.kgbmd.util.setTextStyle
 import kotlin.math.max
 
 private const val HEIGHT = 48
@@ -61,10 +61,7 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
                     marginEnd = 12.dp()
                 }
 
-                TextViewCompat.setTextAppearance(
-                    this,
-                    android.R.style.TextAppearance_Material_Subhead
-                )
+                setTextStyle(android.R.style.TextAppearance_Material_Subhead)
                 inputType = InputType.TYPE_CLASS_TEXT
                 background = null
                 maxLines = 1

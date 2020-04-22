@@ -8,9 +8,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.updateLayoutParams
-import androidx.core.widget.TextViewCompat
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
+import com.kgbier.kgbmd.util.setTextStyle
 
 class RatingStarView(context: Context) : LinearLayout(context) {
 
@@ -23,10 +23,7 @@ class RatingStarView(context: Context) : LinearLayout(context) {
 
         textViewRating = TextView(context).apply {
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-            TextViewCompat.setTextAppearance(
-                this,
-                android.R.style.TextAppearance_Material_Caption
-            )
+            setTextStyle(android.R.style.TextAppearance_Material_Caption)
             viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     viewTreeObserver.removeOnPreDrawListener(this)
