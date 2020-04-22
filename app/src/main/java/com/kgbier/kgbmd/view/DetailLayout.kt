@@ -9,18 +9,30 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.core.view.updatePadding
 import androidx.core.view.updatePaddingRelative
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.TransitionRoute
-import com.kgbier.kgbmd.util.dp
-import com.kgbier.kgbmd.util.setOnUpdateWithWindowInsetsListener
-import com.kgbier.kgbmd.util.setTextColorAttr
-import com.kgbier.kgbmd.util.setTextStyle
+import com.kgbier.kgbmd.domain.model.MovieDetails
+import com.kgbier.kgbmd.util.*
+import com.kgbier.kgbmd.view.viewmodel.TitleDetailsViewModel
 
 @SuppressLint("ViewConstructor")
 class DetailLayout(context: MainActivity) : LinearLayout(context) {
+
+    private val disposeBag = LiveDataDisposeBag()
+
+    val titleDetailsViewModel: TitleDetailsViewModel by context.viewModels()
+
+    val textViewTitle: TextView
+    val textViewReleaseDate: TextView
+    val textViewContentRating: TextView
+    val textViewDuration: TextView
+    val textViewDirectedBy: TextView
+    val textViewWrittenBy: TextView
+    val textViewSummary: TextView
 
     init {
         orientation = VERTICAL
@@ -35,9 +47,9 @@ class DetailLayout(context: MainActivity) : LinearLayout(context) {
             insets.consumeSystemWindowInsets()
         }
 
-        TextView(context).apply {
+        textViewTitle = TextView(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-            text = "Star Wars: Episode VIII - The Last Jedi"
+            text = "Loading"
             setTextStyle(R.style.TextAppearance_MaterialComponents_Headline5)
             setTextColorAttr(android.R.attr.textColorPrimary)
         }.also(::addView)
@@ -48,7 +60,7 @@ class DetailLayout(context: MainActivity) : LinearLayout(context) {
                 topMargin = 12.dp()
             }
 
-            TextView(context).apply {
+            textViewReleaseDate = TextView(context).apply {
                 layoutParams =
                     LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
                         marginEnd = 8.dp()
@@ -58,7 +70,7 @@ class DetailLayout(context: MainActivity) : LinearLayout(context) {
                 setTextColorAttr(android.R.attr.textColorPrimary)
             }.also(::addView)
 
-            TextView(context).apply {
+            textViewContentRating = TextView(context).apply {
                 layoutParams =
                     LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
                         marginEnd = 8.dp()
@@ -68,7 +80,7 @@ class DetailLayout(context: MainActivity) : LinearLayout(context) {
                 setTextColorAttr(android.R.attr.textColorPrimary)
             }.also(::addView)
 
-            TextView(context).apply {
+            textViewDuration = TextView(context).apply {
                 layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 text = "2H 32M"
                 setTextStyle(R.style.TextAppearance_MaterialComponents_Overline)
@@ -86,7 +98,7 @@ class DetailLayout(context: MainActivity) : LinearLayout(context) {
             setTextColorAttr(android.R.attr.textColorSecondary)
         }.also(::addView)
 
-        TextView(context).apply {
+        textViewDirectedBy = TextView(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
             text = "Rian Johnson"
             setTextStyle(R.style.TextAppearance_MaterialComponents_Body2)
@@ -103,7 +115,7 @@ class DetailLayout(context: MainActivity) : LinearLayout(context) {
             setTextColorAttr(android.R.attr.textColorSecondary)
         }.also(::addView)
 
-        TextView(context).apply {
+        textViewWrittenBy = TextView(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
             text = "Rian Johnson, George Lucas"
             setTextStyle(R.style.TextAppearance_MaterialComponents_Body2)
@@ -120,13 +132,32 @@ class DetailLayout(context: MainActivity) : LinearLayout(context) {
             setTextColorAttr(android.R.attr.textColorSecondary)
         }.also(::addView)
 
-        TextView(context).apply {
+        textViewSummary = TextView(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
             text =
                 "Having taken her first steps into the Jedi world, Rey joins Luke Skywalker on an adventure with Leia, Finn and Poe that unlocks mysteries of the Force and secrets of the past."
             setTextStyle(R.style.TextAppearance_MaterialComponents_Body1)
             setTextColorAttr(android.R.attr.textColorPrimary)
         }.also(::addView)
+
+        titleDetailsViewModel.titleDetails.bind(context) {
+            when (it) {
+                is TitleDetailsViewModel.TitleDetailsState.Loaded -> showDetails(it.details)
+                else -> Unit
+            }
+        }.disposeBy(disposeBag)
+    }
+
+    fun showDetails(details: MovieDetails) = with(details) {
+        textViewTitle.text = name
+        textViewReleaseDate.text = yearReleased
+        textViewDuration.text = duration
+        textViewSummary.text = description
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        disposeBag.dispose()
     }
 }
 

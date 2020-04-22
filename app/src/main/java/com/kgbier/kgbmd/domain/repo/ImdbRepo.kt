@@ -15,4 +15,7 @@ object ImdbRepo {
 
     suspend fun getRating(id: String): String? =
         ImdbService.getRating(id)?.run(::transformRatingResponse)
+
+    suspend fun getMovieDetails(id: String): MovieDetails? =
+        ImdbService.getMovieDetails(id)?.run(::transformMovieResponse)
 }

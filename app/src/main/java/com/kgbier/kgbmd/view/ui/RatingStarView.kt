@@ -53,7 +53,6 @@ class RatingStarView(context: Context) : LinearLayout(context) {
         }
     }
 
-
     var isSpinning = false
     fun spin() {
         isSpinning = true

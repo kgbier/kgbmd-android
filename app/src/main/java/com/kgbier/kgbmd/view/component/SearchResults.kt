@@ -13,7 +13,6 @@ import com.kgbier.kgbmd.domain.model.Suggestion
 import com.kgbier.kgbmd.util.LiveDataDisposeBag
 import com.kgbier.kgbmd.util.bind
 import com.kgbier.kgbmd.util.disposeBy
-import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.view.ui.SearchResultsView
 import com.kgbier.kgbmd.view.ui.SearchSuggestionView
 import com.kgbier.kgbmd.view.viewmodel.MovieListSearchViewModel

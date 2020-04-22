@@ -2,7 +2,9 @@ package com.kgbier.kgbmd.data.imdb
 
 import com.kgbier.kgbmd.data.imdb.model.RatingResponse
 import com.kgbier.kgbmd.data.imdb.model.SuggestionResponse
+import com.kgbier.kgbmd.data.imdb.model.jsonld.Movie
 import com.kgbier.kgbmd.domain.model.HotListItem
+import com.kgbier.kgbmd.domain.operation.ImdbDetails
 import com.kgbier.kgbmd.domain.operation.ImdbHotList
 import com.kgbier.kgbmd.domain.operation.JsonP
 import com.kgbier.kgbmd.service.Services
@@ -13,9 +15,6 @@ import okhttp3.Request
 import java.util.*
 
 object ImdbService {
-
-    private const val METER_MOVIE = "https://www.imdb.com/chart/moviemeter"
-    private const val METER_TV = "https://www.imdb.com/chart/tvmeter"
 
     // https://v2.sg.media-imdb.com/suggestion/d/dark_knight.json
     private fun buildSuggestionUrl(query: String) = HttpUrl.Builder()
@@ -35,6 +34,14 @@ object ImdbService {
         .addEncodedPathSegment("ratings%3Fjsonp=imdb.rating.run:imdb.api.title.ratings/data.json")
         .build()
 
+    // https://www.imdb.com/title/tt2527336/
+    private fun buildMovieDetailsUrl(ttid: String) = HttpUrl.Builder()
+        .scheme("https")
+        .host("www.imdb.com")
+        .addPathSegments("title")
+        .addPathSegment(ttid)
+        .build()
+
     private suspend fun getHotList(listUrl: String) = withContext(Dispatchers.IO) {
         val request = Request.Builder()
             .url(listUrl).build()
@@ -43,11 +50,13 @@ object ImdbService {
         ImdbHotList(response.body?.source()!!).getList()
     }
 
+    private const val METER_MOVIE = "https://www.imdb.com/chart/moviemeter"
     suspend fun getHotMovies(): List<HotListItem> = getHotList(METER_MOVIE)
+
+    private const val METER_TV = "https://www.imdb.com/chart/tvmeter"
     suspend fun getHotShows(): List<HotListItem> = getHotList(METER_TV)
 
     private const val SEARCH_REQUEST_TAG = 451
-
     suspend fun search(query: String): SuggestionResponse? = withContext(Dispatchers.IO) {
         val validatedQuery = query
             .trim()
@@ -77,6 +86,14 @@ object ImdbService {
 
         val validatedJson = JsonP.toJson(response.body?.string()!!) ?: return@withContext null
         Services.moshi.adapter(RatingResponse::class.java).fromJson(validatedJson)!!
+    }
+
+    suspend fun getMovieDetails(ttid: String): Movie? = withContext(Dispatchers.IO) {
+        val url = buildMovieDetailsUrl(ttid)
+        val request = Request.Builder().url(url).build()
+
+        val response = Services.client.newCall(request).execute()
+        ImdbDetails(response.body?.source()!!).getMovieDetails()
     }
 }
 

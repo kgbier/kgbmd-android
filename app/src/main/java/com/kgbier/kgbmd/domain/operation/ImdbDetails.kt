@@ -1,8 +1,12 @@
-package com.kgbier.kgbmd.data.imdb.model
+package com.kgbier.kgbmd.domain.operation
+
+import com.kgbier.kgbmd.data.imdb.model.jsonld.Movie
+import com.kgbier.kgbmd.service.Services
+import okio.BufferedSource
+import okio.ByteString.Companion.encodeUtf8
 
 /**
-<script type="application/ld+json">
-{
+<script type="application/ld+json">{
 "@context": "http://schema.org",
 "@type": "Movie",
 "url": "/title/tt2527336/",
@@ -67,32 +71,19 @@ package com.kgbier.kgbmd.data.imdb.model
 },
 {
 "@type": "Organization",
-"url": "/company/co0341125/"
-},
-{
-"@type": "Organization",
-"url": "/company/co0179037/"
-},
-{
-"@type": "Organization",
-"url": "/company/co0655801/"
-},
-{
-"@type": "Organization",
-"url": "/company/co0655801/"
+"url": "/company/co0021593/"
 }
 ],
 "description": "Star Wars: Episode VIII - The Last Jedi is a movie starring Daisy Ridley, John Boyega, and Mark Hamill. Rey develops her newly discovered abilities with the guidance of Luke Skywalker, who is unsettled by the strength of her powers....",
 "datePublished": "2017-12-13",
-"keywords": "wisecrack humor,one liner,chubby,big boned woman,chubby woman",
+"keywords": "wisecrack humor,one liner,sabotage,asiatic,chubby",
 "aggregateRating": {
 "@type": "AggregateRating",
-"ratingCount": 487220,
+"ratingCount": 533011,
 "bestRating": "10.0",
 "worstRating": "1.0",
-"ratingValue": "7.1"
+"ratingValue": "7.0"
 },
-"duration": "PT2H32M", // https://en.wikipedia.org/wiki/ISO_8601
 "review": {
 "@type": "Review",
 "itemReviewed": {
@@ -101,19 +92,14 @@ package com.kgbier.kgbmd.data.imdb.model
 },
 "author": {
 "@type": "Person",
-"name": "andrew_cusack"
+"name": "xufqzxgm-45078"
 },
-"dateCreated": "2019-08-26",
+"dateCreated": "2018-07-15",
 "inLanguage": "English",
-"name": "disappointment around every corner",
-"reviewBody": "I tried really hard to like the movie. I failed.\n\nand then i remembered do or do not, there is no try.\n\nI do not like this movie.",
-"reviewRating": {
-"@type": "Rating",
-"worstRating": "1",
-"bestRating": "10",
-"ratingValue": "3"
-}
+"name": "I Think It Was Boring",
+"reviewBody": "They are making too many movies, I think. The story is uninteresting, the acting is somehow weak. It seems a little unsure or perhaps the actors are reacting to a poor script.  I have watched all the new Star Wars so far and I don\u0027t feel like watching anymore because to be honest with myself they are uninteresting. There are better movies out there or I can just do other stuff."
 },
+"duration": "PT2H32M",
 "trailer": {
 "@type": "VideoObject",
 "name": "\"Back\" TV Spot",
@@ -126,22 +112,23 @@ package com.kgbier.kgbmd.data.imdb.model
 "description": "Having taken her first steps into the Jedi world, Rey joins Luke Skywalker on an adventure with Leia, Finn and Poe that unlocks mysteries of the Force and secrets of the past.",
 "uploadDate": "2017-11-24T04:08:47Z"
 }
-}
-</script>
+}</script>
  */
 
-data class Movie(
-    val url: String,
-    val name: String,
-    val image: String,
-    val thumbnailUrl: String,
-    val description: String,
-    val datePublished: String, // Date released
-    val aggregateRating: Rating,
-    val duration: String
-) {
-    data class Rating(
-        val ratingCount: Int,
-        val ratingValue: String
-    )
+class ImdbDetails(private val source: BufferedSource) {
+
+    private companion object {
+        const val LINK_DATA_LOWER = "<script type=\"application/ld+json\">"
+        const val LINK_DATA_UPPER = "</script>"
+    }
+
+    fun getMovieDetails(): Movie? {
+        val lowerBytes = LINK_DATA_LOWER.encodeUtf8()
+        val lower = source.indexOf(lowerBytes)
+        source.skip(lower + lowerBytes.size)
+        val upper = source.indexOf(LINK_DATA_UPPER.encodeUtf8())
+        val out = source.readUtf8(upper)
+
+        return Services.moshi.adapter(Movie::class.java).fromJson(out)
+    }
 }
