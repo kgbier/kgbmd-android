@@ -90,4 +90,5 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:4.9.0")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.0")
+    debugImplementation("com.jakewharton.timber:timber:4.7.1")
 }
