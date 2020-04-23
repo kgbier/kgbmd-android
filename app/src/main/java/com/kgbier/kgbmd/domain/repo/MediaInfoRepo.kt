@@ -1,11 +1,12 @@
 package com.kgbier.kgbmd.domain.repo
 
 import com.kgbier.kgbmd.data.imdb.ImdbService
-import com.kgbier.kgbmd.data.model.jsonld.transformMovieResponse
 import com.kgbier.kgbmd.data.imdb.model.transformSuggestionResponse
+import com.kgbier.kgbmd.data.omdb.OmdbService
+import com.kgbier.kgbmd.data.omdb.model.transformMovieResponse
 import com.kgbier.kgbmd.domain.model.*
 
-object ImdbRepo {
+object MediaInfoRepo {
     suspend fun getMovieHotListPosters(): List<MoviePoster> =
         ImdbService.getHotMovies().map(::transformHotListItem)
 
@@ -19,5 +20,5 @@ object ImdbRepo {
         ImdbService.getRating(id)?.run(::transformRatingResponse)
 
     suspend fun getMovieDetails(id: String): MovieDetails? =
-        ImdbService.getMovieDetails(id)?.run(::transformMovieResponse)
+        OmdbService.getMovieById(id)?.run(::transformMovieResponse)
 }

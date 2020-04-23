@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kgbier.kgbmd.domain.model.MoviePoster
 import com.kgbier.kgbmd.domain.model.TitleCategory
-import com.kgbier.kgbmd.domain.repo.ImdbRepo
+import com.kgbier.kgbmd.domain.repo.MediaInfoRepo
 import com.kgbier.kgbmd.domain.repo.PreferencesRepo
 import kotlinx.coroutines.launch
 
@@ -35,8 +35,8 @@ class MovieListViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
     private fun load(titleCategory: TitleCategory) = viewModelScope.launch {
         runCatching {
             when (titleCategory) {
-                TitleCategory.MOVIE -> titleList.postValue(TitleListState.Loaded(ImdbRepo.getMovieHotListPosters()))
-                TitleCategory.TV_SHOW -> titleList.postValue(TitleListState.Loaded(ImdbRepo.getTvShowHotListPosters()))
+                TitleCategory.MOVIE -> titleList.postValue(TitleListState.Loaded(MediaInfoRepo.getMovieHotListPosters()))
+                TitleCategory.TV_SHOW -> titleList.postValue(TitleListState.Loaded(MediaInfoRepo.getTvShowHotListPosters()))
             }
         }
         isSpinnerShown.postValue(false)

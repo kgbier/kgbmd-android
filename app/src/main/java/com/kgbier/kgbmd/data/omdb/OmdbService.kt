@@ -9,18 +9,19 @@ import okhttp3.HttpUrl
 import okhttp3.Request
 
 object OmdbService {
-    private val urlBuilder by lazy {
-        HttpUrl.Builder()
-            .scheme("http")
-            .host("www.omdbapi.com")
-            .addQueryParameter("apikey", BuildConfig.API_KEY_OMDB)
-    }
+    private fun buildMovieByIdUrl(ttid: String) = HttpUrl.Builder()
+        .scheme("http")
+        .host("www.omdbapi.com")
+        .addQueryParameter("apikey", BuildConfig.API_KEY_OMDB)
+        .addQueryParameter("i", ttid)
+        .build()
 
-    suspend fun getMovieById(ttId: String): Movie = withContext(Dispatchers.IO) {
-        val request = Request.Builder()
-            .url(urlBuilder.addQueryParameter("i", ttId).build()).build()
+    suspend fun getMovieById(ttid: String): Movie? = withContext(Dispatchers.IO) {
+        val url = buildMovieByIdUrl(ttid)
+
+        val request = Request.Builder().url(url).build()
 
         val response = Services.client.newCall(request).execute()
-        Services.moshi.adapter(Movie::class.java).fromJson(response.body?.string()!!)!!
+        Services.moshi.adapter(Movie::class.java).fromJson(response.body?.string()!!)
     }
 }

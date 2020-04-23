@@ -1,5 +1,6 @@
 package com.kgbier.kgbmd.data.omdb.model
 
+import com.kgbier.kgbmd.domain.model.MovieDetails
 import com.squareup.moshi.Json
 
 /**
@@ -48,7 +49,29 @@ import com.squareup.moshi.Json
 data class Movie(
     @Json(name = "Title")
     val title: String,
+    @Json(name = "Year")
+    val year: String,
+    @Json(name = "Plot")
+    val plot: String,
     @Json(name = "Poster")
     val poster: String,
-    val imdbRating: String
+    @Json(name = "Runtime")
+    val runtime: String,
+    val imdbRating: String,
+    val imdbVotes: String
 )
+
+fun transformMovieResponse(movie: Movie): MovieDetails? = with(movie) {
+    MovieDetails(
+        title,
+        poster, // TODO
+        poster, // TODO
+        plot,
+        year, // TODO
+        MovieDetails.Rating(
+            imdbVotes,
+            imdbRating
+        ),
+        runtime
+    )
+}

@@ -11,7 +11,7 @@ object Services {
         OkHttpClient.Builder().apply {
             if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.HEADERS
+                    level = HttpLoggingInterceptor.Level.BODY
                 }.also { addInterceptor(it) }
             }
         }.build()

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kgbier.kgbmd.domain.model.MovieDetails
-import com.kgbier.kgbmd.domain.repo.ImdbRepo
+import com.kgbier.kgbmd.domain.repo.MediaInfoRepo
 import kotlinx.coroutines.launch
 
 class TitleDetailsViewModel(titleId: String) : ViewModel() {
@@ -24,11 +24,11 @@ class TitleDetailsViewModel(titleId: String) : ViewModel() {
     private fun load(titleId: String) = viewModelScope.launch {
         titleDetails.postValue(TitleDetailsState.Loading)
         runCatching {
-            ImdbRepo.getMovieDetails(titleId) ?: throw Throwable()
+            MediaInfoRepo.getMovieDetails(titleId) ?: throw Throwable()
         }.onSuccess {
             titleDetails.postValue(TitleDetailsState.Loaded(it))
         }.onFailure {
-            titleDetails.postValue(TitleDetailsState.Error(it.message?: "Error"))
+            titleDetails.postValue(TitleDetailsState.Error(it.message ?: "Error"))
         }
     }
 }

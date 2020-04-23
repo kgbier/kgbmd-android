@@ -1,7 +1,6 @@
 package com.kgbier.kgbmd.domain.model
 
 data class MovieDetails(
-    val url: String,
     val name: String,
     val thumbnailUrl: String,
     val posterUrlLarge: String,

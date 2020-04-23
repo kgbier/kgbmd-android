@@ -3,7 +3,7 @@ package com.kgbier.kgbmd.view.viewmodel
 import androidx.lifecycle.*
 import com.kgbier.kgbmd.domain.model.SearchSuggestionType
 import com.kgbier.kgbmd.domain.model.Suggestion
-import com.kgbier.kgbmd.domain.repo.ImdbRepo
+import com.kgbier.kgbmd.domain.repo.MediaInfoRepo
 import kotlinx.coroutines.launch
 
 sealed class RatingResult {
@@ -34,7 +34,7 @@ class MovieListSearchViewModel(savedStateHandle: SavedStateHandle) : ViewModel()
         MutableLiveData<RatingResult>().apply {
             viewModelScope.launch {
                 postValue(RatingResult.Loading)
-                postValue(RatingResult.Result(ImdbRepo.getRating(id)))
+                postValue(RatingResult.Result(MediaInfoRepo.getRating(id)))
             }
         }.also { ratingResults[id] = it }
 
@@ -53,7 +53,7 @@ class MovieListSearchViewModel(savedStateHandle: SavedStateHandle) : ViewModel()
         if (isFirstLoad.value != true) isFirstLoad.postValue(true)
 
         runCatching {
-            ImdbRepo.getSearchResults(query)
+            MediaInfoRepo.getSearchResults(query)
         }.onSuccess {
             resultList.postValue(it)
         }

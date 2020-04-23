@@ -38,7 +38,6 @@ data class Movie(
 
 fun transformMovieResponse(movie: Movie): MovieDetails? = with(movie) {
     MovieDetails(
-        url,
         name,
         image, // TODO
         image, // TODO
