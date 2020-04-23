@@ -1,5 +1,8 @@
 package com.kgbier.kgbmd.data.imdb.model
 
+import com.kgbier.kgbmd.domain.imdb.operation.ImageResizer
+import com.kgbier.kgbmd.domain.model.Suggestion
+import com.kgbier.kgbmd.domain.model.getSuggestionType
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -36,3 +39,22 @@ data class SuggestionResponse(
         )
     }
 }
+
+fun transformSuggestionResult(result: SuggestionResponse.Result) = with(result) {
+    Suggestion(
+        id,
+        title,
+        getSuggestionType(id, type),
+        year,
+        tidbit,
+        image?.imageUrl?.let {
+            ImageResizer.resize(
+                it,
+                ImageResizer.SIZE_WIDTH_THUMBNAIL
+            )
+        }
+    )
+}
+
+fun transformSuggestionResponse(search: SuggestionResponse?) =
+    search?.data?.map(::transformSuggestionResult) ?: emptyList()

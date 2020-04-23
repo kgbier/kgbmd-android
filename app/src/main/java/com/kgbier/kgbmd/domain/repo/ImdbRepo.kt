@@ -1,6 +1,8 @@
 package com.kgbier.kgbmd.domain.repo
 
 import com.kgbier.kgbmd.data.imdb.ImdbService
+import com.kgbier.kgbmd.data.model.jsonld.transformMovieResponse
+import com.kgbier.kgbmd.data.imdb.model.transformSuggestionResponse
 import com.kgbier.kgbmd.domain.model.*
 
 object ImdbRepo {

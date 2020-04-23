@@ -1,4 +1,4 @@
-package com.kgbier.kgbmd.domain.operation
+package com.kgbier.kgbmd.data.imdb.operation
 
 import com.kgbier.kgbmd.domain.model.HotListItem
 import okio.BufferedSource
@@ -52,7 +52,7 @@ import okio.BufferedSource
 </tr>
  */
 
-class ImdbHotList(private val source: BufferedSource) {
+class HotListParser(private val source: BufferedSource) {
 
     private companion object {
         // <span name="ir" data-value="8.8"></span>

@@ -11,7 +11,7 @@ class TitleDetailsViewModel(titleId: String) : ViewModel() {
 
     sealed class TitleDetailsState {
         object Loading : TitleDetailsState()
-        object Error : TitleDetailsState()
+        data class Error(val message: String) : TitleDetailsState()
         data class Loaded(val details: MovieDetails) : TitleDetailsState()
     }
 
@@ -28,7 +28,7 @@ class TitleDetailsViewModel(titleId: String) : ViewModel() {
         }.onSuccess {
             titleDetails.postValue(TitleDetailsState.Loaded(it))
         }.onFailure {
-            titleDetails.postValue(TitleDetailsState.Error)
+            titleDetails.postValue(TitleDetailsState.Error(it.message?: "Error"))
         }
     }
 }

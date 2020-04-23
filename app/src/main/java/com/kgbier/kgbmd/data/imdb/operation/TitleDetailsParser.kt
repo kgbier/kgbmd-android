@@ -1,6 +1,6 @@
-package com.kgbier.kgbmd.domain.operation
+package com.kgbier.kgbmd.data.imdb.operation
 
-import com.kgbier.kgbmd.data.imdb.model.jsonld.Movie
+import com.kgbier.kgbmd.data.model.jsonld.Movie
 import com.kgbier.kgbmd.service.Services
 import okio.BufferedSource
 import okio.ByteString.Companion.encodeUtf8
@@ -115,7 +115,7 @@ import okio.ByteString.Companion.encodeUtf8
 }</script>
  */
 
-class ImdbDetails(private val source: BufferedSource) {
+class TitleDetailsParser(private val source: BufferedSource) {
 
     private companion object {
         const val LINK_DATA_LOWER = "<script type=\"application/ld+json\">"

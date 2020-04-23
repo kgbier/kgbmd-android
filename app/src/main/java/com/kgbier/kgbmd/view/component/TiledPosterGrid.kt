@@ -28,8 +28,8 @@ class TiledPosterGrid(context: MainActivity) : TiledPosterView(context) {
             }
         }.disposeBy(disposeBag)
 
-        posterAdapter.onItemClickListener = { position ->
-            context.navigate(Route.DetailScreen("tt0080684"))
+        posterAdapter.onItemClickListener = { titleId ->
+            context.navigate(Route.DetailScreen(titleId))
         }
     }
 

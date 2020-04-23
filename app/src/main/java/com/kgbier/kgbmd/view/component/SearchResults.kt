@@ -59,8 +59,8 @@ class SearchResults(context: MainActivity) : SearchResultsView(context) {
             }
         }.disposeBy(disposeBag)
 
-        resultAdapter.onItemClickListener = { position ->
-            context.navigate(Route.DetailScreen("tt0076759"))
+        resultAdapter.onItemClickListener = { titleId ->
+            context.navigate(Route.DetailScreen(titleId))
         }
     }
 
@@ -123,15 +123,16 @@ class ResultAdapter(val context: MainActivity) :
             }
     }
 
-    var onItemClickListener: ((position: Int) -> Unit)? = null
+    var onItemClickListener: ((titleId: String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder =
         ResultViewHolder(parent, context)
 
-    override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
-        holder.onBindData(getItem(position))
-        holder.view.setOnClickListener { onItemClickListener?.invoke(position) }
-    }
+    override fun onBindViewHolder(holder: ResultViewHolder, position: Int) =
+        with(getItem(position)) {
+            holder.onBindData(this)
+            holder.view.setOnClickListener { onItemClickListener?.invoke(this.id) }
+        }
 
     override fun onViewRecycled(holder: ResultViewHolder) = holder.onViewRecycled()
 }

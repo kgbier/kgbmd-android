@@ -150,6 +150,7 @@ class DetailLayout(context: MainActivity) :
         titleDetailsViewModel.titleDetails.bind(context) {
             when (it) {
                 is TitleDetailsViewModel.TitleDetailsState.Loaded -> showDetails(it.details)
+                is TitleDetailsViewModel.TitleDetailsState.Error -> showError(it.message)
                 else -> Unit
             }
         }.disposeBy(disposeBag)
@@ -160,6 +161,10 @@ class DetailLayout(context: MainActivity) :
         textViewReleaseDate.text = yearReleased
         textViewDuration.text = duration
         textViewSummary.text = description
+    }
+
+    fun showError(message: String) {
+        textViewTitle.text = message
     }
 
     override fun onDetachedFromWindow() {

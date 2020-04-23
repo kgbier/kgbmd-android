@@ -1,6 +1,6 @@
 package com.kgbier.kgbmd.domain.model
 
-import com.kgbier.kgbmd.domain.operation.ImdbImageResizer
+import com.kgbier.kgbmd.domain.imdb.operation.ImageResizer
 
 data class MoviePoster(
     val ttId: String,
@@ -17,13 +17,13 @@ fun transformHotListItem(item: HotListItem) = with(item) {
         name,
         rating,
         imageUrl,
-        ImdbImageResizer.resize(
+        ImageResizer.resize(
             imageUrl,
-            ImdbImageResizer.SIZE_WIDTH_MEDIUM
+            ImageResizer.SIZE_WIDTH_MEDIUM
         ),
-        ImdbImageResizer.resize(
+        ImageResizer.resize(
             imageUrl,
-            ImdbImageResizer.SIZE_WIDTH_LARGE
+            ImageResizer.SIZE_WIDTH_LARGE
         )
     )
 }

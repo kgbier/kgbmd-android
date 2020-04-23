@@ -1,5 +1,6 @@
-package com.kgbier.kgbmd.data.imdb.model.jsonld
+package com.kgbier.kgbmd.data.model.jsonld
 
+import com.kgbier.kgbmd.domain.model.MovieDetails
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -17,8 +18,8 @@ data class Movie(
     val creator: List<PersonType>,
     val actor: List<PersonType>,
     val datePublished: String, // Date released
-    val aggregateRating: Rating,
-    val duration: String
+    val aggregateRating: Rating?,
+    val duration: String?
 ) {
     @JsonClass(generateAdapter = true)
     data class Rating(
@@ -32,5 +33,23 @@ data class Movie(
         val type: String,
         val url: String?,
         val name: String?
+    )
+}
+
+fun transformMovieResponse(movie: Movie): MovieDetails? = with(movie) {
+    MovieDetails(
+        url,
+        name,
+        image, // TODO
+        image, // TODO
+        description,
+        datePublished, // TODO
+        aggregateRating?.let {
+            MovieDetails.Rating(
+                it.ratingCount.toString(),
+                it.ratingValue
+            )
+        },
+        duration
     )
 }

@@ -1,4 +1,4 @@
-package com.kgbier.kgbmd.domain.operation
+package com.kgbier.kgbmd.data.operation
 
 object JsonP {
     fun toJson(input: String): String? {

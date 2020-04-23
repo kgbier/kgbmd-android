@@ -1,6 +1,6 @@
-package com.kgbier.kgbmd.domain.operation
+package com.kgbier.kgbmd.domain.imdb.operation
 
-object ImdbImageResizer {
+object ImageResizer {
 
     private const val CLIPPER_DELIMITER = "._V1"
 

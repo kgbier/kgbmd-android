@@ -2,11 +2,11 @@ package com.kgbier.kgbmd.data.imdb
 
 import com.kgbier.kgbmd.data.imdb.model.RatingResponse
 import com.kgbier.kgbmd.data.imdb.model.SuggestionResponse
-import com.kgbier.kgbmd.data.imdb.model.jsonld.Movie
+import com.kgbier.kgbmd.data.model.jsonld.Movie
 import com.kgbier.kgbmd.domain.model.HotListItem
-import com.kgbier.kgbmd.domain.operation.ImdbDetails
-import com.kgbier.kgbmd.domain.operation.ImdbHotList
-import com.kgbier.kgbmd.domain.operation.JsonP
+import com.kgbier.kgbmd.data.imdb.operation.TitleDetailsParser
+import com.kgbier.kgbmd.data.imdb.operation.HotListParser
+import com.kgbier.kgbmd.data.operation.JsonP
 import com.kgbier.kgbmd.service.Services
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -47,7 +47,7 @@ object ImdbService {
             .url(listUrl).build()
 
         val response = Services.client.newCall(request).execute()
-        ImdbHotList(response.body?.source()!!).getList()
+        HotListParser(response.body?.source()!!).getList()
     }
 
     private const val METER_MOVIE = "https://www.imdb.com/chart/moviemeter"
@@ -93,7 +93,6 @@ object ImdbService {
         val request = Request.Builder().url(url).build()
 
         val response = Services.client.newCall(request).execute()
-        ImdbDetails(response.body?.source()!!).getMovieDetails()
+        TitleDetailsParser(response.body?.source()!!).getMovieDetails()
     }
 }
-
