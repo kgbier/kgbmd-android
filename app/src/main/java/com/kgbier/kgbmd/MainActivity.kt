@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
     companion object {
         const val KEY_NAV_CURRENT_ROUTE = "kgbmd:NAV_CURRENT_ROUTE"
         const val KEY_NAV_BACK_STACK = "kgbmd:NAV_BACK_STACK"
-        const val ROUTE_UNDEFINED = -1
     }
 
     private var currentRoute: Route? = null
@@ -36,11 +35,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
             backStack.addAll(it)
         }
 
-        val route =
-            savedInstanceState?.getParcelable<RouteParcel>(KEY_NAV_CURRENT_ROUTE)
-                ?.let {
-                    Route.getRoute(it)
-                } ?: Route.MainPosterScreen
+        val route = savedInstanceState?.getParcelable<RouteParcel>(KEY_NAV_CURRENT_ROUTE)
+            ?.let {
+                Route.getRoute(it)
+            } ?: Route.MainPosterScreen
 
         showScreen(route)
     }
@@ -62,10 +60,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
         showScreen(route)
     }
 
-    fun navigateBack() = if (backStack.isEmpty()) {
-        finish()
-    } else {
-        showScreen(backStack.pop())
+    fun navigateBack() {
+        if (backStack.isEmpty()) {
+            finish()
+        } else {
+            showScreen(backStack.pop())
+        }
     }
 
     private fun showScreen(route: Route) {

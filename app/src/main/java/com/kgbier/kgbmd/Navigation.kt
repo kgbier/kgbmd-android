@@ -9,6 +9,10 @@ import android.view.ViewGroup
 import com.kgbier.kgbmd.view.*
 import kotlinx.android.parcel.Parcelize
 
+interface RouteReceiver<R : Route> {
+    val route: R
+}
+
 interface LayoutRoute {
     fun layout(context: MainActivity, route: Route): View
 }
@@ -21,57 +25,70 @@ interface TransitionRoute {
     fun transition(): Transition
 }
 
-enum class RouteId {
-    ROUTE_MAIN_POSTER_SCREEN,
-    ROUTE_SEARCH_SCREEN,
-    ROUTE_DETAIL_SCREEN
-}
-
 @Parcelize
 class ErrorParcelable : Parcelable, Throwable()
 
 @Parcelize
-data class RouteParcel(val routeId: RouteId, val route: Parcelable) : Parcelable
+data class RouteParcel(val routeId: Route.Id, val route: Parcelable) : Parcelable
 
 fun Route.parcelled() = RouteParcel(id, this as? Parcelable ?: ErrorParcelable())
 
-sealed class Route(val id: RouteId) : LayoutRoute {
+sealed class Route(val id: Id) : LayoutRoute {
+
+    enum class Id {
+        ROUTE_MAIN_POSTER_SCREEN,
+        ROUTE_SEARCH_SCREEN,
+        ROUTE_DETAIL_SCREEN
+    }
 
     companion object {
         fun getRoute(route: RouteParcel): Route = when (route.routeId) {
-            RouteId.ROUTE_MAIN_POSTER_SCREEN -> MainPosterScreen
-            RouteId.ROUTE_SEARCH_SCREEN -> SearchScreen
-            RouteId.ROUTE_DETAIL_SCREEN -> route.route as DetailScreen
+            Id.ROUTE_MAIN_POSTER_SCREEN -> MainPosterScreen
+            Id.ROUTE_SEARCH_SCREEN -> SearchScreen
+            Id.ROUTE_DETAIL_SCREEN -> route.route as DetailScreen
         }
 
     }
 
-    object MainPosterScreen : Route(RouteId.ROUTE_MAIN_POSTER_SCREEN),
+    object MainPosterScreen : Route(Id.ROUTE_MAIN_POSTER_SCREEN),
         LayoutRoute by BaseLayoutRoute(::MainLayout),
         TransitionRoute by MainPosterScreenTransitionRoute()
 
-    object SearchScreen : Route(RouteId.ROUTE_SEARCH_SCREEN),
+    object SearchScreen : Route(Id.ROUTE_SEARCH_SCREEN),
         LayoutRoute by BaseLayoutRoute(::SearchLayout),
         SceneRoute by SearchScreenSceneRoute(),
         TransitionRoute by SearchScreenTransitionRoute()
 
     @Parcelize
-    data class DetailScreen(val titleId: String) : Route(RouteId.ROUTE_DETAIL_SCREEN),
+    data class DetailScreen(val titleId: String) : Route(Id.ROUTE_DETAIL_SCREEN),
         LayoutRoute by BaseLayoutRoute(::DetailLayout),
         TransitionRoute by DetailScreenTransitionRoute(),
         Parcelable
 }
 
-class BaseLayoutRoute<T : View>(val provider: (MainActivity, Route) -> T) : LayoutRoute {
-    override fun layout(context: MainActivity, route: Route): T = provider(context, route)
+class BaseLayoutRoute<T : View>(val provider: (MainActivity) -> T) : LayoutRoute {
+    override fun layout(context: MainActivity, route: Route): T = provider(context)
 }
 
 object Navigation {
-    fun routeTo(route: Route, rootView: ViewGroup, context: MainActivity) {
+
+    private var latchedRoute: Route? = null
+    fun <R : Route> routeReceiver(): RouteReceiver<R> {
+        val receiver = object : RouteReceiver<R> {
+            @Suppress("UNCHECKED_CAST")
+            override val route: R = latchedRoute!! as R
+        }
+        latchedRoute = null
+        return receiver
+    }
+
+    fun <R : Route> routeTo(route: R, rootView: ViewGroup, context: MainActivity) {
+        latchedRoute = route
+        val layout = route.layout(context, route)
         val newScene = if (route is SceneRoute) {
-            route.scene(rootView, route.layout(context, route))
+            route.scene(rootView, layout)
         } else {
-            Scene(rootView, route.layout(context, route))
+            Scene(rootView, layout)
         }
         if (route is TransitionRoute) {
             TransitionManager.go(newScene, route.transition())

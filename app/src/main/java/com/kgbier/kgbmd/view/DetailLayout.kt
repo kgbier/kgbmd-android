@@ -13,24 +13,25 @@ import androidx.core.view.updatePadding
 import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.kgbier.kgbmd.MainActivity
-import com.kgbier.kgbmd.R
-import com.kgbier.kgbmd.Route
-import com.kgbier.kgbmd.TransitionRoute
+import com.kgbier.kgbmd.*
 import com.kgbier.kgbmd.domain.model.MovieDetails
 import com.kgbier.kgbmd.util.*
 import com.kgbier.kgbmd.view.viewmodel.TitleDetailsViewModel
 
 @SuppressLint("ViewConstructor")
-class DetailLayout(context: MainActivity, route: Route) : LinearLayout(context) {
+class DetailLayout(context: MainActivity) :
+    RouteReceiver<Route.DetailScreen> by Navigation.routeReceiver(),
+    LinearLayout(context) {
 
     private val disposeBag = LiveDataDisposeBag()
 
-    private val titleDetailsViewModel: TitleDetailsViewModel =
-        ViewModelProvider(context, object : ViewModelProvider.Factory {
+    private val titleDetailsViewModel: TitleDetailsViewModel by context.viewModels(route.titleId) {
+        object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                TitleDetailsViewModel((route as Route.DetailScreen).titleId) as T
-        }).get((route as Route.DetailScreen).titleId, TitleDetailsViewModel::class.java)
+                TitleDetailsViewModel(route.titleId) as T
+        }
+    }
 
     val textViewTitle: TextView
     val textViewReleaseDate: TextView

@@ -15,7 +15,6 @@ import androidx.core.view.updatePadding
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
-import com.kgbier.kgbmd.Route
 import com.kgbier.kgbmd.TransitionRoute
 import com.kgbier.kgbmd.domain.model.TitleCategory
 import com.kgbier.kgbmd.util.*
@@ -26,8 +25,7 @@ import com.kgbier.kgbmd.view.component.TiledPosterGrid
 import com.kgbier.kgbmd.view.viewmodel.MovieListViewModel
 
 @SuppressLint("ViewConstructor")
-class MainLayout(context: MainActivity, route: Route) :
-    CoordinatorLayout(context) {
+class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
 
     private val disposeBag = LiveDataDisposeBag()
 
