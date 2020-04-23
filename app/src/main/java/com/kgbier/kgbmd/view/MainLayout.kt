@@ -70,6 +70,9 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
         // Setup Movie List
         swipeRefreshLayout = SwipeRefreshLayout(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            resolveAttribute(R.attr.colorPrimaryDark)?.let { setColorSchemeResources(it) }
+            resolveAttribute(android.R.attr.colorBackground)?.let(::setProgressBackgroundColorSchemeResource)
+
             setProgressViewEndTarget(false, PULLDOWN_END_DISTANCE)
             setOnRefreshListener { movieListViewModel.reload() }
 
