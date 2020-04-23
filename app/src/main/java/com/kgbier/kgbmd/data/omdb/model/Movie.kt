@@ -51,12 +51,20 @@ data class Movie(
     val title: String,
     @Json(name = "Year")
     val year: String,
+    @Json(name = "Rated")
+    val rated: String,
     @Json(name = "Plot")
     val plot: String,
     @Json(name = "Poster")
     val poster: String,
     @Json(name = "Runtime")
     val runtime: String,
+    @Json(name = "Genre")
+    val genre: String,
+    @Json(name = "Director")
+    val directedBy: String,
+    @Json(name = "Writer")
+    val writtenBy: String,
     val imdbRating: String,
     val imdbVotes: String
 )
@@ -66,6 +74,10 @@ fun transformMovieResponse(movie: Movie): MovieDetails? = with(movie) {
         title,
         poster, // TODO
         poster, // TODO
+        rated,
+        genre,
+        directedBy,
+        writtenBy,
         plot,
         year, // TODO
         MovieDetails.Rating(

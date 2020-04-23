@@ -41,6 +41,10 @@ fun transformMovieResponse(movie: Movie): MovieDetails? = with(movie) {
         name,
         image, // TODO
         image, // TODO
+        "",
+        "",
+        "",
+        "",
         description,
         datePublished, // TODO
         aggregateRating?.let {

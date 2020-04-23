@@ -159,7 +159,10 @@ class DetailLayout(context: MainActivity) :
     fun showDetails(details: MovieDetails) = with(details) {
         textViewTitle.text = name
         textViewReleaseDate.text = yearReleased
+        textViewContentRating.text = contentRating
         textViewDuration.text = duration
+        textViewDirectedBy.text = directedBy
+        textViewWrittenBy.text = writtenBy
         textViewSummary.text = description
     }
 
