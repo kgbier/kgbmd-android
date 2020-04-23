@@ -32,8 +32,6 @@ class SearchResults(context: MainActivity) : SearchResultsView(context) {
         emptyStateMessage.visibility = View.GONE
         resultRecyclerView.adapter = resultAdapter
 
-        movieListSearchViewModel.clearSearchState()
-
         movieListSearchViewModel.isFirstLoad.bind(context) {
             if (it) {
                 visibility = View.VISIBLE

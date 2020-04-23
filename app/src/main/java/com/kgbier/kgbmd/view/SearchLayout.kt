@@ -52,10 +52,7 @@ class SearchLayout(context: MainActivity) : LinearLayout(context) {
             imageViewKeyIcon.apply {
                 resolveAttribute(R.attr.homeAsUpIndicator)?.let(::setImageResource)
                 resolveAttribute(R.attr.actionBarItemBackground)?.let(::setBackgroundResource)
-                setOnClickListener {
-                    movieListSearchViewModel.clearSearchState()
-                    context.navigateBack()
-                }
+                setOnClickListener { context.navigateBack() }
 
                 updateLayoutParams<LayoutParams> {
                     updateMarginsRelative(end = 12.dp())

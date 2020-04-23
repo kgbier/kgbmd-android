@@ -10,7 +10,7 @@ import com.kgbier.kgbmd.domain.repo.ImdbRepo
 import com.kgbier.kgbmd.domain.repo.PreferencesRepo
 import kotlinx.coroutines.launch
 
-class MovieListViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
+class MovieListViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
     companion object {
         const val TITLE_CATEGORY_HANDLE = "title-category"
@@ -33,7 +33,7 @@ class MovieListViewModel(private val savedStateHandle: SavedStateHandle) : ViewM
     fun reload() = load(titleCategory.value!!)
 
     private fun load(titleCategory: TitleCategory) = viewModelScope.launch {
-        kotlin.runCatching {
+        runCatching {
             when (titleCategory) {
                 TitleCategory.MOVIE -> titleList.postValue(TitleListState.Loaded(ImdbRepo.getMovieHotListPosters()))
                 TitleCategory.TV_SHOW -> titleList.postValue(TitleListState.Loaded(ImdbRepo.getTvShowHotListPosters()))

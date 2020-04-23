@@ -11,7 +11,7 @@ sealed class RatingResult {
     data class Result(val rating: String?) : RatingResult()
 }
 
-class MovieListSearchViewModel(val savedStateHandle: SavedStateHandle) : ViewModel() {
+class MovieListSearchViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
     companion object {
         const val SEARCH_STRING_HANDLE = "search-string"
@@ -52,7 +52,7 @@ class MovieListSearchViewModel(val savedStateHandle: SavedStateHandle) : ViewMod
         }
         if (isFirstLoad.value != true) isFirstLoad.postValue(true)
 
-        kotlin.runCatching {
+        runCatching {
             ImdbRepo.getSearchResults(query)
         }.onSuccess {
             resultList.postValue(it)

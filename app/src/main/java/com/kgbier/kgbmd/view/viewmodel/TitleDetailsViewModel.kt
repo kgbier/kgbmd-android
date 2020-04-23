@@ -7,7 +7,7 @@ import com.kgbier.kgbmd.domain.model.MovieDetails
 import com.kgbier.kgbmd.domain.repo.ImdbRepo
 import kotlinx.coroutines.launch
 
-class TitleDetailsViewModel(private val titleId: String) : ViewModel() {
+class TitleDetailsViewModel(titleId: String) : ViewModel() {
 
     sealed class TitleDetailsState {
         object Loading : TitleDetailsState()

@@ -24,13 +24,6 @@ class RatingStarView(context: Context) : LinearLayout(context) {
         textViewRating = TextView(context).apply {
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
             setTextStyle(android.R.style.TextAppearance_Material_Caption)
-            viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
-                override fun onPreDraw(): Boolean {
-                    viewTreeObserver.removeOnPreDrawListener(this)
-                    processTextSize(textSize)
-                    return true
-                }
-            })
             includeFontPadding = false
         }.also(::addView)
 
@@ -41,13 +34,18 @@ class RatingStarView(context: Context) : LinearLayout(context) {
             ).apply { marginStart = 2.dp() }
             setImageResource(R.drawable.ic_star)
         }.also(::addView)
-    }
 
-    private fun processTextSize(size: Float) {
-        imageViewStar.updateLayoutParams {
-            width = (size * 1.2f).toInt()
-            height = (size * 1.2f).toInt()
-        }
+        viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+                viewTreeObserver.removeOnPreDrawListener(this)
+                imageViewStar.updateLayoutParams {
+                    val targetSize = (textViewRating.textSize * 1.2f).toInt()
+                    width = targetSize
+                    height = targetSize
+                }
+                return false
+            }
+        })
     }
 
     var isSpinning = false
