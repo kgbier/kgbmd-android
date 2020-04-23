@@ -2,7 +2,6 @@ package com.kgbier.kgbmd
 
 import android.app.Application
 import android.content.Context
-import timber.log.Timber
 
 class MainApplication : Application() {
     companion object {
@@ -15,7 +14,7 @@ class MainApplication : Application() {
         mainApplicationContext = this.applicationContext
 
         if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
+            plantTimberTask()
         }
     }
 }

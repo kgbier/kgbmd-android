@@ -4,23 +4,27 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-  <group>
-    <clip-path android:pathData="M0,0h24v24h-24z M 0,0"/>
-    <path
-        android:pathData="M12,2L14.645,8.3594L21.5106,8.9098L16.2798,13.3906L17.8779,20.0902L12,16.5L6.1221,20.0902L7.7203,13.3906L2.4894,8.9098L9.355,8.3594L12,2Z"
-        android:strokeWidth="0.5"
-        android:strokeColor="#CB8E00">
-      <aapt:attr name="android:fillColor">
-        <gradient 
-            android:startY="2"
-            android:startX="12"
-            android:endY="22"
-            android:endX="12"
-            android:type="linear">
-          <item android:offset="0" android:color="#FFFFD43A"/>
-          <item android:offset="1" android:color="#FFE6A000"/>
-        </gradient>
-      </aapt:attr>
-    </path>
-  </group>
+    <group>
+        <clip-path android:pathData="M0,0h24v24h-24z M 0,0" />
+        <path
+            android:pathData="M12,2L14.645,8.3594L21.5106,8.9098L16.2798,13.3906L17.8779,20.0902L12,16.5L6.1221,20.0902L7.7203,13.3906L2.4894,8.9098L9.355,8.3594L12,2Z"
+            android:strokeWidth="0.5"
+            android:strokeColor="#CB8E00">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:endX="12"
+                    android:endY="22"
+                    android:startX="12"
+                    android:startY="2"
+                    android:type="linear">
+                    <item
+                        android:color="#FFFFD43A"
+                        android:offset="0" />
+                    <item
+                        android:color="#FFE6A000"
+                        android:offset="1" />
+                </gradient>
+            </aapt:attr>
+        </path>
+    </group>
 </vector>

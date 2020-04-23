@@ -2,6 +2,7 @@ package com.kgbier.kgbmd.data.omdb.model
 
 import com.kgbier.kgbmd.domain.model.MovieDetails
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 /**
 {
@@ -46,6 +47,7 @@ import com.squareup.moshi.Json
 }
  */
 
+@JsonClass(generateAdapter = true)
 data class Movie(
     @Json(name = "Title")
     val title: String,
