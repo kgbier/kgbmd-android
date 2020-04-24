@@ -110,14 +110,14 @@ class DetailLayout(context: MainActivity) :
                             marginEnd = 8.dp()
                         }
                     setTextStyle(R.style.TextAppearance_MaterialComponents_Overline)
-                    setTextColorAttr(android.R.attr.textColorSecondary)
+                    setTextColorAttr(android.R.attr.textColorPrimary)
                 }.also(::addView)
 
                 textViewDuration = TextView(context).apply {
                     layoutParams =
                         LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                     setTextStyle(R.style.TextAppearance_MaterialComponents_Overline)
-                    setTextColorAttr(android.R.attr.textColorTertiary)
+                    setTextColorAttr(android.R.attr.textColorPrimary)
                 }.also(::addView)
             }.also(::addView)
 
