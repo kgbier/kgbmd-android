@@ -112,6 +112,7 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
         }.disposeBy(disposeBag)
 
         movieListViewModel.titleCategory.bind(context) {
+            @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
             val icon = when (it) {
                 TitleCategory.MOVIE -> R.drawable.ic_film
                 TitleCategory.TV_SHOW -> R.drawable.ic_tv
