@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
     }
 
     fun navigateBack() {
+        currentRoute?.let { Navigation.exit(it) }
         if (backStack.isEmpty()) {
             finish()
         } else {

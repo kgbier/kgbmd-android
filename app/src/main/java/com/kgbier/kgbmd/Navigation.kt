@@ -9,12 +9,16 @@ import android.view.ViewGroup
 import com.kgbier.kgbmd.view.*
 import kotlinx.android.parcel.Parcelize
 
+interface RouteEventObserver {
+    fun onExit()
+}
+
 interface RouteReceiver<R : Route> {
     val route: R
 }
 
 interface LayoutRoute {
-    fun layout(context: MainActivity, route: Route): View
+    fun layout(context: MainActivity): View
 }
 
 interface SceneRoute {
@@ -47,7 +51,6 @@ sealed class Route(val id: Id) : LayoutRoute {
             Id.ROUTE_SEARCH_SCREEN -> SearchScreen
             Id.ROUTE_DETAIL_SCREEN -> route.route as DetailScreen
         }
-
     }
 
     object MainPosterScreen : Route(Id.ROUTE_MAIN_POSTER_SCREEN),
@@ -67,12 +70,13 @@ sealed class Route(val id: Id) : LayoutRoute {
 }
 
 class BaseLayoutRoute<T : View>(val provider: (MainActivity) -> T) : LayoutRoute {
-    override fun layout(context: MainActivity, route: Route): T = provider(context)
+    override fun layout(context: MainActivity): T = provider(context)
 }
 
 object Navigation {
 
     private var latchedRoute: Route? = null
+
     fun <R : Route> routeReceiver(): RouteReceiver<R> {
         val receiver = object : RouteReceiver<R> {
             @Suppress("UNCHECKED_CAST")
@@ -82,9 +86,14 @@ object Navigation {
         return receiver
     }
 
+    private val observers: MutableMap<String, RouteEventObserver> = mutableMapOf()
+
     fun <R : Route> routeTo(route: R, rootView: ViewGroup, context: MainActivity) {
         latchedRoute = route
-        val layout = route.layout(context, route)
+        val layout = route.layout(context)
+        if (layout is RouteEventObserver) {
+            observers[route.toString()] = layout
+        }
         val newScene = if (route is SceneRoute) {
             route.scene(rootView, layout)
         } else {
@@ -95,5 +104,11 @@ object Navigation {
         } else {
             newScene.enter()
         }
+    }
+
+    fun exit(route: Route) {
+        val routeKey = route.toString()
+        observers[routeKey]?.onExit()
+        observers.remove(routeKey)
     }
 }
