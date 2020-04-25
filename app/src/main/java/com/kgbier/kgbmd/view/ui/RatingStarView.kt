@@ -2,7 +2,6 @@ package com.kgbier.kgbmd.view.ui
 
 import android.content.Context
 import android.view.Gravity
-import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -34,21 +33,18 @@ class RatingStarView(context: Context) : LinearLayout(context) {
             ).apply { marginStart = 2.dp() }
             setImageResource(R.drawable.ic_star)
         }.also(::addView)
-
-        viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
-            override fun onPreDraw(): Boolean {
-                viewTreeObserver.removeOnPreDrawListener(this)
-                imageViewStar.updateLayoutParams {
-                    val targetSize = (textViewRating.textSize * 1.2f).toInt()
-                    width = targetSize
-                    height = targetSize
-                }
-                return false
-            }
-        })
     }
 
-    var isSpinning = false
+    override fun onAttachedToWindow() {
+        imageViewStar.updateLayoutParams {
+            val targetSize = (textViewRating.textSize * 1.2f).toInt()
+            width = targetSize
+            height = targetSize
+        }
+        super.onAttachedToWindow()
+    }
+
+    private var isSpinning = false
     fun spin() {
         isSpinning = true
         imageViewStar.animate().rotationBy(720f).setInterpolator(AccelerateDecelerateInterpolator())
