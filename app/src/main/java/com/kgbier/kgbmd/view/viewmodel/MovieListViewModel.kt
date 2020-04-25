@@ -1,5 +1,6 @@
 package com.kgbier.kgbmd.view.viewmodel
 
+import android.os.Parcelable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,8 @@ class MovieListViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
         savedStateHandle.getLiveData(TITLE_CATEGORY_HANDLE, PreferencesRepo.getSavedTitleCategory())
     val isSpinnerShown: MutableLiveData<Boolean> = MutableLiveData()
     val titleList: MutableLiveData<TitleListState> = MutableLiveData(TitleListState.Loading)
+
+    var listInstanceState: Parcelable? = null
 
     init {
         load(titleCategory.value!!)

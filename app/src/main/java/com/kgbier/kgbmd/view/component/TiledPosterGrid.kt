@@ -31,10 +31,13 @@ class TiledPosterGrid(context: MainActivity) : TiledPosterView(context) {
         posterAdapter.onItemClickListener = { titleId ->
             context.navigate(Route.DetailScreen(titleId))
         }
+
+        movieListViewModel.listInstanceState?.let { layoutManager?.onRestoreInstanceState(it) }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         disposeBag.dispose()
+        movieListViewModel.listInstanceState = layoutManager?.onSaveInstanceState()
     }
 }
