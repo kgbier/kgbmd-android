@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.kgbier.kgbmd.view.*
 import kotlinx.android.parcel.Parcelize
+import java.lang.ref.WeakReference
 
 interface RouteEventObserver {
     fun onExit()
@@ -86,13 +87,13 @@ object Navigation {
         return receiver
     }
 
-    private val observers: MutableMap<String, RouteEventObserver> = mutableMapOf()
+    private val observers: MutableMap<String, WeakReference<RouteEventObserver>> = mutableMapOf()
 
     fun <R : Route> routeTo(route: R, rootView: ViewGroup, context: MainActivity) {
         latchedRoute = route
         val layout = route.layout(context)
         if (layout is RouteEventObserver) {
-            observers[route.toString()] = layout
+            observers[route.toString()] = WeakReference<RouteEventObserver>(layout)
         }
         val newScene = if (route is SceneRoute) {
             route.scene(rootView, layout)
@@ -108,7 +109,7 @@ object Navigation {
 
     fun exit(route: Route) {
         val routeKey = route.toString()
-        observers[routeKey]?.onExit()
+        observers[routeKey]?.get()?.onExit()
         observers.remove(routeKey)
     }
 }
