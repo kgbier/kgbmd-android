@@ -16,7 +16,7 @@ import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
-import com.kgbier.kgbmd.util.setTextStyle
+import com.kgbier.kgbmd.util.setTextStyleAttr
 import kotlin.math.max
 
 private const val HEIGHT = 48
@@ -61,7 +61,7 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
                     marginEnd = 12.dp()
                 }
 
-                setTextStyle(android.R.style.TextAppearance_Material_Subhead)
+                setTextStyleAttr(R.attr.textAppearanceSubtitle1)
                 inputType = InputType.TYPE_CLASS_TEXT
                 background = null
                 maxLines = 1

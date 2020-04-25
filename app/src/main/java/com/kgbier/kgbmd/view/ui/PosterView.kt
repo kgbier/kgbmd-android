@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
-import com.kgbier.kgbmd.util.setTextStyle
+import com.kgbier.kgbmd.util.setTextStyleAttr
 import com.kgbier.kgbmd.view.animation.ElevateCardViewStateListAnimator
 
 class PosterView(context: Context) : CardView(context) {
@@ -62,7 +62,7 @@ class PosterView(context: Context) : CardView(context) {
             textViewTitle = TextView(context).apply {
                 id = generateViewId()
                 visibility = View.INVISIBLE
-                setTextStyle(android.R.style.TextAppearance_Material_Caption)
+                setTextStyleAttr(R.attr.textAppearanceCaption)
                 setTextColor(Color.WHITE)
                 textAlignment = TextView.TEXT_ALIGNMENT_VIEW_END
             }.also(::addView)
@@ -79,6 +79,7 @@ class PosterView(context: Context) : CardView(context) {
 
             ratingStarView = RatingStarView(context).apply {
                 id = generateViewId()
+                textViewRating.setTextStyleAttr(R.attr.textAppearanceCaption)
                 textViewRating.setTextColor(Color.WHITE)
             }.also(::addView)
             ratingStarView.visibility = View.INVISIBLE

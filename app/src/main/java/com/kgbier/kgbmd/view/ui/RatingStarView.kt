@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.core.view.updateLayoutParams
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
-import com.kgbier.kgbmd.util.setTextStyle
+import com.kgbier.kgbmd.util.setTextStyleAttr
 
 class RatingStarView(context: Context) : LinearLayout(context) {
 
@@ -22,7 +22,7 @@ class RatingStarView(context: Context) : LinearLayout(context) {
 
         textViewRating = TextView(context).apply {
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-            setTextStyle(android.R.style.TextAppearance_Material_Caption)
+            setTextStyleAttr(R.attr.textAppearanceCaption)
             includeFontPadding = false
         }.also(::addView)
 
@@ -34,6 +34,8 @@ class RatingStarView(context: Context) : LinearLayout(context) {
             setImageResource(R.drawable.ic_star)
         }.also(::addView)
     }
+
+    override fun getBaseline(): Int = textViewRating.baseline
 
     override fun onAttachedToWindow() {
         imageViewStar.updateLayoutParams {

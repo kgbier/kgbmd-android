@@ -24,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.kgbier.kgbmd.*
 import com.kgbier.kgbmd.domain.model.MovieDetails
 import com.kgbier.kgbmd.util.*
+import com.kgbier.kgbmd.view.ui.HeroRatingView
 import com.kgbier.kgbmd.view.viewmodel.TitleDetailsViewModel
 
 @SuppressLint("ViewConstructor")
@@ -51,6 +52,7 @@ class DetailLayout(context: MainActivity) :
     val textViewDirectedBy: TextView
     val textViewWrittenBy: TextView
     val textViewSummary: TextView
+    val viewHeroRating: HeroRatingView
 
     init {
         updatePaddingRelative(start = 16.dp(), end = 16.dp(), top = 16.dp(), bottom = 16.dp())
@@ -85,7 +87,7 @@ class DetailLayout(context: MainActivity) :
 
             textViewTitle = TextView(context).apply {
                 layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                setTextStyle(R.style.TextAppearance_MaterialComponents_Headline5)
+                setTextStyleAttr(R.attr.textAppearanceHeadline4)
                 setTextColorAttr(android.R.attr.textColorPrimary)
             }.also(::addView)
 
@@ -100,7 +102,7 @@ class DetailLayout(context: MainActivity) :
                         LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
                             marginEnd = 8.dp()
                         }
-                    setTextStyle(R.style.TextAppearance_MaterialComponents_Overline)
+                    setTextStyleAttr(R.attr.textAppearanceOverline)
                     setTextColorAttr(android.R.attr.textColorPrimary)
                 }.also(::addView)
 
@@ -109,16 +111,24 @@ class DetailLayout(context: MainActivity) :
                         LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
                             marginEnd = 8.dp()
                         }
-                    setTextStyle(R.style.TextAppearance_MaterialComponents_Overline)
+                    setTextStyleAttr(R.attr.textAppearanceOverline)
                     setTextColorAttr(android.R.attr.textColorPrimary)
                 }.also(::addView)
 
                 textViewDuration = TextView(context).apply {
                     layoutParams =
                         LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-                    setTextStyle(R.style.TextAppearance_MaterialComponents_Overline)
+                    setTextStyleAttr(R.attr.textAppearanceOverline)
                     setTextColorAttr(android.R.attr.textColorPrimary)
                 }.also(::addView)
+            }.also(::addView)
+
+            viewHeroRating = HeroRatingView(context).apply {
+                layoutParams =
+                    LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+                        topMargin = 12.dp()
+                        gravity = Gravity.END
+                    }
             }.also(::addView)
 
             TextView(context).apply {
@@ -127,13 +137,13 @@ class DetailLayout(context: MainActivity) :
                         topMargin = 12.dp()
                     }
                 text = "Directed by"
-                setTextStyle(R.style.TextAppearance_MaterialComponents_Overline)
+                setTextStyleAttr(R.attr.textAppearanceOverline)
                 setTextColorAttr(android.R.attr.textColorSecondary)
             }.also(::addView)
 
             textViewDirectedBy = TextView(context).apply {
                 layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                setTextStyle(R.style.TextAppearance_MaterialComponents_Body2)
+                setTextStyleAttr(R.attr.textAppearanceBody2)
                 setTextColorAttr(android.R.attr.textColorPrimary)
             }.also(::addView)
 
@@ -143,13 +153,13 @@ class DetailLayout(context: MainActivity) :
                         topMargin = 12.dp()
                     }
                 text = "Written by"
-                setTextStyle(R.style.TextAppearance_MaterialComponents_Overline)
+                setTextStyleAttr(R.attr.textAppearanceOverline)
                 setTextColorAttr(android.R.attr.textColorSecondary)
             }.also(::addView)
 
             textViewWrittenBy = TextView(context).apply {
                 layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                setTextStyle(R.style.TextAppearance_MaterialComponents_Body2)
+                setTextStyleAttr(R.attr.textAppearanceBody2)
                 setTextColorAttr(android.R.attr.textColorPrimary)
             }.also(::addView)
 
@@ -159,13 +169,13 @@ class DetailLayout(context: MainActivity) :
                         topMargin = 12.dp()
                     }
                 text = "Summary"
-                setTextStyle(R.style.TextAppearance_MaterialComponents_Overline)
+                setTextStyleAttr(R.attr.textAppearanceOverline)
                 setTextColorAttr(android.R.attr.textColorSecondary)
             }.also(::addView)
 
             textViewSummary = TextView(context).apply {
                 layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                setTextStyle(R.style.TextAppearance_MaterialComponents_Body1)
+                setTextStyleAttr(R.attr.textAppearanceBody2)
                 setTextColorAttr(android.R.attr.textColorPrimary)
             }.also(::addView)
         }.also(::addView)
@@ -190,6 +200,8 @@ class DetailLayout(context: MainActivity) :
         textViewDirectedBy.text = directedBy
         textViewWrittenBy.text = writtenBy
         textViewSummary.text = description
+
+        viewHeroRating.setRating(details.rating!!.value, details.rating.count)
     }
 
     fun showError(message: String) {
