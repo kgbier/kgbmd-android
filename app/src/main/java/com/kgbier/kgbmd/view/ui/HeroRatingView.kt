@@ -123,8 +123,14 @@ open class HeroRatingView(context: Context) : ConstraintLayout(context) {
         }.applyTo(this)
     }
 
-    fun setRating(rating: String, count: String?) {
+    fun setRating(rating: String, bestRating: String?, count: String?) {
         textViewRating.text = rating
-        textViewRatingCount.text = count
+        ratingStarView.textViewRating.text = "/ ${bestRating ?: "10"}"
+        count?.let {
+            textViewRatingCount.visibility = View.VISIBLE
+            textViewRatingCount.text = it
+        } ?: run {
+            textViewRatingCount.visibility = View.GONE
+        }
     }
 }

@@ -26,7 +26,8 @@ class MovieListSearchViewModel(savedStateHandle: SavedStateHandle) : ViewModel()
 
     fun liveRatingResult(id: String, type: SearchSuggestionType?): LiveData<RatingResult>? =
         when (type) {
-            SearchSuggestionType.MOVIE -> ratingResults[id] ?: fetchNewLiveResult(id)
+            SearchSuggestionType.MOVIE,
+            SearchSuggestionType.TV_SHOW -> ratingResults[id] ?: fetchNewLiveResult(id)
             else -> null
         }
 

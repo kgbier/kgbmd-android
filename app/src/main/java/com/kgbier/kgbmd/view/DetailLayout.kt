@@ -1,6 +1,10 @@
 package com.kgbier.kgbmd.view
 
 import android.annotation.SuppressLint
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.text.style.TextAppearanceSpan
 import android.transition.Fade
 import android.transition.Transition
 import android.transition.TransitionSet
@@ -15,6 +19,8 @@ import android.widget.LinearLayout.HORIZONTAL
 import android.widget.LinearLayout.VERTICAL
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.toSpannable
 import androidx.core.view.setMargins
 import androidx.core.view.updatePadding
 import androidx.core.view.updatePaddingRelative
@@ -22,9 +28,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.kgbier.kgbmd.*
-import com.kgbier.kgbmd.domain.model.MovieDetails
+import com.kgbier.kgbmd.domain.model.TitleDetails
 import com.kgbier.kgbmd.util.*
 import com.kgbier.kgbmd.view.ui.HeroRatingView
+import com.kgbier.kgbmd.view.ui.TitledTextView
 import com.kgbier.kgbmd.view.viewmodel.TitleDetailsViewModel
 
 @SuppressLint("ViewConstructor")
@@ -46,12 +53,11 @@ class DetailLayout(context: MainActivity) :
     val layoutDetails: LinearLayout
 
     val textViewTitle: TextView
-    val textViewReleaseDate: TextView
-    val textViewContentRating: TextView
     val textViewDuration: TextView
-    val textViewDirectedBy: TextView
-    val textViewWrittenBy: TextView
-    val textViewSummary: TextView
+    val viewDirectedBy: TitledTextView
+    val viewWrittenBy: TitledTextView
+    val viewCreatedBy: TitledTextView
+    val viewSummary: TitledTextView
     val viewHeroRating: HeroRatingView
 
     init {
@@ -87,7 +93,7 @@ class DetailLayout(context: MainActivity) :
 
             textViewTitle = TextView(context).apply {
                 layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                setTextStyleAttr(R.attr.textAppearanceHeadline4)
+                setTextStyleAttr(R.attr.textAppearanceHeadline5)
                 setTextColorAttr(android.R.attr.textColorPrimary)
             }.also(::addView)
 
@@ -96,24 +102,6 @@ class DetailLayout(context: MainActivity) :
                 layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
                     topMargin = 12.dp()
                 }
-
-                textViewReleaseDate = TextView(context).apply {
-                    layoutParams =
-                        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-                            marginEnd = 8.dp()
-                        }
-                    setTextStyleAttr(R.attr.textAppearanceOverline)
-                    setTextColorAttr(android.R.attr.textColorPrimary)
-                }.also(::addView)
-
-                textViewContentRating = TextView(context).apply {
-                    layoutParams =
-                        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-                            marginEnd = 8.dp()
-                        }
-                    setTextStyleAttr(R.attr.textAppearanceOverline)
-                    setTextColorAttr(android.R.attr.textColorPrimary)
-                }.also(::addView)
 
                 textViewDuration = TextView(context).apply {
                     layoutParams =
@@ -131,52 +119,36 @@ class DetailLayout(context: MainActivity) :
                     }
             }.also(::addView)
 
-            TextView(context).apply {
+            viewDirectedBy = TitledTextView(context).apply {
                 layoutParams =
                     LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
                         topMargin = 12.dp()
                     }
-                text = "Directed by"
-                setTextStyleAttr(R.attr.textAppearanceOverline)
-                setTextColorAttr(android.R.attr.textColorSecondary)
+                textViewTitle.text = "Directed by"
             }.also(::addView)
 
-            textViewDirectedBy = TextView(context).apply {
-                layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                setTextStyleAttr(R.attr.textAppearanceBody2)
-                setTextColorAttr(android.R.attr.textColorPrimary)
-            }.also(::addView)
-
-            TextView(context).apply {
+            viewWrittenBy = TitledTextView(context).apply {
                 layoutParams =
                     LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
                         topMargin = 12.dp()
                     }
-                text = "Written by"
-                setTextStyleAttr(R.attr.textAppearanceOverline)
-                setTextColorAttr(android.R.attr.textColorSecondary)
+                textViewTitle.text = "Written by"
             }.also(::addView)
 
-            textViewWrittenBy = TextView(context).apply {
-                layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                setTextStyleAttr(R.attr.textAppearanceBody2)
-                setTextColorAttr(android.R.attr.textColorPrimary)
-            }.also(::addView)
-
-            TextView(context).apply {
+            viewCreatedBy = TitledTextView(context).apply {
                 layoutParams =
                     LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
                         topMargin = 12.dp()
                     }
-                text = "Summary"
-                setTextStyleAttr(R.attr.textAppearanceOverline)
-                setTextColorAttr(android.R.attr.textColorSecondary)
+                textViewTitle.text = "Created by"
             }.also(::addView)
 
-            textViewSummary = TextView(context).apply {
-                layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                setTextStyleAttr(R.attr.textAppearanceBody2)
-                setTextColorAttr(android.R.attr.textColorPrimary)
+            viewSummary = TitledTextView(context).apply {
+                layoutParams =
+                    LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
+                        topMargin = 12.dp()
+                    }
+                textViewTitle.text = "Summary"
             }.also(::addView)
         }.also(::addView)
 
@@ -189,19 +161,63 @@ class DetailLayout(context: MainActivity) :
         }.disposeBy(disposeBag)
     }
 
-    fun showDetails(details: MovieDetails) = with(details) {
+    fun showDetails(details: TitleDetails) = with(details) {
         layoutLoading.visibility = View.GONE
         layoutDetails.visibility = View.VISIBLE
 
-        textViewTitle.text = name
-        textViewReleaseDate.text = yearReleased
-        textViewContentRating.text = contentRating
-        textViewDuration.text = duration
-        textViewDirectedBy.text = directedBy
-        textViewWrittenBy.text = writtenBy
-        textViewSummary.text = description
+        val titleSequence = SpannableStringBuilder().apply {
+            append(name)
+            yearReleased?.let { yearReleased ->
+                val subtitleStyleSpan =
+                    TextAppearanceSpan(context, R.style.TextAppearance_MaterialComponents_Subtitle1)
+                val secondaryColorSpan = resolveAttribute(android.R.attr.textColorSecondary)?.let {
+                    ResourcesCompat.getColor(resources, it, context.theme)
+                }?.let {
+                    ForegroundColorSpan(it)
+                }
 
-        viewHeroRating.setRating(details.rating!!.value, details.rating.count)
+                append("\u00A0") // non-breaking space
+                setSpan(subtitleStyleSpan, length, length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                secondaryColorSpan?.let {
+                    setSpan(it, length, length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                }
+                append("($yearReleased)")
+            }
+        }.toSpannable()
+
+        textViewTitle.text = titleSequence
+        textViewDuration.text = duration
+        directedBy?.let {
+            viewDirectedBy.visibility = View.VISIBLE
+            viewDirectedBy.text = it
+        } ?: run {
+            viewDirectedBy.visibility = View.GONE
+        }
+        writtenBy?.let {
+            viewWrittenBy.visibility = View.VISIBLE
+            viewWrittenBy.text = it
+        } ?: run {
+            viewWrittenBy.visibility = View.GONE
+        }
+        createdBy?.let {
+            viewCreatedBy.visibility = View.VISIBLE
+            viewCreatedBy.text = it
+        } ?: run {
+            viewCreatedBy.visibility = View.GONE
+        }
+        description?.let {
+            viewSummary.visibility = View.VISIBLE
+            viewSummary.text = it
+        } ?: run {
+            viewSummary.visibility = View.GONE
+        }
+
+        details.rating?.let {
+            viewHeroRating.visibility = View.VISIBLE
+            viewHeroRating.setRating(it.value, it.best, it.count)
+        } ?: run {
+            viewHeroRating.visibility = View.GONE
+        }
     }
 
     fun showError(message: String) {

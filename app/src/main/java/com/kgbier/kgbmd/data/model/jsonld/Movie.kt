@@ -1,6 +1,6 @@
 package com.kgbier.kgbmd.data.model.jsonld
 
-import com.kgbier.kgbmd.domain.model.MovieDetails
+import com.kgbier.kgbmd.domain.model.TitleDetails
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -36,11 +36,11 @@ data class Movie(
     )
 }
 
-fun transformMovieResponse(movie: Movie): MovieDetails? = with(movie) {
-    MovieDetails(
+fun transformMovieResponse(movie: Movie): TitleDetails? = with(movie) {
+    TitleDetails(
         name,
-        image, // TODO
-        image, // TODO
+        null,
+        "",
         "",
         "",
         "",
@@ -48,9 +48,10 @@ fun transformMovieResponse(movie: Movie): MovieDetails? = with(movie) {
         description,
         datePublished, // TODO
         aggregateRating?.let {
-            MovieDetails.Rating(
-                it.ratingCount.toString(),
-                it.ratingValue
+            TitleDetails.Rating(
+                it.ratingValue,
+                "10",
+                it.ratingCount.toString()
             )
         },
         duration
