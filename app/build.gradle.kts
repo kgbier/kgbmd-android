@@ -92,4 +92,6 @@ dependencies {
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.0")
     debugImplementation("com.jakewharton.timber:timber:4.7.1")
+
+    testImplementation(kotlin("test-junit5"))
 }
