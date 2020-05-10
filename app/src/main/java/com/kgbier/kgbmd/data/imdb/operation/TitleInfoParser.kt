@@ -34,6 +34,8 @@ class TitleInfoParser(private val source: BufferedSource) {
 
         val SUMMARY_SECTION_SEEK by lazy { "class=\"plot_summary".encodeUtf8() }
         val SUMMARY_TEXT_SEEK by lazy { "class=\"summary_text".encodeUtf8() }
+        val SUMMARY_TEXT_START by lazy { "<div class=\"summary_text\">".encodeUtf8() }
+        val SUMMARY_TEXT_END by lazy { "</div>".encodeUtf8() }
         val SUMMARY_CREDIT_START by lazy { "<div class=\"credit_summary_item\">".encodeUtf8() }
         val SUMMARY_CREDIT_END by lazy { "</div>".encodeUtf8() }
     }
@@ -69,10 +71,10 @@ class TitleInfoParser(private val source: BufferedSource) {
         }
 
         val summaryText = skipOver(SUMMARY_SECTION_SEEK)?.let {
-            skipOver(SUMMARY_TEXT_SEEK)
+            findIndex(SUMMARY_TEXT_SEEK)
         }?.let {
-            getElementValue()
-        }
+            getBetween(SUMMARY_TEXT_START, SUMMARY_TEXT_END)
+        }?.let(::stripMarkup)
 
         val creditSummary = mutableListOf<TitleInfo.Credit>()
         while (findIndex(SUMMARY_CREDIT_START) != null) {
@@ -131,29 +133,33 @@ class TitleInfoParser(private val source: BufferedSource) {
         return source.readUtf8(upper - skipBy)
     }
 
-    private enum class SummaryState {
+    private enum class TagStrippingState {
         READING_STRING,
         EATING_TAG
     }
 
-    private fun parseCreditSummary(fragment: String): TitleInfo.Credit? {
+    private fun stripMarkup(fragment: String): String {
         val stringBuilder = StringBuilder()
-        var state = SummaryState.READING_STRING
+        var state = TagStrippingState.READING_STRING
 
         fragment.forEach { char ->
             when (state) {
-                SummaryState.READING_STRING -> when (char) {
-                    '<' -> state = SummaryState.EATING_TAG
+                TagStrippingState.READING_STRING -> when (char) {
+                    '<' -> state = TagStrippingState.EATING_TAG
                     '\n' -> Unit
                     else -> stringBuilder.append(char)
                 }
-                SummaryState.EATING_TAG -> when (char) {
-                    '>' -> state = SummaryState.READING_STRING
+                TagStrippingState.EATING_TAG -> when (char) {
+                    '>' -> state = TagStrippingState.READING_STRING
                 }
             }
         }
 
-        var str = stringBuilder.toString()
+        return stringBuilder.toString()
+    }
+
+    private fun parseCreditSummary(fragment: String): TitleInfo.Credit? {
+        var str = stripMarkup(fragment)
         val pipeIndex = str.indexOf("|")
         if (pipeIndex > 0) str = str.dropLast(str.length - pipeIndex)
         val typedList = str.split(":")
