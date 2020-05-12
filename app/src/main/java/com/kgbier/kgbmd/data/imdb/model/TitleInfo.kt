@@ -18,27 +18,22 @@ data class TitleInfo(
 
 fun transformTitleInfo(title: TitleInfo): TitleDetails? = with(title) {
     TitleDetails(
-        name.trim().trimTrailingNbsp(),
+        name,
         transformTitleDetailsPoster(posterUrl),
         "",
         "",
         credits.getCreditStringMatching("Direct"),
         credits.getCreditStringMatching("Write"),
         credits.getCreditStringMatching("Creat"),
-        description?.trim(),
+        description,
         yearReleased,
         transformTitleDetailsRating(ratingValue, ratingBest, ratingCount),
         duration
     )
 }
 
-private fun String.trimTrailingNbsp(): String {
-    if (indexOf("&n") == -1) return this
-    return replace("&nbsp;", "")
-}
-
 private fun List<TitleInfo.Credit>.getCreditStringMatching(partialType: String): String? =
-    find { it.type.contains(partialType) }?.names?.joinToString(", ") { it.trim() }
+    find { it.type.contains(partialType) }?.names?.joinToString(", ")
 
 fun transformTitleDetailsPoster(posterUrl: String?): TitleDetails.Poster? = posterUrl?.let {
     TitleDetails.Poster(it, it)

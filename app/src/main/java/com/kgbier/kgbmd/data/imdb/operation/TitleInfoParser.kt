@@ -50,7 +50,9 @@ class TitleInfoParser(private val source: BufferedSource) {
         skipOver(TITLE_SECTION_SEEK) ?: return null
         skipOver(H1) ?: return null
 
-        val titleName = getBetween(END_START_TAG, START_START_TAG) ?: return null
+        val titleName = getBetween(END_START_TAG, START_START_TAG)?.let {
+            it.trim().trimTrailingNbsp()
+        } ?: return null
 
         val titleYear = skipOver(TITLE_YEAR_SEEK)?.let {
             skipOver(ANCHOR)
@@ -74,7 +76,7 @@ class TitleInfoParser(private val source: BufferedSource) {
             findIndex(SUMMARY_TEXT_SEEK)
         }?.let {
             getBetween(SUMMARY_TEXT_START, SUMMARY_TEXT_END)
-        }?.let(::stripMarkup)
+        }?.let(::stripMarkup)?.trim()
 
         val creditSummary = mutableListOf<TitleInfo.Credit>()
         while (findIndex(SUMMARY_CREDIT_START) != null) {
@@ -139,6 +141,8 @@ class TitleInfoParser(private val source: BufferedSource) {
     }
 
     private fun stripMarkup(fragment: String): String {
+        if (fragment.indexOf("<") == -1) return fragment
+
         val stringBuilder = StringBuilder()
         var state = TagStrippingState.READING_STRING
 
@@ -146,7 +150,6 @@ class TitleInfoParser(private val source: BufferedSource) {
             when (state) {
                 TagStrippingState.READING_STRING -> when (char) {
                     '<' -> state = TagStrippingState.EATING_TAG
-                    '\n' -> Unit
                     else -> stringBuilder.append(char)
                 }
                 TagStrippingState.EATING_TAG -> when (char) {
@@ -165,6 +168,11 @@ class TitleInfoParser(private val source: BufferedSource) {
         val typedList = str.split(":")
         val creditList = typedList[1].split(",")
 
-        return TitleInfo.Credit(typedList.first(), creditList)
+        return TitleInfo.Credit(typedList.first().trim(), creditList.map { it.trim() })
+    }
+
+    private fun String.trimTrailingNbsp(): String {
+        if (indexOf("&n") == -1) return this
+        return replace("&nbsp;", "")
     }
 }
