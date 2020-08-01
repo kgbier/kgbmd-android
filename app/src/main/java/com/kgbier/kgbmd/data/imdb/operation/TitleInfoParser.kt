@@ -4,6 +4,7 @@ import com.kgbier.kgbmd.data.imdb.model.TitleInfo
 import okio.BufferedSource
 import okio.ByteString
 import okio.ByteString.Companion.encodeUtf8
+import org.jsoup.Jsoup
 
 class TitleInfoParser(private val source: BufferedSource) {
 
@@ -135,31 +136,7 @@ class TitleInfoParser(private val source: BufferedSource) {
         return source.readUtf8(upper - skipBy)
     }
 
-    private enum class TagStrippingState {
-        READING_STRING,
-        EATING_TAG
-    }
-
-    private fun stripMarkup(fragment: String): String {
-        if (fragment.indexOf("<") == -1) return fragment
-
-        val stringBuilder = StringBuilder()
-        var state = TagStrippingState.READING_STRING
-
-        fragment.forEach { char ->
-            when (state) {
-                TagStrippingState.READING_STRING -> when (char) {
-                    '<' -> state = TagStrippingState.EATING_TAG
-                    else -> stringBuilder.append(char)
-                }
-                TagStrippingState.EATING_TAG -> when (char) {
-                    '>' -> state = TagStrippingState.READING_STRING
-                }
-            }
-        }
-
-        return stringBuilder.toString()
-    }
+    private fun stripMarkup(fragment: String): String = Jsoup.parse(fragment).text()
 
     private fun parseCreditSummary(fragment: String): TitleInfo.Credit? {
         var str = stripMarkup(fragment)

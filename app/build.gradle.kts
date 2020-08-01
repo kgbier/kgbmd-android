@@ -90,6 +90,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:$glideVersion")
     kapt("com.github.bumptech.glide:compiler:$glideVersion")
 
+    implementation("org.jsoup:jsoup:1.13.1")
+
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.0")
     debugImplementation("com.jakewharton.timber:timber:4.7.1")
 
