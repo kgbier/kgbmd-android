@@ -1,0 +1,17 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+
+        <activity
+            android:name="com.kgbier.kgbmd.dev.DeveloperMenuActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name="com.kgbier.kgbmd.dev.ComponentsActivity"
+            android:exported="true"
+            android:parentActivityName="com.kgbier.kgbmd.dev.DeveloperMenuActivity"
+            android:theme="@style/AppTheme" />
+
+    </application>
+</manifest>
