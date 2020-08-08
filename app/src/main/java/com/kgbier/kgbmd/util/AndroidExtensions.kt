@@ -7,9 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import androidx.annotation.AttrRes
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 
 /**
  * `dp` to pixels
@@ -32,49 +29,6 @@ fun Context.resolveAttribute(@AttrRes resource: Int): Int? = with(TypedValue()) 
 }
 
 fun View.resolveAttribute(@AttrRes resource: Int): Int? = context.resolveAttribute(resource)
-
-/**
- * LiveData
- */
-
-inline class LiveDataDisposable(private val removeObserverClosure: () -> Unit) {
-    fun dispose() = removeObserverClosure.invoke()
-}
-
-fun <T> LiveData<T>.disposable(observer: Observer<T>) =
-    LiveDataDisposable { removeObserver(observer) }
-
-class LiveDataDisposeBag {
-    private var isDisposed = false
-    private val disposables = mutableListOf<LiveDataDisposable>()
-
-    fun add(liveDataDisposable: LiveDataDisposable) {
-        if (isDisposed) {
-            liveDataDisposable.dispose()
-        } else {
-            disposables.add(liveDataDisposable)
-        }
-    }
-
-    fun dispose() {
-        if (!isDisposed) {
-            isDisposed = true
-            disposables.forEach { it.dispose() }
-            disposables.clear()
-        }
-    }
-}
-
-inline fun <T> LiveData<T>.bind(
-    lifecycleOwner: LifecycleOwner,
-    crossinline observerClosure: (T) -> Unit
-): LiveDataDisposable {
-    val observer = Observer<T> { observerClosure.invoke(it) }
-    observe(lifecycleOwner, observer)
-    return disposable(observer)
-}
-
-fun LiveDataDisposable.disposeBy(disposeBag: LiveDataDisposeBag) = disposeBag.add(this)
 
 /**
  * System window inset
@@ -119,20 +73,18 @@ inline fun View.setOnUpdateWithWindowInsetsListener(
     requestApplyInsetsWhenAttached()
 }
 
-fun View.requestApplyInsetsWhenAttached() {
-    if (isAttachedToWindow) {
-        // We're already attached, just request as normal
-        requestApplyInsets()
-    } else {
-        // We're not attached to the hierarchy, add a listener to
-        // request when we are
-        addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-            override fun onViewAttachedToWindow(v: View) {
-                v.removeOnAttachStateChangeListener(this)
-                v.requestApplyInsets()
-            }
+fun View.requestApplyInsetsWhenAttached() = if (isAttachedToWindow) {
+    // We're already attached, just request as normal
+    requestApplyInsets()
+} else {
+    // We're not attached to the hierarchy, add a listener to
+    // request when we are
+    addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+        override fun onViewAttachedToWindow(view: View) {
+            view.removeOnAttachStateChangeListener(this)
+            view.requestApplyInsets()
+        }
 
-            override fun onViewDetachedFromWindow(v: View) = Unit
-        })
-    }
+        override fun onViewDetachedFromWindow(view: View) = Unit
+    })
 }
