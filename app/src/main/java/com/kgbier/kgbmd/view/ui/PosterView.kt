@@ -17,6 +17,7 @@ import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
 import com.kgbier.kgbmd.util.setTextStyleAttr
 import com.kgbier.kgbmd.view.animation.ElevateCardViewStateListAnimator
+import com.kgbier.kgbmd.view.drawable.ShimmerDrawable
 
 class PosterView(context: Context) : CardView(context) {
     private val imageViewPoster: ImageView
@@ -24,6 +25,8 @@ class PosterView(context: Context) : CardView(context) {
     private val textViewTitle: TextView
     private val viewCornerScrim: View
     private val ratingStarView: RatingStarView
+
+    private val shimmer = ShimmerDrawable()
 
     init {
         layoutParams = MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
@@ -41,7 +44,7 @@ class PosterView(context: Context) : CardView(context) {
             imageViewPoster = ImageView(context).apply {
                 id = generateViewId()
                 scaleType = ImageView.ScaleType.CENTER_CROP
-                setImageResource(R.drawable.shimmer)
+                setImageDrawable(shimmer)
             }.also(::addView)
 
             ConstraintSet().apply {
@@ -172,7 +175,8 @@ class PosterView(context: Context) : CardView(context) {
                 Glide.with(this)
                     .load(thumbnailUrl)
             )
-            .placeholder(R.drawable.shimmer)
+            .placeholder(shimmer)
             .into(imageViewPoster)
     }
 }
+
