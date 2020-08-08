@@ -30,7 +30,7 @@ class PosterView(context: Context) : CardView(context) {
 
     init {
         layoutParams = MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        radius = 4f.dp()
+        radius = 4f.dp
         resolveAttribute(R.attr.selectableItemBackground)?.let {
             foreground = ResourcesCompat.getDrawable(resources, it, context.theme)
             isClickable = true
@@ -95,15 +95,15 @@ class PosterView(context: Context) : CardView(context) {
                 setVisibility(textViewTitle.id, GONE)
                 constrainHeight(textViewTitle.id, WRAP_CONTENT)
 
-                setMargin(textViewTitle.id, START, 4.dp())
-                setMargin(textViewTitle.id, END, 4.dp())
-                setMargin(textViewTitle.id, BOTTOM, 4.dp())
+                setMargin(textViewTitle.id, START, 4.dp)
+                setMargin(textViewTitle.id, END, 4.dp)
+                setMargin(textViewTitle.id, BOTTOM, 4.dp)
 
                 connect(textViewTitle.id, START, PARENT_ID, START)
                 connect(textViewTitle.id, END, PARENT_ID, END)
                 connect(textViewTitle.id, BOTTOM, PARENT_ID, BOTTOM)
 
-                constrainHeight(spaceTitleTop.id, 8.dp())
+                constrainHeight(spaceTitleTop.id, 8.dp)
 
                 connect(spaceTitleTop.id, START, PARENT_ID, START)
                 connect(spaceTitleTop.id, END, PARENT_ID, END)
@@ -115,13 +115,13 @@ class PosterView(context: Context) : CardView(context) {
                 constrainWidth(ratingStarView.id, WRAP_CONTENT)
                 constrainHeight(ratingStarView.id, WRAP_CONTENT)
 
-                setMargin(ratingStarView.id, TOP, 4.dp())
-                setMargin(ratingStarView.id, END, 4.dp())
+                setMargin(ratingStarView.id, TOP, 4.dp)
+                setMargin(ratingStarView.id, END, 4.dp)
 
                 connect(ratingStarView.id, END, PARENT_ID, END)
                 connect(ratingStarView.id, TOP, PARENT_ID, TOP)
 
-                constrainWidth(spaceRatingStart.id, 24.dp())
+                constrainWidth(spaceRatingStart.id, 24.dp)
 
                 connect(spaceRatingStart.id, END, ratingStarView.id, START)
                 connect(spaceRatingStart.id, TOP, PARENT_ID, TOP)

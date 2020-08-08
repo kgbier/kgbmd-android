@@ -31,9 +31,9 @@ open class TiledPosterView(context: Context) : RecyclerView(context) {
 
         adapter = PosterLoadingAdapter()
         layoutManager = GridLayoutManager(context, estimateColumns())
-        setPadding(8.dp())
+        setPadding(8.dp)
         clipToPadding = false
-        this.addItemDecoration(InsetItemDecoration(8.dp()))
+        this.addItemDecoration(InsetItemDecoration(8.dp))
     }
 }
 

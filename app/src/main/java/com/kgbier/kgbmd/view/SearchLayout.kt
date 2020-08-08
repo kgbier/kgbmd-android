@@ -54,7 +54,7 @@ class SearchLayout(context: MainActivity) :
                 setOnClickListener { context.navigateBack() }
 
                 updateLayoutParams<LayoutParams> {
-                    updateMarginsRelative(end = 12.dp())
+                    updateMarginsRelative(end = 12.dp)
                 }
             }
 

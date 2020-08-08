@@ -21,8 +21,8 @@ class ShimmerDrawable : Drawable() {
     private val shimmerPaint by lazy {
         Paint().apply {
             LinearGradient(
-                64f.dp(), 0f, // line start
-                0f, 64f.dp(), // line end
+                64f.dp, 0f, // line start
+                0f, 64f.dp, // line end
                 intArrayOf(LIGHT, DARK, LIGHT),
                 null, // distribute evenly
                 Shader.TileMode.CLAMP
@@ -32,7 +32,7 @@ class ShimmerDrawable : Drawable() {
 
     private val translationMatrix = translationMatrix()
 
-    private val shimmerAnimator = ValueAnimator.ofFloat(-620f, 270f.dp()).apply {
+    private val shimmerAnimator = ValueAnimator.ofFloat(-620f, 270f.dp).apply {
         repeatMode = ValueAnimator.RESTART
         repeatCount = ValueAnimator.INFINITE
         duration = 1000

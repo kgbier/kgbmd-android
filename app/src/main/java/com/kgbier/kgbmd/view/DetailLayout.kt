@@ -61,7 +61,7 @@ class DetailLayout(context: MainActivity) :
     val viewHeroRating: HeroRatingView
 
     init {
-        updatePaddingRelative(start = 16.dp(), end = 16.dp(), top = 16.dp(), bottom = 16.dp())
+        updatePaddingRelative(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
 
         setOnUpdateWithWindowInsetsListener { _, insets, intendedPadding, _ ->
             updatePadding(
@@ -81,7 +81,7 @@ class DetailLayout(context: MainActivity) :
                     LayoutParams.WRAP_CONTENT,
                     Gravity.CENTER
                 ).apply {
-                    setMargins(16.dp())
+                    setMargins(16.dp)
                 }
             }.also(::addView)
         }.also(::addView)
@@ -100,7 +100,7 @@ class DetailLayout(context: MainActivity) :
             LinearLayout(context).apply {
                 orientation = HORIZONTAL
                 layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
-                    topMargin = 12.dp()
+                    topMargin = 12.dp
                 }
 
                 textViewDuration = TextView(context).apply {
@@ -114,7 +114,7 @@ class DetailLayout(context: MainActivity) :
             viewHeroRating = HeroRatingView(context).apply {
                 layoutParams =
                     LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-                        topMargin = 12.dp()
+                        topMargin = 12.dp
                         gravity = Gravity.END
                     }
             }.also(::addView)
@@ -122,7 +122,7 @@ class DetailLayout(context: MainActivity) :
             viewDirectedBy = TitledTextView(context).apply {
                 layoutParams =
                     LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
-                        topMargin = 12.dp()
+                        topMargin = 12.dp
                     }
                 textViewTitle.text = "Directed by"
             }.also(::addView)
@@ -130,7 +130,7 @@ class DetailLayout(context: MainActivity) :
             viewWrittenBy = TitledTextView(context).apply {
                 layoutParams =
                     LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
-                        topMargin = 12.dp()
+                        topMargin = 12.dp
                     }
                 textViewTitle.text = "Written by"
             }.also(::addView)
@@ -138,7 +138,7 @@ class DetailLayout(context: MainActivity) :
             viewCreatedBy = TitledTextView(context).apply {
                 layoutParams =
                     LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
-                        topMargin = 12.dp()
+                        topMargin = 12.dp
                     }
                 textViewTitle.text = "Created by"
             }.also(::addView)
@@ -146,7 +146,7 @@ class DetailLayout(context: MainActivity) :
             viewSummary = TitledTextView(context).apply {
                 layoutParams =
                     LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
-                        topMargin = 12.dp()
+                        topMargin = 12.dp
                     }
                 textViewTitle.text = "Summary"
             }.also(::addView)

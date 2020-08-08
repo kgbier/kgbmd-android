@@ -37,7 +37,7 @@ class ComponentsActivity : AppCompatActivity(R.layout.components_activity) {
 
         PosterView(this).apply {
             layoutParams = ViewGroup.MarginLayoutParams(
-                64.dp(), 92.dp()
+                64.dp, 92.dp
             )
         }.also(layout::addView)
     }

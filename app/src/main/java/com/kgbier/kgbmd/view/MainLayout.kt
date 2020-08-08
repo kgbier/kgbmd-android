@@ -37,11 +37,11 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
 
     private val movieListViewModel: MovieListViewModel by context.viewModels()
 
-    private val WINDOW_MARGIN = 16.dp()
-    private val GRID_MARGIN_TOP = (40 + 32).dp()
-    private val GRID_MARGIN_BOTTOM = 8.dp()
+    private val WINDOW_MARGIN = 16.dp
+    private val GRID_MARGIN_TOP = (40 + 32).dp
+    private val GRID_MARGIN_BOTTOM = 8.dp
 
-    private val PULLDOWN_END_DISTANCE = (64 + 64).dp()
+    private val PULLDOWN_END_DISTANCE = (64 + 64).dp
 
     init {
         // Setup Search Bar
@@ -90,9 +90,9 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
 
         tiledPosterGrid = TiledPosterGrid(context).apply {
             setPadding(
-                8.dp(),
+                8.dp,
                 GRID_MARGIN_TOP,
-                8.dp(),
+                8.dp,
                 GRID_MARGIN_BOTTOM
             )
 

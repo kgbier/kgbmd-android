@@ -15,39 +15,11 @@ import androidx.lifecycle.Observer
  * `dp` to pixels
  */
 
-fun Context.dp(displayPixels: Float): Float =
-    resources.displayMetrics.density * displayPixels
+val Int.dp: Int
+    get() = (Resources.getSystem().displayMetrics.density * this).toInt()
 
-fun Context.dp(displayPixels: Int): Int =
-    (resources.displayMetrics.density * displayPixels).toInt()
-
-fun View.dp(displayPixels: Float): Float =
-    resources.displayMetrics.density * displayPixels
-
-fun View.dp(displayPixels: Int): Int =
-    (resources.displayMetrics.density * displayPixels).toInt()
-
-fun Int.dp(): Int =
-    (Resources.getSystem().displayMetrics.density * this).toInt()
-
-fun Float.dp(): Float =
-    (Resources.getSystem().displayMetrics.density * this)
-
-/**
- * `sp` to pixels
- */
-
-fun Context.sp(scaledPixels: Float): Float =
-    resources.displayMetrics.scaledDensity * scaledPixels
-
-fun Context.sp(scaledPixels: Int): Int =
-    (resources.displayMetrics.scaledDensity * scaledPixels).toInt()
-
-fun View.sp(scaledPixels: Float): Float =
-    resources.displayMetrics.scaledDensity * scaledPixels
-
-fun View.sp(scaledPixels: Int): Int =
-    (resources.displayMetrics.scaledDensity * scaledPixels).toInt()
+val Float.dp: Float
+    get() = (Resources.getSystem().displayMetrics.density * this)
 
 /**
  * Resource attribute (attr) resolution

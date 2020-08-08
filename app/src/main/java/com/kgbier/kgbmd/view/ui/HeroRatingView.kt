@@ -70,7 +70,7 @@ open class HeroRatingView(context: Context) : ConstraintLayout(context) {
         ConstraintSet().apply {
             constrainWidth(ratingStarView.id, WRAP_CONTENT)
             constrainHeight(ratingStarView.id, WRAP_CONTENT)
-            setMargin(ratingStarView.id, START, 4.dp())
+            setMargin(ratingStarView.id, START, 4.dp)
 
             connect(
                 ratingStarView.id,

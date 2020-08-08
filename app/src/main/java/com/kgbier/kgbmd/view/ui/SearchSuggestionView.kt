@@ -27,7 +27,7 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
     init {
 
-        setPadding(16.dp(), 8.dp(), 16.dp(), 8.dp())
+        setPadding(16.dp, 8.dp, 16.dp, 8.dp)
 
         resolveAttribute(R.attr.selectableItemBackground)?.let {
             background = ResourcesCompat.getDrawable(resources, it, context.theme)
@@ -41,8 +41,8 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
         }.also(::addView)
 
         ConstraintSet().apply {
-            constrainWidth(imageViewThumbnail.id, 40.dp())
-            constrainHeight(imageViewThumbnail.id, 58.dp())
+            constrainWidth(imageViewThumbnail.id, 40.dp)
+            constrainHeight(imageViewThumbnail.id, 58.dp)
 
             connect(
                 imageViewThumbnail.id,
@@ -91,7 +91,7 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                             LayoutParams.WRAP_CONTENT,
                             LayoutParams.WRAP_CONTENT
                         ).apply {
-                            marginStart = 4.dp()
+                            marginStart = 4.dp
                         }
                     setTextStyleAttr(R.attr.textAppearanceCaption)
                     setTextColorAttr(android.R.attr.textColorSecondary)
@@ -147,9 +147,9 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
             constrainWidth(layoutTitleText.id, 0)
             constrainHeight(layoutTitleText.id, WRAP_CONTENT)
 
-            setMargin(layoutTitleText.id, START, 16.dp())
-            setMargin(layoutTitleText.id, END, 8.dp())
-            setGoneMargin(layoutTitleText.id, START, 56.dp())
+            setMargin(layoutTitleText.id, START, 16.dp)
+            setMargin(layoutTitleText.id, END, 8.dp)
+            setGoneMargin(layoutTitleText.id, START, 56.dp)
             setGoneMargin(layoutTitleText.id, END, 0)
 
             connect(

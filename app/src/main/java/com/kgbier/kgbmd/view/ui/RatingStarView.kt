@@ -30,7 +30,7 @@ class RatingStarView(context: Context) : LinearLayout(context) {
             layoutParams = LayoutParams(
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.MATCH_PARENT
-            ).apply { marginStart = 2.dp() }
+            ).apply { marginStart = 2.dp }
             setImageResource(R.drawable.ic_star)
         }.also(::addView)
     }

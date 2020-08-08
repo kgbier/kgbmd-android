@@ -29,14 +29,14 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
     val editTextSearch: EditText
     val imageViewKeyIcon: ImageView
 
-    private val targetMinimumHeight = HEIGHT.dp()
+    private val targetMinimumHeight = HEIGHT.dp
 
     init {
         id = R.id.searchBarView
         isTransitionGroup = true
 
         radius = targetMinimumHeight / 2f
-        cardElevation = ELEVATION.dp()
+        cardElevation = ELEVATION.dp
 
         layout = LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -47,7 +47,7 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
 
             imageViewKeyIcon = makeKeyIcon(context).apply {
                 updateLayoutParams<LayoutParams> {
-                    updateMarginsRelative(end = 4.dp())
+                    updateMarginsRelative(end = 4.dp)
                 }
             }.also(::addView)
 
@@ -58,7 +58,7 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
                     LayoutParams.MATCH_PARENT,
                     1f
                 ).apply {
-                    marginEnd = 12.dp()
+                    marginEnd = 12.dp
                 }
 
                 setTextStyleAttr(R.attr.textAppearanceSubtitle1)
@@ -84,15 +84,15 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
             if (_barAddons != null) throw IllegalStateException("Addons can only be set once.")
 
             editTextSearch.updateLayoutParams<MarginLayoutParams> {
-                updateMarginsRelative(end = 4.dp())
+                updateMarginsRelative(end = 4.dp)
             }
             value.forEach {
                 View(context).apply {
                     layoutParams = MarginLayoutParams(
-                        1.dp(),
+                        1.dp,
                         MATCH_PARENT
                     ).apply {
-                        updateMarginsRelative(top = 8.dp(), bottom = 8.dp())
+                        updateMarginsRelative(top = 8.dp, bottom = 8.dp)
                         resolveAttribute(android.R.attr.colorForeground)?.let(::setBackgroundResource)
                     }
                 }.also(layout::addView)
@@ -107,7 +107,7 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        scrollBehaviourTopTranslationLimit = (measuredHeight + marginTop + 8.dp()) * -1f
+        scrollBehaviourTopTranslationLimit = (measuredHeight + marginTop + 8.dp) * -1f
     }
 
     fun scrollBehaviourResetPosition() {
