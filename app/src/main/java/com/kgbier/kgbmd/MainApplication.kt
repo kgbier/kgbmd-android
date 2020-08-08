@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 
 class MainApplication : Application() {
+
     companion object {
         private var mainApplicationContext: Context? = null
         val applicationContext: Context by lazy { mainApplicationContext!! }
@@ -11,10 +12,14 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        mainApplicationContext = this.applicationContext
+        mainApplicationContext = applicationContext
 
         if (BuildConfig.DEBUG) {
             plantTimberTask()
+        }
+
+        if (BuildConfig.INTERNAL) {
+            developerMenuNotificationTask(this)
         }
     }
 }
