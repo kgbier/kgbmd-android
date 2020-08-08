@@ -3,4 +3,6 @@
     <item name="searchBarView" type="id" />
     <item name="searchResultsView" type="id" />
     <item name="tilePosterView" type="id" />
+
+    <item name="detailLayout" type="id" />
 </resources>

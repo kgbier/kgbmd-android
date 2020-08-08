@@ -6,6 +6,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.TextAppearanceSpan
 import android.transition.Fade
+import android.transition.Slide
 import android.transition.Transition
 import android.transition.TransitionSet
 import android.view.Gravity
@@ -61,6 +62,8 @@ class DetailLayout(context: MainActivity) :
     val viewHeroRating: HeroRatingView
 
     init {
+        id = R.id.detailLayout
+
         updatePaddingRelative(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
 
         setOnUpdateWithWindowInsetsListener { _, insets, intendedPadding, _ ->
@@ -238,6 +241,13 @@ class DetailLayout(context: MainActivity) :
 
 class DetailScreenTransitionRoute : TransitionRoute {
     override fun transition(): Transition = TransitionSet().apply {
-        Fade().setInterpolator(DecelerateInterpolator()).also { addTransition(it) }
+        Fade()
+            .setInterpolator(DecelerateInterpolator())
+            .also { addTransition(it) }
+
+        Slide()
+            .addTarget(R.id.detailLayout)
+            .setInterpolator(DecelerateInterpolator())
+            .also { addTransition(it) }
     }
 }

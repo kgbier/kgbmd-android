@@ -2,11 +2,13 @@ package com.kgbier.kgbmd.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.transition.*
+import android.transition.Scene
+import android.transition.Slide
+import android.transition.Transition
+import android.transition.TransitionSet
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.activity.viewModels
@@ -17,7 +19,6 @@ import com.kgbier.kgbmd.*
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
 import com.kgbier.kgbmd.util.setOnUpdateWithWindowInsetsListener
-import com.kgbier.kgbmd.view.animation.CornerRadiusTransition
 import com.kgbier.kgbmd.view.component.SearchBar
 import com.kgbier.kgbmd.view.component.SearchResults
 import com.kgbier.kgbmd.view.viewmodel.MovieListSearchViewModel
@@ -96,18 +97,9 @@ class SearchScreenSceneRoute : SceneRoute {
 
 class SearchScreenTransitionRoute : TransitionRoute {
     override fun transition(): Transition = TransitionSet().apply {
-        ChangeBounds()
-            .addTarget(R.id.searchBarView)
-            .setInterpolator(DecelerateInterpolator())
-            .also { addTransition(it) }
-
-        CornerRadiusTransition()
-            .addTarget(R.id.searchBarView)
-            .setInterpolator(DecelerateInterpolator())
-            .also { addTransition(it) }
-
         Slide()
-            .addTarget(R.id.tilePosterView)
-            .setInterpolator(AccelerateInterpolator()).also { addTransition(it) }
+            .addTarget(R.id.searchResultsView)
+            .setInterpolator(AccelerateInterpolator())
+            .also { addTransition(it) }
     }
 }

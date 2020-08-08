@@ -129,6 +129,11 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
 
 class MainPosterScreenTransitionRoute : TransitionRoute {
     override fun transition(): Transition = TransitionSet().apply {
+        Slide()
+            .addTarget(R.id.tilePosterView)
+            .setInterpolator(DecelerateInterpolator())
+            .also { addTransition(it) }
+
         ChangeBounds()
             .addTarget(R.id.searchBarView)
             .setInterpolator(DecelerateInterpolator())
@@ -138,9 +143,5 @@ class MainPosterScreenTransitionRoute : TransitionRoute {
             .addTarget(R.id.searchBarView)
             .setInterpolator(DecelerateInterpolator())
             .also { addTransition(it) }
-
-        Slide()
-            .addTarget(R.id.tilePosterView)
-            .setInterpolator(DecelerateInterpolator()).also { addTransition(it) }
     }
 }

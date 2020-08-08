@@ -70,8 +70,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
     }
 
     private fun showScreen(route: Route) {
+        Navigation.routeTo(route, currentRoute, rootView, this)
         currentRoute = route
-        Navigation.routeTo(route, rootView, this)
     }
 
     override fun onBackPressed() = navigateBack()

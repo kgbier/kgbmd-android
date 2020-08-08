@@ -4,6 +4,7 @@ import android.os.Parcelable
 import android.transition.Scene
 import android.transition.Transition
 import android.transition.TransitionManager
+import android.transition.TransitionSet
 import android.view.View
 import android.view.ViewGroup
 import com.kgbier.kgbmd.view.*
@@ -89,7 +90,7 @@ object Navigation {
 
     private val observers: MutableMap<String, WeakReference<RouteEventObserver>> = mutableMapOf()
 
-    fun <R : Route> routeTo(route: R, rootView: ViewGroup, context: MainActivity) {
+    fun routeTo(route: Route, oldRoute: Route?, rootView: ViewGroup, context: MainActivity) {
         latchedRoute = route
         val layout = route.layout(context)
         if (layout is RouteEventObserver) {
@@ -100,8 +101,17 @@ object Navigation {
         } else {
             Scene(rootView, layout)
         }
-        if (route is TransitionRoute) {
-            TransitionManager.go(newScene, route.transition())
+        if (route is TransitionRoute || oldRoute is TransitionRoute) {
+            val ensemble = TransitionSet().apply {
+                if (oldRoute is TransitionRoute) {
+                    addTransition(oldRoute.transition())
+                }
+                if (route is TransitionRoute) {
+                    addTransition(route.transition())
+                }
+            }
+
+            TransitionManager.go(newScene, ensemble)
         } else {
             newScene.enter()
         }
