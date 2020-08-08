@@ -1,8 +1,17 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+}
+
+tasks.withType(KotlinCompile::class).all {
+    kotlinOptions {
+        // Enable Experimental Inline Classes support
+        freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
+    }
 }
 
 android {

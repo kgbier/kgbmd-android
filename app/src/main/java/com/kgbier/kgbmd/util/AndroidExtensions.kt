@@ -37,18 +37,31 @@ fun View.resolveAttribute(@AttrRes resource: Int): Int? = context.resolveAttribu
  * LiveData
  */
 
-typealias LiveDataDisposable = () -> Unit
+inline class LiveDataDisposable(private val removeObserverClosure: () -> Unit) {
+    fun dispose() = removeObserverClosure.invoke()
+}
+
+fun <T> LiveData<T>.disposable(observer: Observer<T>) =
+    LiveDataDisposable { removeObserver(observer) }
 
 class LiveDataDisposeBag {
+    private var isDisposed = false
     private val disposables = mutableListOf<LiveDataDisposable>()
 
     fun add(liveDataDisposable: LiveDataDisposable) {
-        disposables.add(liveDataDisposable)
+        if (isDisposed) {
+            liveDataDisposable.dispose()
+        } else {
+            disposables.add(liveDataDisposable)
+        }
     }
 
     fun dispose() {
-        disposables.forEach { it.invoke() }
-        disposables.clear()
+        if (!isDisposed) {
+            isDisposed = true
+            disposables.forEach { it.dispose() }
+            disposables.clear()
+        }
     }
 }
 
@@ -58,7 +71,7 @@ inline fun <T> LiveData<T>.bind(
 ): LiveDataDisposable {
     val observer = Observer<T> { observerClosure.invoke(it) }
     observe(lifecycleOwner, observer)
-    return { removeObserver(observer) }
+    return disposable(observer)
 }
 
 fun LiveDataDisposable.disposeBy(disposeBag: LiveDataDisposeBag) = disposeBag.add(this)
