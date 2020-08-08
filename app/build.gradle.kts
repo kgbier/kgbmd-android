@@ -64,7 +64,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(kotlin("stdlib-jdk7"))
 
-    implementation("androidx.appcompat:appcompat:1.1.0")
+    implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.core:core-ktx:1.3.1")
     implementation("androidx.activity:activity-ktx:1.1.0")
 
@@ -84,9 +84,9 @@ dependencies {
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
-    implementation("com.google.android.material:material:1.1.0")
+    implementation("com.google.android.material:material:1.2.0")
 
-    val okhttpVersion = "4.7.2"
+    val okhttpVersion = "4.8.0"
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     debugImplementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
 
@@ -101,7 +101,7 @@ dependencies {
 
     implementation("org.jsoup:jsoup:1.13.1")
 
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.0")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.4")
     debugImplementation("com.jakewharton.timber:timber:4.7.1")
 
     testImplementation(kotlin("test-junit5"))
