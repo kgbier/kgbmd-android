@@ -32,7 +32,7 @@ class ShimmerDrawable : Drawable() {
 
     private val translationMatrix = translationMatrix()
 
-    private val shimmerAnimator = ValueAnimator.ofFloat(-620f, 270f.dp).apply {
+    private val shimmerAnimator = ValueAnimator.ofFloat((-360f).dp, 270f.dp).apply {
         repeatMode = ValueAnimator.RESTART
         repeatCount = ValueAnimator.INFINITE
         duration = 1000
