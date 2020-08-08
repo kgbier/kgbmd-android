@@ -1,10 +1,10 @@
 package com.kgbier.kgbmd
 
 import android.os.Parcelable
-import android.transition.Scene
-import android.transition.Transition
-import android.transition.TransitionManager
-import android.transition.TransitionSet
+import androidx.transition.Scene
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
+import androidx.transition.TransitionSet
 import android.view.View
 import android.view.ViewGroup
 import com.kgbier.kgbmd.view.*

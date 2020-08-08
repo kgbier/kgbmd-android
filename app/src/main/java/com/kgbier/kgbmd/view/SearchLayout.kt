@@ -2,10 +2,10 @@ package com.kgbier.kgbmd.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.transition.Scene
-import android.transition.Slide
-import android.transition.Transition
-import android.transition.TransitionSet
+import androidx.transition.Scene
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionSet
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator

@@ -2,8 +2,8 @@ package com.kgbier.kgbmd.view.animation
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
-import android.transition.Transition
-import android.transition.TransitionValues
+import androidx.transition.Transition
+import androidx.transition.TransitionValues
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 

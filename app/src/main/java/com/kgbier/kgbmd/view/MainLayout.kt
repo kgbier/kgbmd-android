@@ -1,10 +1,10 @@
 package com.kgbier.kgbmd.view
 
 import android.annotation.SuppressLint
-import android.transition.ChangeBounds
-import android.transition.Slide
-import android.transition.Transition
-import android.transition.TransitionSet
+import androidx.transition.ChangeBounds
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionSet
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.activity.viewModels
