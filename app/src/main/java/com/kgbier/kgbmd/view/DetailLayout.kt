@@ -5,10 +5,6 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.TextAppearanceSpan
-import androidx.transition.Fade
-import androidx.transition.Slide
-import androidx.transition.Transition
-import androidx.transition.TransitionSet
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -16,17 +12,23 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.LinearLayout.HORIZONTAL
-import android.widget.LinearLayout.VERTICAL
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.toSpannable
 import androidx.core.view.setMargins
+import androidx.core.view.updateMarginsRelative
 import androidx.core.view.updatePadding
 import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.transition.Fade
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionSet
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.kgbier.kgbmd.*
 import com.kgbier.kgbmd.domain.model.TitleDetails
@@ -38,7 +40,7 @@ import com.kgbier.kgbmd.view.viewmodel.TitleDetailsViewModel
 @SuppressLint("ViewConstructor")
 class DetailLayout(context: MainActivity) :
     RouteReceiver<Route.DetailScreen> by Navigation.routeReceiver(),
-    FrameLayout(context) {
+    LinearLayout(context) {
 
     private val disposeBag = LiveDataDisposeBag()
 
@@ -64,22 +66,26 @@ class DetailLayout(context: MainActivity) :
     init {
         id = R.id.detailLayout
 
-        updatePaddingRelative(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
+        orientation = VERTICAL
 
-        setOnUpdateWithWindowInsetsListener { _, insets, intendedPadding, _ ->
-            updatePadding(
-                top = intendedPadding.top + insets.systemWindowInsetTop,
-                bottom = intendedPadding.bottom + insets.systemWindowInsetBottom
-            )
-            insets.consumeSystemWindowInsets()
-        }
+        MaterialToolbar(context).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)//, resolveDimensionAttribute(android.R.attr.actionBarSize) ?: 0)
+
+            setOnUpdateWithWindowInsetsListener { _, insets, _, _ ->
+                (this.layoutParams as MarginLayoutParams).updateMarginsRelative(top = insets.systemWindowInsetTop)
+                insets.consumeSystemWindowInsets()
+            }
+
+            setNavigationIcon(R.drawable.ic_close)
+            setNavigationOnClickListener { context.navigateBack() }
+        }.also(::addView)
 
         layoutLoading = FrameLayout(context).apply {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
             visibility = View.VISIBLE
 
             ProgressBar(context).apply {
-                layoutParams = LayoutParams(
+                layoutParams = FrameLayout.LayoutParams(
                     LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT,
                     Gravity.CENTER
@@ -90,8 +96,17 @@ class DetailLayout(context: MainActivity) :
         }.also(::addView)
 
         layoutDetails = LinearLayout(context).apply {
+            updatePaddingRelative(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
+
+            setOnUpdateWithWindowInsetsListener { _, insets, intendedPadding, _ ->
+                updatePadding(
+                    bottom = intendedPadding.bottom + insets.systemWindowInsetBottom
+                )
+                insets.consumeSystemWindowInsets()
+            }
+
             orientation = VERTICAL
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
             visibility = View.GONE
 
             textViewTitle = TextView(context).apply {
@@ -116,9 +131,11 @@ class DetailLayout(context: MainActivity) :
 
             viewHeroRating = HeroRatingView(context).apply {
                 layoutParams =
-                    LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+                    ConstraintLayout.LayoutParams(
+                        LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT
+                    ).apply {
                         topMargin = 12.dp
-                        gravity = Gravity.END
                     }
             }.also(::addView)
 

@@ -3,6 +3,7 @@ package com.kgbier.kgbmd.view.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kgbier.kgbmd.Navigation
 import com.kgbier.kgbmd.domain.model.TitleDetails
 import com.kgbier.kgbmd.domain.repo.MediaInfoRepo
 import kotlinx.coroutines.launch
