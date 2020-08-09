@@ -22,6 +22,14 @@ val Float.dp: Float
  * Resource attribute (attr) resolution
  */
 
+fun Context.resolveDimensionAttribute(@AttrRes resource: Int): Int? =
+    resolveAttribute(resource)?.let {
+        resources.getDimensionPixelSize(it)
+    }
+
+fun View.resolveDimensionAttribute(@AttrRes resource: Int): Int? =
+    context.resolveDimensionAttribute(resource)
+
 fun Context.resolveAttribute(@AttrRes resource: Int): Int? = with(TypedValue()) {
     if (theme.resolveAttribute(resource, this, true)) {
         return resourceId

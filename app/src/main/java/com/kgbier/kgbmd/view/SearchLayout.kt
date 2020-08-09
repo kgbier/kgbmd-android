@@ -18,6 +18,7 @@ import androidx.core.view.updateMarginsRelative
 import com.kgbier.kgbmd.*
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
+import com.kgbier.kgbmd.util.resolveDimensionAttribute
 import com.kgbier.kgbmd.util.setOnUpdateWithWindowInsetsListener
 import com.kgbier.kgbmd.view.component.SearchBar
 import com.kgbier.kgbmd.view.component.SearchResults
@@ -44,7 +45,7 @@ class SearchLayout(context: MainActivity) :
         searchBar = SearchBar(context).apply {
             layoutParams = LayoutParams(
                 LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT
+                resolveDimensionAttribute(android.R.attr.actionBarSize) ?: LayoutParams.WRAP_CONTENT
             )
 
             radius = 0f

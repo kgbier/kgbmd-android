@@ -1,10 +1,6 @@
 package com.kgbier.kgbmd.view
 
 import android.annotation.SuppressLint
-import androidx.transition.ChangeBounds
-import androidx.transition.Slide
-import androidx.transition.Transition
-import androidx.transition.TransitionSet
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -13,6 +9,10 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.transition.ChangeBounds
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionSet
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.TransitionRoute
@@ -22,6 +22,7 @@ import com.kgbier.kgbmd.view.animation.CornerRadiusTransition
 import com.kgbier.kgbmd.view.behaviour.ScrollBehaviour
 import com.kgbier.kgbmd.view.component.ReadOnlySearchBar
 import com.kgbier.kgbmd.view.component.TiledPosterGrid
+import com.kgbier.kgbmd.view.ui.SearchBarView
 import com.kgbier.kgbmd.view.viewmodel.MovieListViewModel
 
 @SuppressLint("ViewConstructor")
@@ -47,11 +48,11 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
         // Setup Search Bar
         readOnlySearchBar = ReadOnlySearchBar(context).apply {
             layoutParams =
-                LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
+                LayoutParams(LayoutParams.MATCH_PARENT, 48.dp).apply {
                     marginStart = WINDOW_MARGIN
                     marginEnd = WINDOW_MARGIN
                     topMargin = WINDOW_MARGIN
-                    behavior = ScrollBehaviour(context)
+                    behavior = ScrollBehaviour<SearchBarView>()
                 }
 
             setOnUpdateWithWindowInsetsListener { _, insets, _, intendedMargin ->

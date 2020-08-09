@@ -17,25 +17,22 @@ import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
 import com.kgbier.kgbmd.util.setTextStyleAttr
+import com.kgbier.kgbmd.view.behaviour.ScrollBehaviour
 import kotlin.math.max
 
-private const val HEIGHT = 48
 private const val ELEVATION = 4f
 
 @SuppressLint("ViewConstructor")
-open class SearchBarView(context: MainActivity) : CardView(context) {
+open class SearchBarView(context: MainActivity) : CardView(context), ScrollBehaviour.Child {
 
     val layout: LinearLayout
     val editTextSearch: EditText
     val imageViewKeyIcon: ImageView
 
-    private val targetMinimumHeight = HEIGHT.dp
-
     init {
         id = R.id.searchBarView
         isTransitionGroup = true
 
-        radius = targetMinimumHeight / 2f
         cardElevation = ELEVATION.dp
 
         layout = LinearLayout(context).apply {
@@ -71,8 +68,8 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
 
     fun makeKeyIcon(context: MainActivity) = ImageView(context).apply {
         layoutParams = LayoutParams(
-            targetMinimumHeight,
-            targetMinimumHeight
+            48.dp,
+            48.dp
         )
         scaleType = ImageView.ScaleType.CENTER_INSIDE
         setImageResource(R.drawable.ic_search)
@@ -105,16 +102,25 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
     private var isAnimating = false
     private var scrollBehaviourTopTranslationLimit = 0f
 
+    open fun updateCornerRadius(layoutHeight: Int) {
+        radius = 0f
+    }
+
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         scrollBehaviourTopTranslationLimit = (measuredHeight + marginTop + 8.dp) * -1f
+        updateCornerRadius(measuredHeight)
+        imageViewKeyIcon.updateLayoutParams<LinearLayout.LayoutParams> {
+            height = measuredHeight
+            width = measuredHeight
+        }
     }
 
-    fun scrollBehaviourResetPosition() {
+    override fun scrollBehaviourResetPosition() {
         translationY = 0f
     }
 
-    fun scrollBehaviourScrollDown(distance: Int) {
+    override fun scrollBehaviourScrollDown(distance: Int) {
         animate().cancel()
         isAnimating = false
         translationY = max(scrollBehaviourTopTranslationLimit, translationY - distance)
@@ -122,17 +128,13 @@ open class SearchBarView(context: MainActivity) : CardView(context) {
 
     private val interpolator by lazy { DecelerateInterpolator() }
     private val animatorEndAction by lazy { Runnable { isAnimating = false } }
-    fun scrollBehaviourScrollUp() {
+    override fun scrollBehaviourScrollUp() {
         if (isAnimating) return
 
         isAnimating = true
-        animate().setInterpolator(interpolator).translationY(0f).withEndAction(animatorEndAction)
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(
-            widthMeasureSpec,
-            MeasureSpec.makeMeasureSpec(targetMinimumHeight, MeasureSpec.EXACTLY)
-        )
+        animate()
+            .setInterpolator(interpolator)
+            .translationY(0f)
+            .withEndAction(animatorEndAction)
     }
 }

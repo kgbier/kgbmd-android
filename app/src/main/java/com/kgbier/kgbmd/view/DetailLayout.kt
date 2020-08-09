@@ -69,7 +69,7 @@ class DetailLayout(context: MainActivity) :
         orientation = VERTICAL
 
         MaterialToolbar(context).apply {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)//, resolveDimensionAttribute(android.R.attr.actionBarSize) ?: 0)
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
             setOnUpdateWithWindowInsetsListener { _, insets, _, _ ->
                 (this.layoutParams as MarginLayoutParams).updateMarginsRelative(top = insets.systemWindowInsetTop)

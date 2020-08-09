@@ -1,25 +1,29 @@
 package com.kgbier.kgbmd.view.behaviour
 
-import android.content.Context
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.kgbier.kgbmd.view.ui.SearchBarView
 
-class ScrollBehaviour(private val context: Context) :
-    CoordinatorLayout.Behavior<SearchBarView>() {
+class ScrollBehaviour<T> : CoordinatorLayout.Behavior<T>()
+        where T : View, T : ScrollBehaviour.Child {
+
+    interface Child {
+        fun scrollBehaviourResetPosition()
+        fun scrollBehaviourScrollDown(distance: Int)
+        fun scrollBehaviourScrollUp()
+    }
 
     override fun layoutDependsOn(
         parent: CoordinatorLayout,
-        child: SearchBarView,
+        child: T,
         dependency: View
     ): Boolean =
         dependency is SwipeRefreshLayout
 
     override fun onStartNestedScroll(
         coordinatorLayout: CoordinatorLayout,
-        child: SearchBarView,
+        child: T,
         directTargetChild: View,
         target: View,
         axes: Int,
@@ -28,7 +32,7 @@ class ScrollBehaviour(private val context: Context) :
 
     override fun onNestedScroll(
         coordinatorLayout: CoordinatorLayout,
-        child: SearchBarView,
+        child: T,
         target: View,
         dxConsumed: Int,
         dyConsumed: Int,

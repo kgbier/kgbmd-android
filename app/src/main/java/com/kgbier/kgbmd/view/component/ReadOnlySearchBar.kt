@@ -2,6 +2,7 @@ package com.kgbier.kgbmd.view.component
 
 import android.annotation.SuppressLint
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.Route
@@ -22,12 +23,16 @@ class ReadOnlySearchBar(context: MainActivity) : SearchBarView(context) {
         editTextSearch.movementMethod = null
         editTextSearch.keyListener = null
 
-        foreground =
-            resolveAttribute(R.attr.selectableItemBackground)?.let { context.getDrawable(it) }
+        foreground = resolveAttribute(R.attr.selectableItemBackground)
+            ?.let { ContextCompat.getDrawable(context, it) }
         stateListAnimator = ElevateCardViewStateListAnimator(context, 4f.dp, 8f.dp)
 
         setOnClickListener {
             context.navigate(Route.SearchScreen)
         }
+    }
+
+    override fun updateCornerRadius(layoutHeight: Int) {
+        radius = layoutHeight / 2f
     }
 }
