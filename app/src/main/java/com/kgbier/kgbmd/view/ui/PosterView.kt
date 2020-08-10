@@ -8,14 +8,11 @@ import android.widget.Space
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.constraintlayout.widget.ConstraintSet.*
+import androidx.constraintlayout.widget.ConstraintSet.WRAP_CONTENT
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.kgbier.kgbmd.R
-import com.kgbier.kgbmd.util.dp
-import com.kgbier.kgbmd.util.resolveAttribute
-import com.kgbier.kgbmd.util.setTextStyleAttr
+import com.kgbier.kgbmd.util.*
 import com.kgbier.kgbmd.view.animation.ElevateCardViewStateListAnimator
 import com.kgbier.kgbmd.view.drawable.ShimmerDrawable
 
@@ -42,109 +39,98 @@ class PosterView(context: Context) : CardView(context) {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
             imageViewPoster = ImageView(context).apply {
-                id = generateViewId()
                 scaleType = ImageView.ScaleType.CENTER_CROP
                 setImageDrawable(shimmer)
             }.also(::addView)
 
-            ConstraintSet().apply {
-                connect(imageViewPoster.id, START, PARENT_ID, START)
-                connect(imageViewPoster.id, END, PARENT_ID, END)
-                connect(imageViewPoster.id, TOP, PARENT_ID, TOP)
-                connect(imageViewPoster.id, BOTTOM, PARENT_ID, BOTTOM)
-
-                setDimensionRatio(imageViewPoster.id, "100:148")
-            }.applyTo(this)
-
             viewBottomScrim = View(context).apply {
-                id = generateViewId()
                 visibility = View.INVISIBLE
                 setBackgroundResource(R.drawable.scrim_overlay_bottom)
             }.also(::addView)
 
             textViewTitle = TextView(context).apply {
-                id = generateViewId()
                 visibility = View.INVISIBLE
                 setTextStyleAttr(R.attr.textAppearanceCaption)
                 setTextColor(Color.WHITE)
                 textAlignment = TextView.TEXT_ALIGNMENT_VIEW_END
             }.also(::addView)
 
-            val spaceTitleTop = Space(context).apply {
-                id = generateViewId()
-            }.also(::addView)
+            val spaceTitleTop = Space(context).also(::addView)
 
             viewCornerScrim = View(context).apply {
-                id = generateViewId()
                 visibility = View.INVISIBLE
                 setBackgroundResource(R.drawable.scrim_overlay_corner)
             }.also(::addView)
 
             ratingStarView = RatingStarView(context).apply {
-                id = generateViewId()
                 textViewRating.setTextStyleAttr(R.attr.textAppearanceCaption)
                 textViewRating.setTextColor(Color.WHITE)
             }.also(::addView)
             ratingStarView.visibility = View.INVISIBLE
 
-            val spaceRatingStart = Space(context).apply {
-                id = generateViewId()
-            }.also(::addView)
+            val spaceRatingStart = Space(context).also(::addView)
 
-            ConstraintSet().apply {
-                setVisibility(textViewTitle.id, GONE)
-                constrainHeight(textViewTitle.id, WRAP_CONTENT)
+            constraintSet {
+                constrain(imageViewPoster) {
+                    link(start, parent.start)
+                    link(end, parent.end)
+                    link(top, parent.top)
+                    link(bottom, parent.bottom)
 
-                setMargin(textViewTitle.id, START, 4.dp)
-                setMargin(textViewTitle.id, END, 4.dp)
-                setMargin(textViewTitle.id, BOTTOM, 4.dp)
+                    ratio("100:148")
+                }
 
-                connect(textViewTitle.id, START, PARENT_ID, START)
-                connect(textViewTitle.id, END, PARENT_ID, END)
-                connect(textViewTitle.id, BOTTOM, PARENT_ID, BOTTOM)
+                val textViewTitleRef = constrain(textViewTitle) {
+                    link(start, parent.start, margin = 4.dp)
+                    link(end, parent.end, margin = 4.dp)
+                    link(bottom, parent.bottom, margin = 4.dp)
 
-                constrainHeight(spaceTitleTop.id, 8.dp)
+                    height(WRAP_CONTENT)
+                    visibility(GONE)
+                }
 
-                connect(spaceTitleTop.id, START, PARENT_ID, START)
-                connect(spaceTitleTop.id, END, PARENT_ID, END)
-                connect(spaceTitleTop.id, BOTTOM, textViewTitle.id, TOP)
-            }.applyTo(this)
+                val spaceTitleTopRef = constrain(spaceTitleTop) {
+                    link(start, parent.start)
+                    link(end, parent.end)
+                    link(bottom, textViewTitleRef.top)
 
-            ConstraintSet().apply {
-                setVisibility(ratingStarView.id, GONE)
-                constrainWidth(ratingStarView.id, WRAP_CONTENT)
-                constrainHeight(ratingStarView.id, WRAP_CONTENT)
+                    height(8.dp)
+                }
 
-                setMargin(ratingStarView.id, TOP, 4.dp)
-                setMargin(ratingStarView.id, END, 4.dp)
+                val ratingStarViewRef = constrain(ratingStarView) {
+                    link(end, parent.end, margin = 4.dp)
+                    link(top, parent.top, margin = 4.dp)
 
-                connect(ratingStarView.id, END, PARENT_ID, END)
-                connect(ratingStarView.id, TOP, PARENT_ID, TOP)
+                    width(WRAP_CONTENT)
+                    height(WRAP_CONTENT)
+                    visibility(GONE)
+                }
 
-                constrainWidth(spaceRatingStart.id, 24.dp)
+                val spaceRatingStartRef = constrain(spaceRatingStart) {
+                    link(end, ratingStarViewRef.start)
+                    link(top, parent.top)
 
-                connect(spaceRatingStart.id, END, ratingStarView.id, START)
-                connect(spaceRatingStart.id, TOP, PARENT_ID, TOP)
-            }.applyTo(this)
+                    width(24.dp)
+                }
 
-            ConstraintSet().apply {
-                setVisibility(viewBottomScrim.id, GONE)
+                constrain(viewBottomScrim) {
+                    link(start, parent.start)
+                    link(end, parent.end)
+                    link(top, spaceTitleTopRef.top)
+                    link(bottom, parent.bottom)
 
-                connect(viewBottomScrim.id, START, PARENT_ID, START)
-                connect(viewBottomScrim.id, END, PARENT_ID, END)
-                connect(viewBottomScrim.id, TOP, spaceTitleTop.id, TOP)
-                connect(viewBottomScrim.id, BOTTOM, PARENT_ID, BOTTOM)
-            }.applyTo(this)
+                    visibility(GONE)
+                }
 
-            ConstraintSet().apply {
-                setVisibility(viewCornerScrim.id, GONE)
+                constrain(viewCornerScrim) {
+                    link(start, spaceRatingStartRef.start)
+                    link(end, parent.end)
+                    link(top, parent.top)
 
-                connect(viewCornerScrim.id, START, spaceRatingStart.id, START)
-                connect(viewCornerScrim.id, END, PARENT_ID, END)
-                connect(viewCornerScrim.id, TOP, PARENT_ID, TOP)
-
-                setDimensionRatio(viewCornerScrim.id, "1:1")
-            }.applyTo(this)
+                    ratio("1:1")
+                    visibility(GONE)
+                }
+            }
 
         }.also(::addView)
     }
