@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kgbier.kgbmd.domain.model.TitleDetails
 import com.kgbier.kgbmd.domain.repo.MediaInfoRepo
 import com.kgbier.kgbmd.view.ui.listingdetails.BaseListingViewModel
-import com.kgbier.kgbmd.view.ui.listingdetails.TitleListingViewModel
+import com.kgbier.kgbmd.view.ui.listingdetails.HeaderViewModel
 import com.kgbier.kgbmd.view.ui.listingdetails.TitledTextListingViewModel
 import kotlinx.coroutines.launch
 
@@ -38,7 +38,7 @@ class TitleDetailsViewModel(titleId: String) : ViewModel() {
     private fun transformDetails(titleDetails: TitleDetails): List<BaseListingViewModel> {
         val list = mutableListOf<BaseListingViewModel>()
         with(titleDetails) {
-            list.add(TitleListingViewModel(name, yearReleased))
+            list.add(HeaderViewModel(name, yearReleased, rating, poster))
             directedBy?.let { list.add(TitledTextListingViewModel("Directed by", it)) }
             writtenBy?.let { list.add(TitledTextListingViewModel("Written by", it)) }
             createdBy?.let { list.add(TitledTextListingViewModel("Created by", it)) }

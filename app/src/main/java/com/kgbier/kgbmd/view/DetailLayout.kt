@@ -75,8 +75,6 @@ class DetailLayout(context: MainActivity) :
         }.also(::addView)
 
         listingDetailsList = ListingDetailsList(context, route.titleId).apply {
-            updatePaddingRelative(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
-
             setOnUpdateWithWindowInsetsListener { _, insets, intendedPadding, _ ->
                 updatePadding(
                     bottom = intendedPadding.bottom + insets.systemWindowInsetBottom

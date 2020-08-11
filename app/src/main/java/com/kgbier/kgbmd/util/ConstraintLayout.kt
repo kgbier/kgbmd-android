@@ -88,3 +88,7 @@ inline fun ConstrainingScope.width(@Px width: Int) {
 inline fun ConstrainingScope.height(@Px height: Int) {
     constraintSet.constrainHeight(ref.id, height)
 }
+
+inline fun ConstrainingScope.goneMargin(edge: Edge, @Px margin: Int) {
+    constraintSet.setGoneMargin(ref.id, edge.side.facing, margin)
+}

@@ -1,5 +1,6 @@
 package com.kgbier.kgbmd.data.imdb.model
 
+import com.kgbier.kgbmd.domain.imdb.operation.ImageResizer
 import com.kgbier.kgbmd.domain.model.TitleDetails
 
 data class TitleInfo(
@@ -36,7 +37,10 @@ private fun List<TitleInfo.Credit>.getCreditStringMatching(partialType: String):
     find { it.type.contains(partialType) }?.names?.joinToString(", ")
 
 fun transformTitleDetailsPoster(posterUrl: String?): TitleDetails.Poster? = posterUrl?.let {
-    TitleDetails.Poster(it, it)
+    TitleDetails.Poster(
+        ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_THUMBNAIL),
+        ImageResizer.resize(it, ImageResizer.SIZE_FULL)
+    )
 }
 
 fun transformTitleDetailsRating(

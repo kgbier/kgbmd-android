@@ -17,8 +17,6 @@ open class ListingDetailsView(context: Context) : RecyclerView(context) {
     init {
         layoutManager = LinearLayoutManager(context)
         adapter = listingAdapter
-        setPadding(16.dp)
-        clipToPadding = false
         this.addItemDecoration(BetweenItemDecoration(12.dp))
     }
 }
@@ -43,11 +41,13 @@ class ListingAdapter : ListAdapter<BaseListingViewModel, BaseListingViewHolder>(
 
         const val VIEW_TYPE_TITLE = 0
         const val VIEW_TYPE_TITLED_TEXT = 1
+        const val VIEW_TYPE_HEADER = 2
     }
 
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
         is TitleListingViewModel -> VIEW_TYPE_TITLE
         is TitledTextListingViewModel -> VIEW_TYPE_TITLED_TEXT
+        is HeaderViewModel -> VIEW_TYPE_HEADER
         else -> throw NotImplementedError()
     }
 
@@ -55,6 +55,7 @@ class ListingAdapter : ListAdapter<BaseListingViewModel, BaseListingViewHolder>(
         when (viewType) {
             VIEW_TYPE_TITLE -> TitleListingViewHolder(parent.context)
             VIEW_TYPE_TITLED_TEXT -> TitledTextListingViewHolder(parent.context)
+            VIEW_TYPE_HEADER -> HeaderViewHolder(parent.context)
             else -> throw NotImplementedError()
         }
 

@@ -19,11 +19,14 @@ object ImageResizer {
     const val SIZE_WIDTH_SMALL = 120
     const val SIZE_WIDTH_MEDIUM = 320
     const val SIZE_WIDTH_LARGE = 640
+    const val SIZE_FULL = -1
 
     fun resize(
         imageUrl: String,
         size: Int = SIZE_WIDTH_SMALL
-    ): String {
-        return imageUrl.replaceAfter(CLIPPER_DELIMITER, "_UX$size.jpg")
+    ): String = if (size == SIZE_FULL) {
+        imageUrl.replaceAfter(CLIPPER_DELIMITER, ".jpg")
+    } else {
+        imageUrl.replaceAfter(CLIPPER_DELIMITER, "_UX$size.jpg")
     }
 }
