@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Space
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet.WRAP_CONTENT
 import androidx.core.content.ContextCompat
@@ -17,12 +18,16 @@ import com.kgbier.kgbmd.view.ui.HeroRatingView
 
 class HeaderView(context: Context) : ConstraintLayout(context) {
 
+    val spaceTop: Space
     val imageViewBackground: ImageView
     val viewScrim: View
     val listingTitle: ListingTitle
     val heroRatingView: HeroRatingView
 
     init {
+        val defaultSpaceTopHeight = resolveDimensionAttribute(android.R.attr.actionBarSize) ?: 0
+
+        spaceTop = Space(context).also(::addView)
         imageViewBackground = ImageView(context).apply {
             scaleType = ImageView.ScaleType.CENTER_CROP
         }.also(::addView)
@@ -31,6 +36,15 @@ class HeaderView(context: Context) : ConstraintLayout(context) {
         }.also(::addView)
         listingTitle = ListingTitle(context).also(::addView)
         heroRatingView = HeroRatingView(context).also(::addView)
+
+        setOnUpdateWithWindowInsetsListener { _, insets, _, _ ->
+            constraintSet {
+                constrain(spaceTop) {
+                    height(defaultSpaceTopHeight + insets.systemWindowInsetTop)
+                }
+            }
+            insets.consumeSystemWindowInsets()
+        }
 
         constraintSet {
             constrain(imageViewBackground) {
@@ -45,13 +59,18 @@ class HeaderView(context: Context) : ConstraintLayout(context) {
                 link(end, parent.end)
                 link(bottom, parent.bottom)
             }
+            val spaceTopRef = constrain(spaceTop) {
+                link(start, parent.start)
+                link(top, parent.top)
+                link(end, parent.end)
+            }
 
             val heroRatingViewRef = ref(heroRatingView)
             val listingTitleRef = ref(listingTitle)
 
             constrain(listingTitleRef) {
                 link(start, parent.start, margin = 16.dp)
-                link(top, parent.top, margin = 16.dp)
+                link(top, spaceTopRef.bottom, margin = 16.dp)
                 link(end, parent.end, margin = 16.dp)
                 link(bottom, heroRatingViewRef.top, 16.dp)
 

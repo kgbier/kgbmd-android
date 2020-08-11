@@ -4,13 +4,11 @@ import android.annotation.SuppressLint
 import android.view.Gravity
 import android.view.View
 import android.view.animation.DecelerateInterpolator
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.setMargins
 import androidx.core.view.updateMarginsRelative
 import androidx.core.view.updatePadding
-import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.transition.Fade
@@ -27,7 +25,7 @@ import com.kgbier.kgbmd.view.viewmodel.TitleDetailsViewModel
 @SuppressLint("ViewConstructor")
 class DetailLayout(context: MainActivity) :
     RouteReceiver<Route.DetailScreen> by Navigation.routeReceiver(),
-    LinearLayout(context) {
+    CoordinatorLayout(context) {
 
     private val disposeBag = LiveDataDisposeBag()
 
@@ -39,15 +37,26 @@ class DetailLayout(context: MainActivity) :
         }
     }
 
-    val layoutLoading: FrameLayout
+    val toolbar: MaterialToolbar
+    val progressBar: ProgressBar
     val listingDetailsList: ListingDetailsList
 
     init {
         id = R.id.detailLayout
 
-        orientation = VERTICAL
+        listingDetailsList = ListingDetailsList(context, route.titleId).apply {
+            setOnUpdateWithWindowInsetsListener { _, insets, intendedPadding, _ ->
+                updatePadding(
+                    bottom = intendedPadding.bottom + insets.systemWindowInsetBottom
+                )
+                insets.consumeSystemWindowInsets()
+            }
 
-        MaterialToolbar(context).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            visibility = View.GONE
+        }.also(::addView)
+
+        toolbar = MaterialToolbar(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
 
             setOnUpdateWithWindowInsetsListener { _, insets, _, _ ->
@@ -59,31 +68,15 @@ class DetailLayout(context: MainActivity) :
             setNavigationOnClickListener { context.navigateBack() }
         }.also(::addView)
 
-        layoutLoading = FrameLayout(context).apply {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
-            visibility = View.VISIBLE
-
-            ProgressBar(context).apply {
-                layoutParams = FrameLayout.LayoutParams(
-                    LayoutParams.WRAP_CONTENT,
-                    LayoutParams.WRAP_CONTENT,
-                    Gravity.CENTER
-                ).apply {
-                    setMargins(16.dp)
-                }
-            }.also(::addView)
-        }.also(::addView)
-
-        listingDetailsList = ListingDetailsList(context, route.titleId).apply {
-            setOnUpdateWithWindowInsetsListener { _, insets, intendedPadding, _ ->
-                updatePadding(
-                    bottom = intendedPadding.bottom + insets.systemWindowInsetBottom
-                )
-                insets.consumeSystemWindowInsets()
+        progressBar = ProgressBar(context).apply {
+            layoutParams = LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
+            ).apply {
+                gravity = Gravity.CENTER
+                setMargins(16.dp)
             }
-
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
-            visibility = View.GONE
+            visibility = View.VISIBLE
         }.also(::addView)
 
         titleDetailsViewModel.titleDetails.bind(context) {
@@ -96,17 +89,17 @@ class DetailLayout(context: MainActivity) :
     }
 
     fun showDetails() {
-        layoutLoading.visibility = View.GONE
+        progressBar.visibility = View.GONE
         listingDetailsList.visibility = View.VISIBLE
     }
 
     fun showError(message: String) {
-        layoutLoading.visibility = View.GONE
+        progressBar.visibility = View.GONE
         Snackbar.make(this, message, Snackbar.LENGTH_SHORT).show()
     }
 
     fun showLoading() {
-        layoutLoading.visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
         listingDetailsList.visibility = View.GONE
     }
 

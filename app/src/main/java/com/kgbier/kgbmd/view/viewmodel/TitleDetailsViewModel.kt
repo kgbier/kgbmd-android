@@ -43,6 +43,23 @@ class TitleDetailsViewModel(titleId: String) : ViewModel() {
             writtenBy?.let { list.add(TitledTextListingViewModel("Written by", it)) }
             createdBy?.let { list.add(TitledTextListingViewModel("Created by", it)) }
             description?.let { list.add(TitledTextListingViewModel("Summary", it)) }
+            // these are filler for now
+            directedBy?.let { list.add(TitledTextListingViewModel("Directed by", it)) }
+            writtenBy?.let { list.add(TitledTextListingViewModel("Written by", it)) }
+            createdBy?.let { list.add(TitledTextListingViewModel("Created by", it)) }
+            description?.let { list.add(TitledTextListingViewModel("Summary", it)) }
+            directedBy?.let { list.add(TitledTextListingViewModel("Directed by", it)) }
+            writtenBy?.let { list.add(TitledTextListingViewModel("Written by", it)) }
+            createdBy?.let { list.add(TitledTextListingViewModel("Created by", it)) }
+            description?.let { list.add(TitledTextListingViewModel("Summary", it)) }
+            directedBy?.let { list.add(TitledTextListingViewModel("Directed by", it)) }
+            writtenBy?.let { list.add(TitledTextListingViewModel("Written by", it)) }
+            createdBy?.let { list.add(TitledTextListingViewModel("Created by", it)) }
+            description?.let { list.add(TitledTextListingViewModel("Summary", it)) }
+            directedBy?.let { list.add(TitledTextListingViewModel("Directed by", it)) }
+            writtenBy?.let { list.add(TitledTextListingViewModel("Written by", it)) }
+            createdBy?.let { list.add(TitledTextListingViewModel("Created by", it)) }
+            description?.let { list.add(TitledTextListingViewModel("Summary", it)) }
         }
         return list
     }
