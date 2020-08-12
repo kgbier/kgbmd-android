@@ -1,4 +1,4 @@
-package com.kgbier.kgbmd.view.ui.listingdetails
+package com.kgbier.kgbmd.view.ui.titledetails
 
 import android.content.Context
 import android.view.View
@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.domain.model.TitleDetails
 import com.kgbier.kgbmd.util.*
-import com.kgbier.kgbmd.view.component.ListingTitle
+import com.kgbier.kgbmd.view.component.TitleHeading
 import com.kgbier.kgbmd.view.drawable.ShimmerDrawable
 import com.kgbier.kgbmd.view.ui.HeroRatingView
 
@@ -21,7 +21,7 @@ class HeaderView(context: Context) : ConstraintLayout(context) {
     val spaceTop: Space
     val imageViewBackground: ImageView
     val viewScrim: View
-    val listingTitle: ListingTitle
+    val titleHeading: TitleHeading
     val heroRatingView: HeroRatingView
 
     init {
@@ -34,7 +34,7 @@ class HeaderView(context: Context) : ConstraintLayout(context) {
         viewScrim = ImageView(context).apply {
             background = ContextCompat.getDrawable(context, R.drawable.scrim_overlay)
         }.also(::addView)
-        listingTitle = ListingTitle(context).also(::addView)
+        titleHeading = TitleHeading(context).also(::addView)
         heroRatingView = HeroRatingView(context).also(::addView)
 
         setOnUpdateWithWindowInsetsListener { _, insets, _, _ ->
@@ -71,9 +71,9 @@ class HeaderView(context: Context) : ConstraintLayout(context) {
             }
 
             val heroRatingViewRef = ref(heroRatingView)
-            val listingTitleRef = ref(listingTitle)
+            val titleHeadingRef = ref(titleHeading)
 
-            constrain(listingTitleRef) {
+            constrain(titleHeadingRef) {
                 link(start, parent.start, margin = 16.dp)
                 link(top, spaceTopRef.bottom, margin = 16.dp)
                 link(end, parent.end, margin = 16.dp)
@@ -83,7 +83,7 @@ class HeaderView(context: Context) : ConstraintLayout(context) {
             }
 
             constrain(heroRatingViewRef) {
-                link(top, listingTitleRef.bottom)
+                link(top, titleHeadingRef.bottom)
                 link(end, parent.end, margin = 16.dp)
                 link(bottom, parent.bottom, margin = 12.dp)
 
@@ -99,9 +99,9 @@ class HeaderViewModel(
     val yearReleased: String?,
     val rating: TitleDetails.Rating?,
     val poster: TitleDetails.Poster?
-) : BaseListingViewModel
+) : BaseTitlesViewModel
 
-class HeaderViewHolder(context: Context) : BaseListingViewHolder(HeaderView(context).apply {
+class HeaderViewHolder(context: Context) : BaseTitlesViewHolder(HeaderView(context).apply {
     layoutParams = ViewGroup.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT
@@ -111,7 +111,7 @@ class HeaderViewHolder(context: Context) : BaseListingViewHolder(HeaderView(cont
 
     val shimmer = ShimmerDrawable()
 
-    override fun bind(viewModel: BaseListingViewModel) {
+    override fun bind(viewModel: BaseTitlesViewModel) {
         if (viewModel !is HeaderViewModel) return
 
         Glide.with(view)
@@ -123,7 +123,7 @@ class HeaderViewHolder(context: Context) : BaseListingViewHolder(HeaderView(cont
             .placeholder(shimmer)
             .into(view.imageViewBackground)
 
-        view.listingTitle.setTitleSequence(viewModel.name, viewModel.yearReleased)
+        view.titleHeading.setTitleSequence(viewModel.name, viewModel.yearReleased)
 
         if (viewModel.rating == null) {
             view.heroRatingView.visibility = View.GONE

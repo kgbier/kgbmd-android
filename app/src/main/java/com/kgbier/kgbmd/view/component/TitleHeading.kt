@@ -15,7 +15,7 @@ import com.kgbier.kgbmd.util.setTextColorAttr
 import com.kgbier.kgbmd.util.setTextStyleAttr
 
 @SuppressLint("ViewConstructor")
-class ListingTitle(context: Context) : AppCompatTextView(context) {
+class TitleHeading(context: Context) : AppCompatTextView(context) {
     init {
         setTextStyleAttr(R.attr.textAppearanceHeadline5)
         setTextColorAttr(android.R.attr.textColorPrimary)

@@ -8,11 +8,11 @@ import com.kgbier.kgbmd.util.LiveDataDisposeBag
 import com.kgbier.kgbmd.util.bind
 import com.kgbier.kgbmd.util.disposeBy
 import com.kgbier.kgbmd.util.viewModels
-import com.kgbier.kgbmd.view.ui.listingdetails.ListingDetailsView
+import com.kgbier.kgbmd.view.ui.titledetails.TitleDetailsView
 import com.kgbier.kgbmd.view.viewmodel.TitleDetailsViewModel
 
 @SuppressLint("ViewConstructor")
-class ListingDetailsList(context: MainActivity, titleId: String) : ListingDetailsView(context) {
+class TitleDetailsList(context: MainActivity, titleId: String) : TitleDetailsView(context) {
 
     private val disposeBag = LiveDataDisposeBag()
 
@@ -27,7 +27,7 @@ class ListingDetailsList(context: MainActivity, titleId: String) : ListingDetail
     init {
         titleDetailsViewModel.titleDetails.bind(context) {
             if (it is TitleDetailsViewModel.TitleDetailsState.Loaded) {
-                listingAdapter.submitList(it.details)
+                titlesAdapter.submitList(it.details)
             }
         }.disposeBy(disposeBag)
     }

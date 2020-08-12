@@ -1,4 +1,4 @@
-package com.kgbier.kgbmd.view.ui.listingdetails
+package com.kgbier.kgbmd.view.ui.titledetails
 
 import android.content.Context
 import android.view.ViewGroup
@@ -7,10 +7,10 @@ import androidx.core.view.updateMarginsRelative
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.view.ui.TitledTextView
 
-class TitledTextListingViewModel(val title: String, val content: String) : BaseListingViewModel
+class TitledTextTitlesViewModel(val title: String, val content: String) : BaseTitlesViewModel
 
-class TitledTextListingViewHolder(context: Context) :
-    BaseListingViewHolder(TitledTextView(context).apply {
+class TitledTextTitlesViewHolder(context: Context) :
+    BaseTitlesViewHolder(TitledTextView(context).apply {
         layoutParams = ViewGroup.MarginLayoutParams(
             LayoutParams.MATCH_PARENT,
             LayoutParams.WRAP_CONTENT
@@ -20,8 +20,8 @@ class TitledTextListingViewHolder(context: Context) :
     }) {
     val view get() = itemView as TitledTextView
 
-    override fun bind(viewModel: BaseListingViewModel) {
-        if (viewModel !is TitledTextListingViewModel) return
+    override fun bind(viewModel: BaseTitlesViewModel) {
+        if (viewModel !is TitledTextTitlesViewModel) return
 
         view.textViewTitle.text = viewModel.title
         view.textViewContent.text = viewModel.content

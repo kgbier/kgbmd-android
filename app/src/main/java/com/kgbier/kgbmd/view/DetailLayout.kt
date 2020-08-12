@@ -7,7 +7,6 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.ProgressBar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.setMargins
-import androidx.core.view.updateMarginsRelative
 import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -19,8 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.kgbier.kgbmd.*
 import com.kgbier.kgbmd.util.*
 import com.kgbier.kgbmd.view.behaviour.ScrollBehaviour
-import com.kgbier.kgbmd.view.component.ListingDetailsList
-import com.kgbier.kgbmd.view.ui.SearchBarView
+import com.kgbier.kgbmd.view.component.TitleDetailsList
 import com.kgbier.kgbmd.view.ui.ToolbarView
 import com.kgbier.kgbmd.view.viewmodel.TitleDetailsViewModel
 
@@ -41,12 +39,12 @@ class DetailLayout(context: MainActivity) :
 
     val toolbar: ToolbarView
     val progressBar: ProgressBar
-    val listingDetailsList: ListingDetailsList
+    val titleDetailsList: TitleDetailsList
 
     init {
         id = R.id.detailLayout
 
-        listingDetailsList = ListingDetailsList(context, route.titleId).apply {
+        titleDetailsList = TitleDetailsList(context, route.titleId).apply {
             setOnUpdateWithWindowInsetsListener { _, insets, intendedPadding, _ ->
                 updatePadding(
                     bottom = intendedPadding.bottom + insets.systemWindowInsetBottom
@@ -94,7 +92,7 @@ class DetailLayout(context: MainActivity) :
 
     fun showDetails() {
         progressBar.visibility = View.GONE
-        listingDetailsList.visibility = View.VISIBLE
+        titleDetailsList.visibility = View.VISIBLE
     }
 
     fun showError(message: String) {
@@ -104,7 +102,7 @@ class DetailLayout(context: MainActivity) :
 
     fun showLoading() {
         progressBar.visibility = View.VISIBLE
-        listingDetailsList.visibility = View.GONE
+        titleDetailsList.visibility = View.GONE
     }
 
     override fun onDetachedFromWindow() {
