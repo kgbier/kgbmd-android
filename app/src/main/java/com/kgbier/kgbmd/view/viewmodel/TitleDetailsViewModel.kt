@@ -19,6 +19,7 @@ class TitleDetailsViewModel(titleId: String) : ViewModel() {
     }
 
     val titleDetails: MutableLiveData<TitleDetailsState> = MutableLiveData()
+    val titleHeading: MutableLiveData<String> = MutableLiveData()
 
     init {
         load(titleId)
@@ -38,6 +39,8 @@ class TitleDetailsViewModel(titleId: String) : ViewModel() {
     private fun transformDetails(titleDetails: TitleDetails): List<BaseTitlesViewModel> {
         val list = mutableListOf<BaseTitlesViewModel>()
         with(titleDetails) {
+            titleHeading.value = name
+
             list.add(HeaderViewModel(name, yearReleased, rating, poster))
             directedBy?.let { list.add(TitledTextTitlesViewModel("Directed by", it)) }
             writtenBy?.let { list.add(TitledTextTitlesViewModel("Written by", it)) }

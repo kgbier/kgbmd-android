@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Space
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet.WRAP_CONTENT
 import androidx.core.content.ContextCompat
@@ -16,7 +17,15 @@ import com.kgbier.kgbmd.view.component.TitleHeading
 import com.kgbier.kgbmd.view.drawable.ShimmerDrawable
 import com.kgbier.kgbmd.view.ui.HeroRatingView
 
-class HeaderView(context: Context) : ConstraintLayout(context) {
+class HeaderView(context: ContextThemeWrapper) : ConstraintLayout(context) {
+
+    // Wrap this view with the Dark Material Components theme
+    constructor(context: Context) : this(
+        ContextThemeWrapper(
+            context,
+            R.style.Theme_MaterialComponents
+        )
+    )
 
     val spaceTop: Space
     val imageViewBackground: ImageView

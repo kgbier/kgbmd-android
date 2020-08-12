@@ -5,6 +5,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.ProgressBar
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.setMargins
 import androidx.core.view.updatePadding
@@ -44,6 +45,10 @@ class DetailLayout(context: MainActivity) :
     init {
         id = R.id.detailLayout
 
+        resolveColorAttribute(android.R.attr.colorBackground)?.let {
+            setBackgroundColor(it)
+        }
+
         titleDetailsList = TitleDetailsList(context, route.titleId).apply {
             setOnUpdateWithWindowInsetsListener { _, insets, intendedPadding, _ ->
                 updatePadding(
@@ -56,10 +61,13 @@ class DetailLayout(context: MainActivity) :
             visibility = View.GONE
         }.also(::addView)
 
-        toolbar = ToolbarView(context).apply {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
-                behavior = ScrollBehaviour<ToolbarView>()
-            }
+        toolbar = ToolbarView(
+            ContextThemeWrapper(context, R.style.Theme_MaterialComponents)
+        ).apply {
+            layoutParams =
+                LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
+                    behavior = ScrollBehaviour<ToolbarView>()
+                }
 
             setOnUpdateWithWindowInsetsListener { _, insets, _, _ ->
                 updatePadding(top = insets.systemWindowInsetTop)
@@ -80,6 +88,8 @@ class DetailLayout(context: MainActivity) :
             }
             visibility = View.VISIBLE
         }.also(::addView)
+
+//c
 
         titleDetailsViewModel.titleDetails.bind(context) {
             when (it) {

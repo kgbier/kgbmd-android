@@ -15,7 +15,11 @@ class ToolbarView(context: Context) : Toolbar(context), ScrollBehaviour.Child {
     val elevationAnimDuration = 150L
 
     init {
-        resolveAttribute(R.attr.colorBackgroundFloating)?.let { setBackgroundResource(it) }
+        resolveAttribute(R.attr.colorBackgroundFloating)?.let {
+            setBackgroundResource(
+                it
+            )
+        }
         elevation = 4f.dp
 
         liftAnimator = ValueAnimator().apply {

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import androidx.annotation.AttrRes
+import androidx.core.content.ContextCompat
 
 /**
  * `dp` to pixels
@@ -21,6 +22,14 @@ val Float.dp: Float
 /**
  * Resource attribute (attr) resolution
  */
+
+fun Context.resolveColorAttribute(@AttrRes resource: Int): Int? =
+    resolveAttribute(resource)?.let {
+        ContextCompat.getColor(this, it)
+    }
+
+fun View.resolveColorAttribute(@AttrRes resource: Int): Int? =
+    context.resolveColorAttribute(resource)
 
 fun Context.resolveDimensionAttribute(@AttrRes resource: Int): Int? =
     resolveAttribute(resource)?.let {
