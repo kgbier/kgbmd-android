@@ -2,10 +2,6 @@ package com.kgbier.kgbmd.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.transition.Scene
-import androidx.transition.Slide
-import androidx.transition.Transition
-import androidx.transition.TransitionSet
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
@@ -15,11 +11,12 @@ import androidx.activity.viewModels
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updateMarginsRelative
+import androidx.transition.Scene
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionSet
 import com.kgbier.kgbmd.*
-import com.kgbier.kgbmd.util.dp
-import com.kgbier.kgbmd.util.resolveAttribute
-import com.kgbier.kgbmd.util.resolveDimensionAttribute
-import com.kgbier.kgbmd.util.setOnUpdateWithWindowInsetsListener
+import com.kgbier.kgbmd.util.*
 import com.kgbier.kgbmd.view.component.SearchBar
 import com.kgbier.kgbmd.view.component.SearchResults
 import com.kgbier.kgbmd.view.viewmodel.MovieListSearchViewModel
@@ -35,6 +32,11 @@ class SearchLayout(context: MainActivity) :
     private val movieListSearchViewModel: MovieListSearchViewModel by context.viewModels()
 
     init {
+
+        resolveColorAttribute(android.R.attr.colorBackground)?.let {
+            setBackgroundColor(it)
+        }
+
         // Needs to be set when the app is laid out fullscreen. Otherwise when the keyboard is visible
         // the window does not get padded from the bottom to compensate for the keyboard.
         fitsSystemWindows = true

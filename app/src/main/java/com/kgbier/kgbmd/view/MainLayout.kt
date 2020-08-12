@@ -45,6 +45,11 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
     private val PULLDOWN_END_DISTANCE = (64 + 64).dp
 
     init {
+
+        resolveColorAttribute(android.R.attr.colorBackground)?.let {
+            setBackgroundColor(it)
+        }
+
         // Setup Search Bar
         readOnlySearchBar = ReadOnlySearchBar(context).apply {
             layoutParams =
