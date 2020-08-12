@@ -63,6 +63,11 @@ class HeaderView(context: Context) : ConstraintLayout(context) {
                 link(start, parent.start)
                 link(top, parent.top)
                 link(end, parent.end)
+
+                // This will update once window insets have been consumed
+                height(
+                    defaultSpaceTopHeight + (WindowInsetsHint.lastInsets?.systemWindowInsetTop ?: 0)
+                )
             }
 
             val heroRatingViewRef = ref(heroRatingView)

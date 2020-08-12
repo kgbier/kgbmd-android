@@ -120,7 +120,7 @@ open class SearchBarView(context: MainActivity) : CardView(context), ScrollBehav
         translationY = 0f
     }
 
-    override fun scrollBehaviourScrollDown(distance: Int) {
+    override fun scrollBehaviourScrollDown(distance: Int, totalDistance: Int) {
         animate().cancel()
         isAnimating = false
         translationY = max(scrollBehaviourTopTranslationLimit, translationY - distance)
@@ -128,7 +128,7 @@ open class SearchBarView(context: MainActivity) : CardView(context), ScrollBehav
 
     private val interpolator by lazy { DecelerateInterpolator() }
     private val animatorEndAction by lazy { Runnable { isAnimating = false } }
-    override fun scrollBehaviourScrollUp() {
+    override fun scrollBehaviourScrollUp(distance: Int, totalDistance: Int) {
         if (isAnimating) return
 
         isAnimating = true

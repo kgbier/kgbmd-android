@@ -15,11 +15,13 @@ import androidx.transition.Fade
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionSet
-import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.kgbier.kgbmd.*
 import com.kgbier.kgbmd.util.*
+import com.kgbier.kgbmd.view.behaviour.ScrollBehaviour
 import com.kgbier.kgbmd.view.component.ListingDetailsList
+import com.kgbier.kgbmd.view.ui.SearchBarView
+import com.kgbier.kgbmd.view.ui.ToolbarView
 import com.kgbier.kgbmd.view.viewmodel.TitleDetailsViewModel
 
 @SuppressLint("ViewConstructor")
@@ -37,7 +39,7 @@ class DetailLayout(context: MainActivity) :
         }
     }
 
-    val toolbar: MaterialToolbar
+    val toolbar: ToolbarView
     val progressBar: ProgressBar
     val listingDetailsList: ListingDetailsList
 
@@ -56,11 +58,13 @@ class DetailLayout(context: MainActivity) :
             visibility = View.GONE
         }.also(::addView)
 
-        toolbar = MaterialToolbar(context).apply {
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        toolbar = ToolbarView(context).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
+                behavior = ScrollBehaviour<ToolbarView>()
+            }
 
             setOnUpdateWithWindowInsetsListener { _, insets, _, _ ->
-                (this.layoutParams as MarginLayoutParams).updateMarginsRelative(top = insets.systemWindowInsetTop)
+                updatePadding(top = insets.systemWindowInsetTop)
                 insets.consumeSystemWindowInsets()
             }
 

@@ -49,6 +49,10 @@ data class LayoutAdjustment(
     val bottom: Int = 0
 )
 
+object WindowInsetsHint {
+    var lastInsets: WindowInsets? = null
+}
+
 // Stolen in part from: https://medium.com/androiddevelopers/windowinsets-listeners-to-layouts-8f9ccc8fa4d1
 inline fun View.setOnUpdateWithWindowInsetsListener(
     crossinline onApply: (
@@ -75,6 +79,7 @@ inline fun View.setOnUpdateWithWindowInsetsListener(
     } ?: LayoutAdjustment()
 
     setOnApplyWindowInsetsListener { v, insets ->
+        WindowInsetsHint.lastInsets = insets
         onApply(v, insets, intendedPadding, intendedMargin)
         insets
     }
