@@ -95,12 +95,9 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
         }.also(::addView)
 
         tiledPosterGrid = TiledPosterGrid(context).apply {
-            setPadding(
-                8.dp,
-                GRID_MARGIN_TOP,
-                8.dp,
-                GRID_MARGIN_BOTTOM
-            )
+            setPadding(8.dp, GRID_MARGIN_TOP, 8.dp, GRID_MARGIN_BOTTOM)
+
+            clipToPadding = false
 
             setOnUpdateWithWindowInsetsListener { _, insets, intendedPadding, _ ->
                 updatePadding(

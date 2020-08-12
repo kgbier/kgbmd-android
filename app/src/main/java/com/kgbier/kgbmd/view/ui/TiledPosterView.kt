@@ -3,7 +3,6 @@ package com.kgbier.kgbmd.view.ui
 import android.content.Context
 import android.graphics.Rect
 import android.view.ViewGroup
-import androidx.core.view.setPadding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -31,8 +30,6 @@ open class TiledPosterView(context: Context) : RecyclerView(context) {
 
         adapter = PosterLoadingAdapter()
         layoutManager = GridLayoutManager(context, estimateColumns())
-        setPadding(8.dp)
-        clipToPadding = false
         this.addItemDecoration(InsetItemDecoration(8.dp))
     }
 }

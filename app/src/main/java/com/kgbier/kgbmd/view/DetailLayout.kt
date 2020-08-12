@@ -50,15 +50,16 @@ class DetailLayout(context: MainActivity) :
         }
 
         titleDetailsList = TitleDetailsList(context, route.titleId).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            visibility = View.GONE
+            clipToPadding = false
+
             setOnUpdateWithWindowInsetsListener { _, insets, intendedPadding, _ ->
                 updatePadding(
                     bottom = intendedPadding.bottom + insets.systemWindowInsetBottom
                 )
                 insets.consumeSystemWindowInsets()
             }
-
-            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            visibility = View.GONE
         }.also(::addView)
 
         toolbar = ToolbarView(

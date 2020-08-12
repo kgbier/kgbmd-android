@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updateMarginsRelative
+import androidx.core.view.updatePadding
 import androidx.transition.Scene
 import androidx.transition.Slide
 import androidx.transition.Transition
@@ -37,13 +38,8 @@ class SearchLayout(context: MainActivity) :
             setBackgroundColor(it)
         }
 
-        // Needs to be set when the app is laid out fullscreen. Otherwise when the keyboard is visible
-        // the window does not get padded from the bottom to compensate for the keyboard.
-        fitsSystemWindows = true
-
         orientation = VERTICAL
 
-        // Setup Search Bar
         searchBar = SearchBar(context).apply {
             layoutParams = LayoutParams(
                 LayoutParams.MATCH_PARENT,
@@ -73,6 +69,13 @@ class SearchLayout(context: MainActivity) :
 
         searchResults = SearchResults(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f)
+            clipToPadding = false
+
+            setOnUpdateWithWindowInsetsListener { _, insets, _, _ ->
+                updatePadding(bottom = insets.systemWindowInsetBottom)
+
+                insets.consumeSystemWindowInsets()
+            }
         }.also(::addView)
     }
 
