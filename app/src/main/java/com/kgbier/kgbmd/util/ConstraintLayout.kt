@@ -15,11 +15,13 @@ inline val Reference.start get() = Edge(this, Side(ConstraintSet.START))
 inline val Reference.end get() = Edge(this, Side(ConstraintSet.END))
 inline val Reference.top get() = Edge(this, Side(ConstraintSet.TOP))
 inline val Reference.bottom get() = Edge(this, Side(ConstraintSet.BOTTOM))
+inline val Reference.baseline get() = Edge(this, Side(ConstraintSet.BASELINE))
 
 inline val ConstrainingScope.start get() = Edge(ref, Side(ConstraintSet.START))
 inline val ConstrainingScope.end get() = Edge(ref, Side(ConstraintSet.END))
 inline val ConstrainingScope.top get() = Edge(ref, Side(ConstraintSet.TOP))
 inline val ConstrainingScope.bottom get() = Edge(ref, Side(ConstraintSet.BOTTOM))
+inline val ConstrainingScope.baseline get() = Edge(ref, Side(ConstraintSet.BASELINE))
 
 inline class Side(val facing: Int)
 

@@ -8,9 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.ConstraintSet.*
 import com.kgbier.kgbmd.R
-import com.kgbier.kgbmd.util.dp
-import com.kgbier.kgbmd.util.setTextColorAttr
-import com.kgbier.kgbmd.util.setTextStyleAttr
+import com.kgbier.kgbmd.util.*
 
 open class HeroRatingView(context: Context) : ConstraintLayout(context) {
 
@@ -33,7 +31,6 @@ open class HeroRatingView(context: Context) : ConstraintLayout(context) {
 
         ratingStarView = RatingStarView(context).apply {
             id = View.generateViewId()
-            textViewRating.text = "/ 10"
             textViewRating.setTextStyleAttr(R.attr.textAppearanceSubtitle1)
             textViewRating.setTextColorAttr(android.R.attr.textColorSecondary)
         }.also(::addView)
@@ -49,78 +46,34 @@ open class HeroRatingView(context: Context) : ConstraintLayout(context) {
             setLines(1)
         }.also(::addView)
 
-        ConstraintSet().apply {
-            constrainWidth(textViewRating.id, WRAP_CONTENT)
-            constrainHeight(textViewRating.id, WRAP_CONTENT)
+        constraintSet {
+            val textViewRatingRef = constrain(textViewRating) {
+                link(start, parent.start)
+                link(top, parent.top)
 
-            connect(
-                textViewRating.id,
-                START,
-                PARENT_ID,
-                START
-            )
-            connect(
-                textViewRating.id,
-                TOP,
-                PARENT_ID,
-                TOP
-            )
-        }.applyTo(this)
+                width(WRAP_CONTENT)
+                height(WRAP_CONTENT)
+            }
 
-        ConstraintSet().apply {
-            constrainWidth(ratingStarView.id, WRAP_CONTENT)
-            constrainHeight(ratingStarView.id, WRAP_CONTENT)
-            setMargin(ratingStarView.id, START, 4.dp)
+            constrain(ratingStarView) {
+                link(start, textViewRatingRef.end, margin = 4.dp)
+                link(baseline, textViewRatingRef.baseline)
+                link(end, parent.end)
 
-            connect(
-                ratingStarView.id,
-                START,
-                textViewRating.id,
-                END
-            )
-            connect(
-                ratingStarView.id,
-                BASELINE,
-                textViewRating.id,
-                BASELINE
-            )
-            connect(
-                ratingStarView.id,
-                END,
-                PARENT_ID,
-                END
-            )
-        }.applyTo(this)
+                width(WRAP_CONTENT)
+                height(WRAP_CONTENT)
+            }
 
-        ConstraintSet().apply {
-            constrainWidth(textViewRatingCount.id, WRAP_CONTENT)
-            constrainHeight(textViewRatingCount.id, WRAP_CONTENT)
+            constrain(textViewRatingCount) {
+                link(start, parent.start)
+                link(bottom, parent.bottom)
+                link(top, textViewRatingRef.bottom)
+                link(end, parent.end)
 
-            connect(
-                textViewRatingCount.id,
-                START,
-                PARENT_ID,
-                START
-            )
-            connect(
-                textViewRatingCount.id,
-                BOTTOM,
-                PARENT_ID,
-                BOTTOM
-            )
-            connect(
-                textViewRatingCount.id,
-                TOP,
-                textViewRating.id,
-                BOTTOM
-            )
-            connect(
-                textViewRatingCount.id,
-                END,
-                PARENT_ID,
-                END
-            )
-        }.applyTo(this)
+                width(WRAP_CONTENT)
+                height(WRAP_CONTENT)
+            }
+        }
     }
 
     fun setRating(rating: String, bestRating: String?, count: String?) {
