@@ -18,7 +18,7 @@ object ImageResizer {
     const val SIZE_FULL = -1
     const val SIZE_WIDTH_THUMBNAIL_CDN = -2
     const val SIZE_WIDTH_HINT = 20
-    const val SIZE_WIDTH_THUMBNAIL = 40
+    const val SIZE_WIDTH_THUMBNAIL = 80
     const val SIZE_WIDTH_SMALL = 120
     const val SIZE_WIDTH_MEDIUM = 320
     const val SIZE_WIDTH_LARGE = 640

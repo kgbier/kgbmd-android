@@ -25,5 +25,6 @@ class CastMemberViewHolder(context: Context) :
         if (viewModel !is CastMemberViewModel) return
 
         view.setText(viewModel.name, viewModel.role)
+        view.setAvatarUrl(viewModel.avatarUrl)
     }
 }

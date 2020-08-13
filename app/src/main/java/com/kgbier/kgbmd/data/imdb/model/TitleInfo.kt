@@ -38,7 +38,8 @@ fun transformTitleInfo(title: TitleInfo): TitleDetails? = with(title) {
 
 fun transformCast(cast: List<TitleInfo.CastMember>): List<TitleDetails.CastMember> = cast.map {
     TitleDetails.CastMember(
-        it.image.ifEmpty { null },
+        it.image.ifEmpty { null }
+            ?.let { ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_THUMBNAIL) },
         it.name,
         it.role
     )

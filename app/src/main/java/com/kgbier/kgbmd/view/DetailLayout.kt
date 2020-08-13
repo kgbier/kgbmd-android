@@ -9,6 +9,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.setMargins
 import androidx.core.view.updatePadding
+import androidx.core.view.updatePaddingRelative
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.transition.Fade
@@ -52,6 +53,8 @@ class DetailLayout(context: MainActivity) :
         titleDetailsList = TitleDetailsList(context, route.titleId).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             visibility = View.GONE
+
+            updatePaddingRelative(bottom = 16.dp)
             clipToPadding = false
 
             setOnUpdateWithWindowInsetsListener { _, insets, intendedPadding, _ ->
