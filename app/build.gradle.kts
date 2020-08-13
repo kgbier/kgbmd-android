@@ -87,7 +87,7 @@ dependencies {
 
     implementation("com.google.android.material:material:1.2.0")
 
-    val okhttpVersion = "4.8.0"
+    val okhttpVersion = "4.8.1"
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     debugImplementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
 
