@@ -17,6 +17,14 @@ open class TitleDetailsView(context: Context) : RecyclerView(context) {
         layoutManager = LinearLayoutManager(context)
         adapter = titlesAdapter
         this.addItemDecoration(BetweenItemDecoration(12.dp))
+
+        addOnScrollListener(object : OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                (findViewHolderForAdapterPosition(0) as? HeaderViewHolder)?.let {
+                    it.view.imageViewBackground.translationY = computeVerticalScrollOffset() * 0.4f
+                }
+            }
+        })
     }
 }
 
