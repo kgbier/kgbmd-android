@@ -1,6 +1,7 @@
 package com.kgbier.kgbmd.domain.repo
 
 import com.kgbier.kgbmd.data.imdb.ImdbService
+import com.kgbier.kgbmd.data.imdb.model.transformHotListItem
 import com.kgbier.kgbmd.data.imdb.model.transformSuggestionResponse
 import com.kgbier.kgbmd.data.imdb.model.transformTitleInfo
 import com.kgbier.kgbmd.domain.model.*

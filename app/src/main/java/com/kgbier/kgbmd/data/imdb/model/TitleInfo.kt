@@ -49,8 +49,8 @@ private fun List<TitleInfo.Credit>.getCreditStringMatching(partialType: String):
 
 fun transformTitleDetailsPoster(posterUrl: String?): TitleDetails.Poster? = posterUrl?.let {
     TitleDetails.Poster(
-        ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_THUMBNAIL),
-        ImageResizer.resize(it, ImageResizer.SIZE_FULL)
+        ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_HINT),
+        ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_LARGE)
     )
 }
 

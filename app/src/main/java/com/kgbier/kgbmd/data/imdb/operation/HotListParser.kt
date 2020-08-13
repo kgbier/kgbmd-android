@@ -1,6 +1,6 @@
 package com.kgbier.kgbmd.data.imdb.operation
 
-import com.kgbier.kgbmd.domain.model.HotListItem
+import com.kgbier.kgbmd.data.imdb.model.HotListItem
 import okio.BufferedSource
 
 
