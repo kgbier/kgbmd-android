@@ -49,12 +49,14 @@ class TitlesAdapter : ListAdapter<BaseTitlesViewModel, BaseTitlesViewHolder>(DIF
         const val VIEW_TYPE_HEADER = 0
         const val VIEW_TYPE_SECTION_HEADER = 1
         const val VIEW_TYPE_TITLED_TEXT = 2
+        const val VIEW_TYPE_CAST_MEMBER = 3
     }
 
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
         is HeaderViewModel -> VIEW_TYPE_HEADER
         is SectionHeadingViewModel -> VIEW_TYPE_SECTION_HEADER
         is TitledTextViewModel -> VIEW_TYPE_TITLED_TEXT
+        is CastMemberViewModel -> VIEW_TYPE_CAST_MEMBER
         else -> throw NotImplementedError()
     }
 
@@ -63,6 +65,7 @@ class TitlesAdapter : ListAdapter<BaseTitlesViewModel, BaseTitlesViewHolder>(DIF
             VIEW_TYPE_HEADER -> HeaderViewHolder(parent.context)
             VIEW_TYPE_SECTION_HEADER -> SectionHeadingViewHolder(parent.context)
             VIEW_TYPE_TITLED_TEXT -> TitledTextViewHolder(parent.context)
+            VIEW_TYPE_CAST_MEMBER -> CastMemberViewHolder(parent.context)
             else -> throw NotImplementedError()
         }
 

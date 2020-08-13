@@ -5,10 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kgbier.kgbmd.domain.model.TitleDetails
 import com.kgbier.kgbmd.domain.repo.MediaInfoRepo
-import com.kgbier.kgbmd.view.ui.titledetails.BaseTitlesViewModel
-import com.kgbier.kgbmd.view.ui.titledetails.HeaderViewModel
-import com.kgbier.kgbmd.view.ui.titledetails.SectionHeadingViewModel
-import com.kgbier.kgbmd.view.ui.titledetails.TitledTextViewModel
+import com.kgbier.kgbmd.view.ui.titledetails.*
 import kotlinx.coroutines.launch
 
 class TitleDetailsViewModel(titleId: String) : ViewModel() {
@@ -49,10 +46,10 @@ class TitleDetailsViewModel(titleId: String) : ViewModel() {
             description?.let { list.add(TitledTextViewModel("Summary", it)) }
 
             if (castMembers.isNotEmpty()) {
-                list.add(SectionHeadingViewModel("Cast", null))
+                list.add(SectionHeadingViewModel("Cast"))
             }
             castMembers.forEach {
-                list.add(TitledTextViewModel(it.role ?: "", it.name ?: ""))
+                list.add(CastMemberViewModel(it.name ?: "", it.role, it.thumbnailUrl))
             }
         }
         return list

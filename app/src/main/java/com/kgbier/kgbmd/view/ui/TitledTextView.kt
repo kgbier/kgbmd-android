@@ -33,10 +33,4 @@ class TitledTextView(context: Context) : LinearLayout(context) {
             setTextColorAttr(android.R.attr.textColorPrimary)
         }.also(::addView)
     }
-
-    var text: CharSequence?
-        get() = textViewContent.text
-        set(value) {
-            textViewContent.text = value
-        }
 }
