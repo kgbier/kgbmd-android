@@ -6,10 +6,10 @@ import androidx.core.view.updateMarginsRelative
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.view.component.TitleHeading
 
-class TitleSectionHeadingViewModel(val name: String, val yearReleased: String?) :
+class SectionHeadingViewModel(val name: String, val yearReleased: String?) :
     BaseTitlesViewModel
 
-class TitleSectionHeadingViewHolder(context: Context) :
+class SectionHeadingViewHolder(context: Context) :
     BaseTitlesViewHolder(TitleHeading(context).apply {
         layoutParams = ViewGroup.MarginLayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -21,7 +21,7 @@ class TitleSectionHeadingViewHolder(context: Context) :
     val view get() = itemView as TitleHeading
 
     override fun bind(viewModel: BaseTitlesViewModel) {
-        if (viewModel !is TitleSectionHeadingViewModel) return
+        if (viewModel !is SectionHeadingViewModel) return
 
         view.setTitleSequence(viewModel.name, viewModel.yearReleased)
     }

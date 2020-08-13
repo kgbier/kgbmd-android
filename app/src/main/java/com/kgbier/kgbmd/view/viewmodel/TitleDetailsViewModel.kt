@@ -7,8 +7,8 @@ import com.kgbier.kgbmd.domain.model.TitleDetails
 import com.kgbier.kgbmd.domain.repo.MediaInfoRepo
 import com.kgbier.kgbmd.view.ui.titledetails.BaseTitlesViewModel
 import com.kgbier.kgbmd.view.ui.titledetails.HeaderViewModel
-import com.kgbier.kgbmd.view.ui.titledetails.TitleSectionHeadingViewModel
-import com.kgbier.kgbmd.view.ui.titledetails.TitledTextTitlesViewModel
+import com.kgbier.kgbmd.view.ui.titledetails.SectionHeadingViewModel
+import com.kgbier.kgbmd.view.ui.titledetails.TitledTextViewModel
 import kotlinx.coroutines.launch
 
 class TitleDetailsViewModel(titleId: String) : ViewModel() {
@@ -43,16 +43,16 @@ class TitleDetailsViewModel(titleId: String) : ViewModel() {
             titleHeading.value = name
 
             list.add(HeaderViewModel(name, yearReleased, rating, poster))
-            directedBy?.let { list.add(TitledTextTitlesViewModel("Directed by", it)) }
-            writtenBy?.let { list.add(TitledTextTitlesViewModel("Written by", it)) }
-            createdBy?.let { list.add(TitledTextTitlesViewModel("Created by", it)) }
-            description?.let { list.add(TitledTextTitlesViewModel("Summary", it)) }
+            directedBy?.let { list.add(TitledTextViewModel("Directed by", it)) }
+            writtenBy?.let { list.add(TitledTextViewModel("Written by", it)) }
+            createdBy?.let { list.add(TitledTextViewModel("Created by", it)) }
+            description?.let { list.add(TitledTextViewModel("Summary", it)) }
 
             if (castMembers.isNotEmpty()) {
-                list.add(TitleSectionHeadingViewModel("Cast", null))
+                list.add(SectionHeadingViewModel("Cast", null))
             }
             castMembers.forEach {
-                list.add(TitledTextTitlesViewModel(it.role ?: "", it.name ?: ""))
+                list.add(TitledTextViewModel(it.role ?: "", it.name ?: ""))
             }
         }
         return list
