@@ -87,6 +87,7 @@ fun transformMovieResponse(movie: Movie): TitleDetails? = with(movie) {
             "10",
             imdbVotes
         ),
-        runtime
+        runtime,
+        emptyList()
     )
 }

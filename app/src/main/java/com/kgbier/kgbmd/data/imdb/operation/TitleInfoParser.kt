@@ -5,6 +5,8 @@ import okio.BufferedSource
 import okio.ByteString
 import okio.ByteString.Companion.encodeUtf8
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Element
+import org.jsoup.parser.Parser
 
 class TitleInfoParser(private val source: BufferedSource) {
 
@@ -15,6 +17,7 @@ class TitleInfoParser(private val source: BufferedSource) {
         val END_END_TAG by lazy { END_START_TAG }
 
         val H1 by lazy { "<h1".encodeUtf8() }
+        val TD by lazy { "<td".encodeUtf8() }
         val H4 by lazy { "<h4".encodeUtf8() }
         val ANCHOR by lazy { "<a".encodeUtf8() }
         val IMG by lazy { "<img".encodeUtf8() }
@@ -39,6 +42,10 @@ class TitleInfoParser(private val source: BufferedSource) {
         val SUMMARY_TEXT_END by lazy { "</div>".encodeUtf8() }
         val SUMMARY_CREDIT_START by lazy { "<div class=\"credit_summary_item\">".encodeUtf8() }
         val SUMMARY_CREDIT_END by lazy { "</div>".encodeUtf8() }
+
+        val CAST_SECTION_SEEK by lazy { "<div class=\"article\" id=\"titleCast\">".encodeUtf8() }
+        val CAST_SECTION_START by lazy { "<table class=\"cast_list\">".encodeUtf8() }
+        val CAST_SECTION_END by lazy { "</table>".encodeUtf8() }
     }
 
     fun getTitleInfo(): TitleInfo? {
@@ -88,6 +95,23 @@ class TitleInfoParser(private val source: BufferedSource) {
                 }
         }
 
+        val cast = mutableListOf<TitleInfo.CastMember>()
+        skipOver(CAST_SECTION_SEEK)?.let {
+            getBetween(CAST_SECTION_START, CAST_SECTION_END)
+        }?.let { Parser.parseXmlFragment(it, "") }?.let { table ->
+            cast += table.asSequence()
+                .filterIsInstance<Element>()
+                .map { it.getElementsByTag("td") }
+                .filter { it.size == 4 }
+                .map {
+                    TitleInfo.CastMember(
+                        it[0].getElementsByTag("img").firstOrNull()?.attr("loadlate") ?: "",
+                        it[1].text(),
+                        it[3].text()
+                    )
+                }.toList()
+        }
+
         return TitleInfo(
             ratingValue,
             ratingBest,
@@ -97,7 +121,8 @@ class TitleInfoParser(private val source: BufferedSource) {
             duration,
             posterUrl,
             summaryText,
-            creditSummary
+            creditSummary,
+            cast
         )
     }
 
@@ -136,7 +161,7 @@ class TitleInfoParser(private val source: BufferedSource) {
         return source.readUtf8(upper - skipBy)
     }
 
-    private fun stripMarkup(fragment: String): String = Jsoup.parse(fragment).text()
+    private fun stripMarkup(fragment: String): String = Jsoup.parseBodyFragment(fragment).text()
 
     private fun parseCreditSummary(fragment: String): TitleInfo.Credit? {
         var str = stripMarkup(fragment)

@@ -7,6 +7,7 @@ import com.kgbier.kgbmd.domain.model.TitleDetails
 import com.kgbier.kgbmd.domain.repo.MediaInfoRepo
 import com.kgbier.kgbmd.view.ui.titledetails.BaseTitlesViewModel
 import com.kgbier.kgbmd.view.ui.titledetails.HeaderViewModel
+import com.kgbier.kgbmd.view.ui.titledetails.TitleSectionHeadingViewModel
 import com.kgbier.kgbmd.view.ui.titledetails.TitledTextTitlesViewModel
 import kotlinx.coroutines.launch
 
@@ -46,23 +47,13 @@ class TitleDetailsViewModel(titleId: String) : ViewModel() {
             writtenBy?.let { list.add(TitledTextTitlesViewModel("Written by", it)) }
             createdBy?.let { list.add(TitledTextTitlesViewModel("Created by", it)) }
             description?.let { list.add(TitledTextTitlesViewModel("Summary", it)) }
-            // these are filler for now
-            directedBy?.let { list.add(TitledTextTitlesViewModel("Directed by", it)) }
-            writtenBy?.let { list.add(TitledTextTitlesViewModel("Written by", it)) }
-            createdBy?.let { list.add(TitledTextTitlesViewModel("Created by", it)) }
-            description?.let { list.add(TitledTextTitlesViewModel("Summary", it)) }
-            directedBy?.let { list.add(TitledTextTitlesViewModel("Directed by", it)) }
-            writtenBy?.let { list.add(TitledTextTitlesViewModel("Written by", it)) }
-            createdBy?.let { list.add(TitledTextTitlesViewModel("Created by", it)) }
-            description?.let { list.add(TitledTextTitlesViewModel("Summary", it)) }
-            directedBy?.let { list.add(TitledTextTitlesViewModel("Directed by", it)) }
-            writtenBy?.let { list.add(TitledTextTitlesViewModel("Written by", it)) }
-            createdBy?.let { list.add(TitledTextTitlesViewModel("Created by", it)) }
-            description?.let { list.add(TitledTextTitlesViewModel("Summary", it)) }
-            directedBy?.let { list.add(TitledTextTitlesViewModel("Directed by", it)) }
-            writtenBy?.let { list.add(TitledTextTitlesViewModel("Written by", it)) }
-            createdBy?.let { list.add(TitledTextTitlesViewModel("Created by", it)) }
-            description?.let { list.add(TitledTextTitlesViewModel("Summary", it)) }
+
+            if (castMembers.isNotEmpty()) {
+                list.add(TitleSectionHeadingViewModel("Cast", null))
+            }
+            castMembers.forEach {
+                list.add(TitledTextTitlesViewModel(it.role ?: "", it.name ?: ""))
+            }
         }
         return list
     }

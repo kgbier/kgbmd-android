@@ -54,6 +54,7 @@ fun transformMovieResponse(movie: Movie): TitleDetails? = with(movie) {
                 it.ratingCount.toString()
             )
         },
-        duration
+        duration,
+        emptyList()
     )
 }

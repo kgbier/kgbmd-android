@@ -12,9 +12,11 @@ data class TitleInfo(
     val duration: String?,
     val posterUrl: String?,
     val description: String?,
-    val credits: List<Credit>
+    val credits: List<Credit>,
+    val cast: List<CastMember>
 ) {
     data class Credit(val type: String, val names: List<String>)
+    data class CastMember(val image: String, val name: String?, val role: String?)
 }
 
 fun transformTitleInfo(title: TitleInfo): TitleDetails? = with(title) {
@@ -29,7 +31,16 @@ fun transformTitleInfo(title: TitleInfo): TitleDetails? = with(title) {
         description,
         yearReleased,
         transformTitleDetailsRating(ratingValue, ratingBest, ratingCount),
-        duration
+        duration,
+        transformCast(cast)
+    )
+}
+
+fun transformCast(cast: List<TitleInfo.CastMember>): List<TitleDetails.CastMember> = cast.map {
+    TitleDetails.CastMember(
+        it.image.ifEmpty { null },
+        it.name,
+        it.role
     )
 }
 

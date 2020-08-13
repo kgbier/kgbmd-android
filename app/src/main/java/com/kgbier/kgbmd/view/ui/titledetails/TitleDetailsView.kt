@@ -44,7 +44,7 @@ class TitlesAdapter : ListAdapter<BaseTitlesViewModel, BaseTitlesViewHolder>(DIF
     }
 
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
-        is TitleHeadingViewModel -> VIEW_TYPE_TITLE
+        is TitleSectionHeadingViewModel -> VIEW_TYPE_TITLE
         is TitledTextTitlesViewModel -> VIEW_TYPE_TITLED_TEXT
         is HeaderViewModel -> VIEW_TYPE_HEADER
         else -> throw NotImplementedError()
@@ -52,7 +52,7 @@ class TitlesAdapter : ListAdapter<BaseTitlesViewModel, BaseTitlesViewHolder>(DIF
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseTitlesViewHolder =
         when (viewType) {
-            VIEW_TYPE_TITLE -> TitleHeadingViewHolder(parent.context)
+            VIEW_TYPE_TITLE -> TitleSectionHeadingViewHolder(parent.context)
             VIEW_TYPE_TITLED_TEXT -> TitledTextTitlesViewHolder(parent.context)
             VIEW_TYPE_HEADER -> HeaderViewHolder(parent.context)
             else -> throw NotImplementedError()
