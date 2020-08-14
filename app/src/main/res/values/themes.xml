@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="transparent">#00000000</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="darkGrey">#121212</color>
+    <color name="darkGrey_7">#232323</color>
+    <color name="darkGrey_9">#272727</color>
+
+    <!-- Window background color  -->
+    <attr name="backgroundColorPrimary" format="reference|color" />
+    <!-- Appears elevated above the background -->
+    <attr name="backgroundColorSecondary" format="reference|color" />
+    <!-- Appears elevated above secondary backgrounds -->
+    <attr name="backgroundColorTertiary" format="reference|color" />
+
+    <style name="BaseAlphaTheme.Light" parent="Theme.MaterialComponents.Light">
+        <item name="android:colorForeground">@color/black</item>
+        <item name="backgroundColorPrimary">@color/white</item>
+        <item name="backgroundColorSecondary">@color/white</item>
+        <item name="backgroundColorTertiary">@color/white</item>
+    </style>
+
+    <style name="BaseAlphaTheme.Dark" parent="Theme.MaterialComponents">
+        <item name="android:colorForeground">@color/white</item>
+        <item name="backgroundColorPrimary">@color/darkGrey</item>
+        <item name="backgroundColorSecondary">@color/darkGrey_7</item>
+        <item name="backgroundColorTertiary">@color/darkGrey_9</item>
+    </style>
+
+    <!-- Respects device theme. Overridden in `res/values-night` -->
+    <style name="BaseAlphaTheme.DayNight" parent="BaseAlphaTheme.Light" />
+
+    <style name="BaseAlphaTheme.DayNight.Common">
+        <item name="android:windowBackground">?backgroundColorPrimary</item>
+        <item name="android:colorBackground">?backgroundColorPrimary</item>
+        <item name="android:colorBackgroundCacheHint">@color/color_background_cache_hint</item>
+
+        <item name="colorSurface">?backgroundColorSecondary</item>
+        <item name="cardBackgroundColor">?backgroundColorSecondary</item>
+        <item name="colorPrimarySurface">?backgroundColorSecondary</item>
+        <item name="colorBackgroundFloating">?backgroundColorSecondary</item>
+    </style>
+
+    <style name="AlphaTheme" parent="BaseAlphaTheme.DayNight.Common" />
+
+</resources>

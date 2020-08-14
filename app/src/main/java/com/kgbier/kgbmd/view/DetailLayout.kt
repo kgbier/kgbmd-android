@@ -46,7 +46,7 @@ class DetailLayout(context: MainActivity) :
     init {
         id = R.id.detailLayout
 
-        resolveColorAttribute(android.R.attr.colorBackground)?.let {
+        resolveColorAttribute(R.attr.backgroundColorPrimary)?.let {
             setBackgroundColor(it)
         }
 
@@ -65,8 +65,9 @@ class DetailLayout(context: MainActivity) :
             }
         }.also(::addView)
 
+        // Wrap this view with the Dark theme
         toolbar = ToolbarView(
-            ContextThemeWrapper(context, R.style.Theme_MaterialComponents)
+            ContextThemeWrapper(context, R.style.BaseAlphaTheme_Dark)
         ).apply {
             layoutParams =
                 LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {

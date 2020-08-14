@@ -46,7 +46,7 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
 
     init {
 
-        resolveColorAttribute(android.R.attr.colorBackground)?.let {
+        resolveColorAttribute(R.attr.backgroundColorPrimary)?.let {
             setBackgroundColor(it)
         }
 
@@ -81,7 +81,7 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
                     setColorSchemeResources(primaryDark, primary)
                 }
             }
-            resolveAttribute(android.R.attr.colorBackground)?.let(::setProgressBackgroundColorSchemeResource)
+            resolveAttribute(R.attr.backgroundColorTertiary)?.let(::setProgressBackgroundColorSchemeResource)
 
             setProgressViewEndTarget(false, PULLDOWN_END_DISTANCE)
             setOnRefreshListener { movieListViewModel.reload() }

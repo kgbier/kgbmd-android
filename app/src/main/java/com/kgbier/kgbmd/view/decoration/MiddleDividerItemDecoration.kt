@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewCompat.getLayoutDirection
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +25,7 @@ class MiddleDividerItemDecoration(
 
     private val bounds = Rect()
     private val divider: Drawable? = context.resolveAttribute(DIVIDER_DRAWABLE_ATTR_ID)?.let {
-        context.getDrawable(it)
+        ContextCompat.getDrawable(context, it)
     }
 
     override fun onDraw(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {

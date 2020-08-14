@@ -90,7 +90,7 @@ open class SearchBarView(context: MainActivity) : CardView(context), ScrollBehav
                         MATCH_PARENT
                     ).apply {
                         updateMarginsRelative(top = 8.dp, bottom = 8.dp)
-                        resolveAttribute(android.R.attr.colorForeground)?.let(::setBackgroundResource)
+                        resolveAttribute(android.R.attr.colorControlNormal)?.let(::setBackgroundResource)
                     }
                 }.also(layout::addView)
                 layout.addView(it)

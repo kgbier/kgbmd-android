@@ -19,13 +19,8 @@ import com.kgbier.kgbmd.view.ui.HeroRatingView
 
 class HeaderView(context: ContextThemeWrapper) : ConstraintLayout(context) {
 
-    // Wrap this view with the Dark Material Components theme
-    constructor(context: Context) : this(
-        ContextThemeWrapper(
-            context,
-            R.style.Theme_MaterialComponents
-        )
-    )
+    // Wrap this view with the Dark theme
+    constructor(context: Context) : this(ContextThemeWrapper(context, R.style.BaseAlphaTheme_Dark))
 
     val spaceTop: Space
     val imageViewBackground: ImageView

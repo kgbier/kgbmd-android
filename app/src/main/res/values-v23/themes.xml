@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AlphaTheme" parent="BaseAlphaTheme.DayNight.Common">
+        <item name="android:colorBackgroundFloating">?backgroundColorSecondary</item>
+    </style>
+
+</resources>

@@ -33,8 +33,7 @@ class SearchLayout(context: MainActivity) :
     private val movieListSearchViewModel: MovieListSearchViewModel by context.viewModels()
 
     init {
-
-        resolveColorAttribute(android.R.attr.colorBackground)?.let {
+        resolveColorAttribute(R.attr.backgroundColorPrimary)?.let {
             setBackgroundColor(it)
         }
 
