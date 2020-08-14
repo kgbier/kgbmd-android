@@ -94,7 +94,9 @@ class DetailLayout(context: MainActivity) :
             visibility = View.VISIBLE
         }.also(::addView)
 
-//c
+        titleDetailsViewModel.titleHeading.bind(context) {
+            toolbar.title = it
+        }.disposeBy(disposeBag)
 
         titleDetailsViewModel.titleDetails.bind(context) {
             when (it) {

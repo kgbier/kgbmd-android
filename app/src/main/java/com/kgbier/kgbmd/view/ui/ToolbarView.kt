@@ -2,36 +2,43 @@ package com.kgbier.kgbmd.view.ui
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Color
 import androidx.appcompat.widget.Toolbar
+import androidx.core.graphics.ColorUtils
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.util.resolveAttribute
+import com.kgbier.kgbmd.util.resolveColorAttribute
 import com.kgbier.kgbmd.view.behaviour.ScrollBehaviour
 
 class ToolbarView(context: Context) : Toolbar(context), ScrollBehaviour.Child {
 
-    val liftAnimator: ValueAnimator
+    val liftAlphaAnimator: ValueAnimator
     val liftTriggerDistance = 32.dp
     val elevationAnimDuration = 150L
 
+    var baseTitleColor = resolveColorAttribute(android.R.attr.textColorPrimary) ?: Color.WHITE
+
     init {
-        resolveAttribute(R.attr.backgroundColorSecondary)?.let {
-            setBackgroundResource(
-                it
-            )
-        }
+        resolveAttribute(R.attr.backgroundColorSecondary)?.let(::setBackgroundResource)
         elevation = 4f.dp
 
-        liftAnimator = ValueAnimator().apply {
+        liftAlphaAnimator = ValueAnimator().apply {
             duration = elevationAnimDuration
             setIntValues(0, 255)
-            addUpdateListener { background.alpha = it.animatedValue as Int }
+            addUpdateListener { onAnimationUpdate(it.animatedValue as Int) }
         }
 
-        background.alpha = 0
+        liftAlphaAnimator.reverse()
+        liftAlphaAnimator.end()
     }
 
-    var isLifted = false
+    private fun onAnimationUpdate(alpha: Int) {
+        background.alpha = alpha
+        setTitleTextColor(ColorUtils.setAlphaComponent(baseTitleColor, alpha))
+    }
+
+    private var isLifted = false
 
     override fun scrollBehaviourResetPosition() {
         isLifted = false
@@ -42,7 +49,7 @@ class ToolbarView(context: Context) : Toolbar(context), ScrollBehaviour.Child {
         if (!isLifted) {
             if (totalDistance > liftTriggerDistance) {
                 isLifted = true
-                liftAnimator.start()
+                liftAlphaAnimator.start()
             }
         }
     }
@@ -51,7 +58,7 @@ class ToolbarView(context: Context) : Toolbar(context), ScrollBehaviour.Child {
         if (isLifted) {
             if (totalDistance < liftTriggerDistance || (distance - totalDistance - liftTriggerDistance) > 0) {
                 isLifted = false
-                liftAnimator.reverse()
+                liftAlphaAnimator.reverse()
             }
         }
     }
