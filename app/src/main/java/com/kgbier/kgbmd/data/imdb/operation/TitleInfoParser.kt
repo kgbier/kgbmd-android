@@ -106,8 +106,8 @@ class TitleInfoParser(private val source: BufferedSource) {
                 .map {
                     TitleInfo.CastMember(
                         it[0].getElementsByTag("img").firstOrNull()?.attr("loadlate") ?: "",
-                        it[1].text(),
-                        it[3].text()
+                        it[1].text() ?: "",
+                        it[3].text() ?: ""
                     )
                 }.toList()
         }

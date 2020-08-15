@@ -16,7 +16,7 @@ data class TitleInfo(
     val cast: List<CastMember>
 ) {
     data class Credit(val type: String, val names: List<String>)
-    data class CastMember(val image: String, val name: String?, val role: String?)
+    data class CastMember(val image: String, val name: String, val role: String)
 }
 
 fun transformTitleInfo(title: TitleInfo): TitleDetails? = with(title) {
@@ -36,14 +36,19 @@ fun transformTitleInfo(title: TitleInfo): TitleDetails? = with(title) {
     )
 }
 
-fun transformCast(cast: List<TitleInfo.CastMember>): List<TitleDetails.CastMember> = cast.map {
-    TitleDetails.CastMember(
-        it.image.ifEmpty { null }
-            ?.let { ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_THUMBNAIL) },
-        it.name,
-        it.role
-    )
-}
+fun transformCast(cast: List<TitleInfo.CastMember>): List<TitleDetails.CastMember> =
+    cast.mapNotNull {
+        if (it.name.isBlank() && it.role.isBlank()) {
+            null
+        } else {
+            TitleDetails.CastMember(
+                it.image.ifBlank { null }
+                    ?.let { ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_THUMBNAIL) },
+                it.name.ifBlank { null },
+                it.role.ifBlank { null }
+            )
+        }
+    }
 
 private fun List<TitleInfo.Credit>.getCreditStringMatching(partialType: String): String? =
     find { it.type.contains(partialType) }?.names?.joinToString(", ")
@@ -51,6 +56,7 @@ private fun List<TitleInfo.Credit>.getCreditStringMatching(partialType: String):
 fun transformTitleDetailsPoster(posterUrl: String?): TitleDetails.Poster? = posterUrl?.let {
     TitleDetails.Poster(
         ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_HINT),
+        ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_THUMBNAIL),
         ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_LARGE)
     )
 }

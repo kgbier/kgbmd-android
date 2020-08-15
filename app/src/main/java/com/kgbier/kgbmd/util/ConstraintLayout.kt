@@ -75,22 +75,20 @@ inline fun ConstrainingScope.link(thisEdge: Edge, otherEdge: Edge, @Px margin: I
     }
 }
 
-inline fun ConstrainingScope.visibility(visibility: Int) {
+inline fun ConstrainingScope.visibility(visibility: Int) =
     constraintSet.setVisibility(ref.id, visibility)
-}
 
-inline fun ConstrainingScope.ratio(ratio: String) {
-    constraintSet.setDimensionRatio(ref.id, ratio)
-}
+inline fun ConstrainingScope.ratio(ratio: String) = constraintSet.setDimensionRatio(ref.id, ratio)
 
-inline fun ConstrainingScope.width(@Px width: Int) {
-    constraintSet.constrainWidth(ref.id, width)
-}
+inline fun ConstrainingScope.width(@Px width: Int) = constraintSet.constrainWidth(ref.id, width)
 
-inline fun ConstrainingScope.height(@Px height: Int) {
-    constraintSet.constrainHeight(ref.id, height)
-}
+inline fun ConstrainingScope.height(@Px height: Int) = constraintSet.constrainHeight(ref.id, height)
 
-inline fun ConstrainingScope.goneMargin(edge: Edge, @Px margin: Int) {
+inline fun ConstrainingScope.minWidth(@Px width: Int) =
+    constraintSet.constrainMinWidth(ref.id, width)
+
+inline fun ConstrainingScope.minHeight(@Px height: Int) =
+    constraintSet.constrainMinHeight(ref.id, height)
+
+inline fun ConstrainingScope.goneMargin(edge: Edge, @Px margin: Int) =
     constraintSet.setGoneMargin(ref.id, edge.side.facing, margin)
-}
