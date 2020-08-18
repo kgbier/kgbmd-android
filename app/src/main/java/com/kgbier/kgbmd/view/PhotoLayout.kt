@@ -4,16 +4,13 @@ import android.annotation.SuppressLint
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.transition.ChangeBounds
-import androidx.transition.Fade
-import androidx.transition.Transition
-import androidx.transition.TransitionSet
+import androidx.transition.*
 import com.bumptech.glide.Glide
 import com.kgbier.kgbmd.*
+import com.kgbier.kgbmd.R
 
 @SuppressLint("ViewConstructor")
 class PhotoLayout(context: MainActivity) :
@@ -45,6 +42,11 @@ class PhotoScreenTransitionRoute : TransitionRoute {
             .also { addTransition(it) }
 
         ChangeBounds()
+            .addTarget(R.id.imageViewPhoto)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .also { addTransition(it) }
+
+        ChangeImageTransform()
             .addTarget(R.id.imageViewPhoto)
             .setInterpolator(AccelerateDecelerateInterpolator())
             .also { addTransition(it) }
