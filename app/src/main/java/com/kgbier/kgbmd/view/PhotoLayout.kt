@@ -27,8 +27,6 @@ class PhotoLayout(context: MainActivity) :
             layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
         }.also(::addView)
 
-        TextView(context).also(::addView)
-
         Glide.with(this)
             .load(route.fullImage)
             .into(imageViewPhoto)

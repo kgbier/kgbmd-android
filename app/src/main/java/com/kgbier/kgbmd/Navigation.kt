@@ -73,8 +73,7 @@ sealed class Route(val id: Id) : LayoutRoute {
         Parcelable
 
     @Parcelize
-    data class PhotoScreen(val fullImage: String) :
-        Route(Id.ROUTE_PHOTO_SCREEN),
+    data class PhotoScreen(val fullImage: String) : Route(Id.ROUTE_PHOTO_SCREEN),
         LayoutRoute by BaseLayoutRoute(::PhotoLayout),
         TransitionRoute by PhotoScreenTransitionRoute(),
         Parcelable
