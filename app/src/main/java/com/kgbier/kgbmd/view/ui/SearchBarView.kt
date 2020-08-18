@@ -15,7 +15,7 @@ import androidx.core.view.updateMarginsRelative
 import com.kgbier.kgbmd.MainActivity
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
-import com.kgbier.kgbmd.util.resolveAttribute
+import com.kgbier.kgbmd.util.resolveColorAttribute
 import com.kgbier.kgbmd.util.setTextStyleAttr
 import com.kgbier.kgbmd.view.behaviour.ScrollBehaviour
 import kotlin.math.max
@@ -90,7 +90,7 @@ open class SearchBarView(context: MainActivity) : CardView(context), ScrollBehav
                         MATCH_PARENT
                     ).apply {
                         updateMarginsRelative(top = 8.dp, bottom = 8.dp)
-                        resolveAttribute(android.R.attr.colorControlNormal)?.let(::setBackgroundResource)
+                        resolveColorAttribute(R.attr.colorControlNormal)?.let(::setBackgroundColor)
                     }
                 }.also(layout::addView)
                 layout.addView(it)
