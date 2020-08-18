@@ -4,5 +4,7 @@
     <item name="searchResultsView" type="id" />
     <item name="tilePosterView" type="id" />
 
+    <item name="imageViewPhoto" type="id" />
+
     <item name="detailLayout" type="id" />
 </resources>

@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Navigator.mainActivity = this
+
         rootView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
 

@@ -10,7 +10,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet.WRAP_CONTENT
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.kgbier.kgbmd.Navigator
 import com.kgbier.kgbmd.R
+import com.kgbier.kgbmd.Route
+import com.kgbier.kgbmd.domain.imdb.operation.ImageResizer
 import com.kgbier.kgbmd.domain.model.TitleDetails
 import com.kgbier.kgbmd.util.*
 import com.kgbier.kgbmd.view.component.TitleHeading
@@ -41,6 +44,7 @@ class HeaderView(context: ContextThemeWrapper) : ConstraintLayout(context) {
         titleHeading = TitleHeading(context).also(::addView)
         heroRatingView = HeroRatingView(context).also(::addView)
         imageViewPoster = ImageView(context).apply {
+            id = R.id.imageViewPhoto
             scaleType = ImageView.ScaleType.CENTER_CROP
         }.also(::addView)
 
@@ -116,7 +120,20 @@ class HeaderViewModel(
     val yearReleased: String?,
     val rating: TitleDetails.Rating?,
     val poster: TitleDetails.Poster?
-) : BaseTitlesViewModel
+) : BaseTitlesViewModel {
+    fun openPosterScreen() {
+        poster ?: return
+
+        Navigator.navigate(
+            Route.PhotoScreen(
+                ImageResizer.resize(
+                    poster.largeUrl,
+                    ImageResizer.SIZE_FULL
+                )
+            )
+        )
+    }
+}
 
 class HeaderViewHolder(context: Context) : BaseTitlesViewHolder(HeaderView(context).apply {
     layoutParams = ViewGroup.LayoutParams(
@@ -129,22 +146,24 @@ class HeaderViewHolder(context: Context) : BaseTitlesViewHolder(HeaderView(conte
     override fun bind(viewModel: BaseTitlesViewModel) {
         if (viewModel !is HeaderViewModel) return
 
-        if(viewModel.poster == null) {
+        if (viewModel.poster == null) {
             view.imageViewPoster.visibility = View.GONE
         } else {
             view.imageViewPoster.visibility = View.VISIBLE
             val posterHint = Glide.with(view)
-                .load(viewModel.poster?.hintUrl)
+                .load(viewModel.poster.hintUrl)
 
             Glide.with(view)
-                .load(viewModel.poster?.largeUrl)
+                .load(viewModel.poster.largeUrl)
                 .thumbnail(posterHint)
                 .into(view.imageViewBackground)
 
             Glide.with(view)
-                .load(viewModel.poster?.thumbnailUrl)
+                .load(viewModel.poster.thumbnailUrl)
                 .thumbnail(posterHint)
                 .into(view.imageViewPoster)
+
+            view.imageViewPoster.setOnClickListener { viewModel.openPosterScreen() }
         }
         view.titleHeading.setTitleSequence(viewModel.name, viewModel.yearReleased)
 

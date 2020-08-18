@@ -1,12 +1,12 @@
 package com.kgbier.kgbmd
 
 import android.os.Parcelable
+import android.view.View
+import android.view.ViewGroup
 import androidx.transition.Scene
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
-import android.view.View
-import android.view.ViewGroup
 import com.kgbier.kgbmd.view.*
 import kotlinx.android.parcel.Parcelize
 import java.lang.ref.WeakReference
@@ -44,7 +44,8 @@ sealed class Route(val id: Id) : LayoutRoute {
     enum class Id {
         ROUTE_MAIN_POSTER_SCREEN,
         ROUTE_SEARCH_SCREEN,
-        ROUTE_DETAIL_SCREEN
+        ROUTE_DETAIL_SCREEN,
+        ROUTE_PHOTO_SCREEN
     }
 
     companion object {
@@ -52,6 +53,7 @@ sealed class Route(val id: Id) : LayoutRoute {
             Id.ROUTE_MAIN_POSTER_SCREEN -> MainPosterScreen
             Id.ROUTE_SEARCH_SCREEN -> SearchScreen
             Id.ROUTE_DETAIL_SCREEN -> route.route as DetailScreen
+            Id.ROUTE_PHOTO_SCREEN -> route.route as PhotoScreen
         }
     }
 
@@ -68,6 +70,13 @@ sealed class Route(val id: Id) : LayoutRoute {
     data class DetailScreen(val titleId: String) : Route(Id.ROUTE_DETAIL_SCREEN),
         LayoutRoute by BaseLayoutRoute(::DetailLayout),
         TransitionRoute by DetailScreenTransitionRoute(),
+        Parcelable
+
+    @Parcelize
+    data class PhotoScreen(val fullImage: String) :
+        Route(Id.ROUTE_PHOTO_SCREEN),
+        LayoutRoute by BaseLayoutRoute(::PhotoLayout),
+        TransitionRoute by PhotoScreenTransitionRoute(),
         Parcelable
 }
 
@@ -122,4 +131,12 @@ object Navigation {
         observers[routeKey]?.get()?.onExit()
         observers.remove(routeKey)
     }
+}
+
+object Navigator {
+    lateinit var mainActivity: MainActivity
+
+    fun navigate(route: Route) = mainActivity.navigate(route)
+
+    fun navigateBack() = mainActivity.navigateBack()
 }
