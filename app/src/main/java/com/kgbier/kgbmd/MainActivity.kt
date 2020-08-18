@@ -20,8 +20,21 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
     private var currentRoute: Route? = null
     private val backStack = Stack<Route>()
 
-    private val rootView: ViewGroup
-        get() = window.decorView.findViewById(android.R.id.content)
+    /**
+     * So there's this real weird bug. Initially, I had an assumption that fetching this view by id would always succeed.
+     * However, this has since been proven false (on at least one emualator and one real device).
+     *
+     * When navigating SPECIFICALLY to the "PhotoScreen", if the system needs to recreate the screen for any reason
+     * (theme is changed, screen is rotated, etc.) once onCreate occurs, and the navigation hierarchy is restored,
+     * the root ContentFrameLayout is nowhere to be seen. Pressing the system "back" button will
+     * try to show the next screen, attempt to find the ContentFrameLayout by id, and will fail since
+     * it is not present in the view hierarchy.
+     *
+     * Setting this root view to lazy captures it and keeps everything working for some crazy reason.
+     */
+    private val rootView: ViewGroup by lazy {
+        window.decorView.findViewById(android.R.id.content)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
