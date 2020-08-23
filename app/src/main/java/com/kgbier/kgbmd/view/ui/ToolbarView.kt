@@ -42,7 +42,7 @@ class ToolbarView(context: Context) : Toolbar(context), ScrollBehaviour.Child {
 
     override fun scrollBehaviourResetPosition() {
         isLifted = false
-        liftAlphaAnimator.end()
+        liftAlphaAnimator.cancel()
         setToolbarAlpha(0)
     }
 
