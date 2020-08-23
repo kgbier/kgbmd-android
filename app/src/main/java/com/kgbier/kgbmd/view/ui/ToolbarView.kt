@@ -26,14 +26,14 @@ class ToolbarView(context: Context) : Toolbar(context), ScrollBehaviour.Child {
         liftAlphaAnimator = ValueAnimator().apply {
             duration = elevationAnimDuration
             setIntValues(0, 255)
-            addUpdateListener { onAnimationUpdate(it.animatedValue as Int) }
+            addUpdateListener { setToolbarAlpha(it.animatedValue as Int) }
         }
 
         liftAlphaAnimator.reverse()
         liftAlphaAnimator.end()
     }
 
-    private fun onAnimationUpdate(alpha: Int) {
+    private fun setToolbarAlpha(alpha: Int) {
         background.alpha = alpha
         setTitleTextColor(ColorUtils.setAlphaComponent(baseTitleColor, alpha))
     }
@@ -42,7 +42,8 @@ class ToolbarView(context: Context) : Toolbar(context), ScrollBehaviour.Child {
 
     override fun scrollBehaviourResetPosition() {
         isLifted = false
-        background.alpha = 0
+        liftAlphaAnimator.end()
+        setToolbarAlpha(0)
     }
 
     override fun scrollBehaviourScrollDown(distance: Int, totalDistance: Int) {
