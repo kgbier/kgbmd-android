@@ -9,7 +9,6 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.util.dp
-import com.kgbier.kgbmd.util.resolveAttribute
 import com.kgbier.kgbmd.util.setTextColorAttr
 import com.kgbier.kgbmd.util.setTextStyleAttr
 

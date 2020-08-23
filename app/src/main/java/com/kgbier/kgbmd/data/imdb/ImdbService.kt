@@ -1,12 +1,12 @@
 package com.kgbier.kgbmd.data.imdb
 
+import com.kgbier.kgbmd.data.imdb.model.HotListItem
 import com.kgbier.kgbmd.data.imdb.model.RatingResponse
 import com.kgbier.kgbmd.data.imdb.model.SuggestionResponse
 import com.kgbier.kgbmd.data.imdb.model.TitleInfo
 import com.kgbier.kgbmd.data.imdb.operation.HotListParser
 import com.kgbier.kgbmd.data.imdb.operation.TitleInfoParser
 import com.kgbier.kgbmd.data.operation.JsonP
-import com.kgbier.kgbmd.data.imdb.model.HotListItem
 import com.kgbier.kgbmd.service.Services
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

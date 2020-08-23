@@ -6,7 +6,6 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.transition.*
 import com.bumptech.glide.Glide
 import com.kgbier.kgbmd.*

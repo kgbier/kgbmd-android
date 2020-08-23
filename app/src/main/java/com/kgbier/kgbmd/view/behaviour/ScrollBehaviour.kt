@@ -4,7 +4,6 @@ import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlin.math.absoluteValue
 
 class ScrollBehaviour<T> : CoordinatorLayout.Behavior<T>()
         where T : View, T : ScrollBehaviour.Child {

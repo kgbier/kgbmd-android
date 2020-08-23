@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.dev.DeveloperMenuActivity
 
 private const val CHANNEL_ID = "DEV_NOTIFICATION_CHANNEL_ID"

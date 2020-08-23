@@ -4,7 +4,6 @@ import android.animation.ValueAnimator
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
-import androidx.constraintlayout.solver.widgets.Rectangle
 import androidx.core.graphics.translationMatrix
 import com.kgbier.kgbmd.util.dp
 
@@ -62,7 +61,7 @@ class ShimmerDrawable : Drawable() {
             shimmerAnimator.addUpdateListener {
                 invalidateSelf()
             }
-        } else if(!visible) {
+        } else if (!visible) {
             attached = false
             shimmerAnimator.end()
             shimmerAnimator.removeAllListeners()
