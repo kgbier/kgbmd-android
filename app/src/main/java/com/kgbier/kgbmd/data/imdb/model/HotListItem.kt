@@ -14,7 +14,7 @@ fun transformHotListItem(item: HotListItem) = with(item) {
     MoviePoster(
         ttId,
         name,
-        rating,
+        rating.takeUnless { it == "0.0" },
         imageUrl, // Keep the same URL as the public site to try and take advantage of any CDN caching
         ImageResizer.resize(
             imageUrl,

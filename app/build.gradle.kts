@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.dsl.SigningConfig
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -33,7 +34,6 @@ android {
         versionName = "1.0"
 
         buildConfigField("Boolean", "INTERNAL", "false")
-        buildConfigField("String", "API_KEY_OMDB", "\"e6cce6b\"")
     }
 
     flavorDimensions("distribution")

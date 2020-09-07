@@ -93,12 +93,10 @@ class HotListParser(private val source: BufferedSource) {
         val titleTextLine = findEndAnchor() ?: return null
         val name = extractFromBounds(titleTextLine, NAME_LOWER, NAME_UPPER)
 
-        val validatedRating = rating.takeUnless { it == "0.0" }
-
         return HotListItem(
             ttid,
             name,
-            validatedRating,
+            rating,
             imageUrl
         )
     }
