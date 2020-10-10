@@ -1,7 +1,39 @@
 package com.kgbier.kgbmd.data.imdb.model
 
 import com.kgbier.kgbmd.domain.imdb.operation.ImageResizer
+import com.kgbier.kgbmd.domain.model.NameDetails
 import com.kgbier.kgbmd.domain.model.TitleDetails
+
+sealed class MediaEntityInfo
+
+data class NameInfo(
+    val name: String,
+    val headshotUrl: String?,
+    val description: String?,
+    val filmography: List<Title>,
+) : MediaEntityInfo() {
+    data class Title(val name: String, val role: String)
+}
+
+fun transformNameInfo(nameInfo: NameInfo): NameDetails? = with(nameInfo) {
+    NameDetails(
+        name,
+        headshotUrl?.let(::transformImageUrl),
+        description,
+        transformFilmography(filmography),
+    )
+}
+
+fun transformFilmography(title: List<NameInfo.Title>): List<NameDetails.Title> = title.mapNotNull {
+    if (it.name.isBlank() && it.role.isBlank()) {
+        null
+    } else {
+        NameDetails.Title(
+            it.name.ifBlank { null },
+            it.role.ifBlank { null },
+        )
+    }
+}
 
 data class TitleInfo(
     val ratingValue: String?,
@@ -13,8 +45,8 @@ data class TitleInfo(
     val posterUrl: String?,
     val description: String?,
     val credits: List<Credit>,
-    val cast: List<CastMember>
-) {
+    val cast: List<CastMember>,
+) : MediaEntityInfo() {
     data class Credit(val type: String, val names: List<String>)
     data class CastMember(val image: String, val name: String, val role: String)
 }
@@ -22,7 +54,7 @@ data class TitleInfo(
 fun transformTitleInfo(title: TitleInfo): TitleDetails? = with(title) {
     TitleDetails(
         name,
-        transformTitleDetailsPoster(posterUrl),
+        posterUrl?.let(::transformImageUrl),
         "",
         "",
         credits.getCreditStringMatching("Direct"),
@@ -32,7 +64,7 @@ fun transformTitleInfo(title: TitleInfo): TitleDetails? = with(title) {
         yearReleased,
         transformTitleDetailsRating(ratingValue, ratingBest, ratingCount),
         duration,
-        transformCast(cast)
+        transformCast(cast),
     )
 }
 
@@ -45,7 +77,7 @@ fun transformCast(cast: List<TitleInfo.CastMember>): List<TitleDetails.CastMembe
                 it.image.ifBlank { null }
                     ?.let { ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_THUMBNAIL) },
                 it.name.ifBlank { null },
-                it.role.ifBlank { null }
+                it.role.ifBlank { null },
             )
         }
     }
@@ -53,22 +85,14 @@ fun transformCast(cast: List<TitleInfo.CastMember>): List<TitleDetails.CastMembe
 private fun List<TitleInfo.Credit>.getCreditStringMatching(partialType: String): String? =
     find { it.type.contains(partialType) }?.names?.joinToString(", ")
 
-fun transformTitleDetailsPoster(posterUrl: String?): TitleDetails.Poster? = posterUrl?.let {
-    TitleDetails.Poster(
-        ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_HINT),
-        ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_THUMBNAIL),
-        ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_LARGE)
-    )
-}
-
 fun transformTitleDetailsRating(
     ratingValue: String?,
     ratingBest: String?,
-    ratingCount: String?
+    ratingCount: String?,
 ): TitleDetails.Rating? = ratingValue?.let {
     TitleDetails.Rating(
         ratingValue,
         ratingBest ?: "10",
-        ratingCount
+        ratingCount,
     )
 }

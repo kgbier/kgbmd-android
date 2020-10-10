@@ -133,9 +133,9 @@ object Navigation {
 }
 
 object Navigator {
-    lateinit var mainActivity: MainActivity
+    var mainActivity: MainActivity? = null
 
-    fun navigate(route: Route) = mainActivity.navigate(route)
+    fun navigate(route: Route) = mainActivity?.navigate(route)
 
-    fun navigateBack() = mainActivity.navigateBack()
+    fun navigateBack() = mainActivity?.navigateBack()
 }

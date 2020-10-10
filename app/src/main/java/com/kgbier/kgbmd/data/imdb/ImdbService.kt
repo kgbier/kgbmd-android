@@ -1,9 +1,6 @@
 package com.kgbier.kgbmd.data.imdb
 
-import com.kgbier.kgbmd.data.imdb.model.HotListItem
-import com.kgbier.kgbmd.data.imdb.model.RatingResponse
-import com.kgbier.kgbmd.data.imdb.model.SuggestionResponse
-import com.kgbier.kgbmd.data.imdb.model.TitleInfo
+import com.kgbier.kgbmd.data.imdb.model.*
 import com.kgbier.kgbmd.data.imdb.operation.HotListParser
 import com.kgbier.kgbmd.data.imdb.operation.MediaEntityInfoParser
 import com.kgbier.kgbmd.data.operation.JsonP
@@ -14,6 +11,7 @@ import okhttp3.HttpUrl
 import okhttp3.Request
 import java.util.*
 
+@Suppress("BlockingMethodInNonBlockingContext")
 object ImdbService {
 
     // https://v2.sg.media-imdb.com/suggestion/d/dark_knight.json
@@ -40,6 +38,14 @@ object ImdbService {
         .host("www.imdb.com")
         .addPathSegments("title")
         .addPathSegment(ttid)
+        .build()
+
+    // https://www.imdb.com/name/nm0272581/
+    private fun buildNameDetailsUrl(nmid: String) = HttpUrl.Builder()
+        .scheme("https")
+        .host("www.imdb.com")
+        .addPathSegments("name")
+        .addPathSegment(nmid)
         .build()
 
     private suspend fun getHotList(listUrl: String) = withContext(Dispatchers.IO) {
@@ -94,5 +100,13 @@ object ImdbService {
 
         val response = Services.client.newCall(request).execute()
         MediaEntityInfoParser(response.body?.source()!!).getTitleInfo()
+    }
+
+    suspend fun getNameDetails(nmid: String): NameInfo? = withContext(Dispatchers.IO) {
+        val url = buildNameDetailsUrl(nmid)
+        val request = Request.Builder().url(url).build()
+
+        val response = Services.client.newCall(request).execute()
+        MediaEntityInfoParser(response.body?.source()!!).getNameInfo()
     }
 }

@@ -14,6 +14,7 @@ import com.kgbier.kgbmd.Navigator
 import com.kgbier.kgbmd.R
 import com.kgbier.kgbmd.Route
 import com.kgbier.kgbmd.domain.imdb.operation.ImageResizer
+import com.kgbier.kgbmd.domain.model.Image
 import com.kgbier.kgbmd.domain.model.TitleDetails
 import com.kgbier.kgbmd.util.*
 import com.kgbier.kgbmd.view.component.TitleHeading
@@ -119,15 +120,15 @@ class HeaderViewModel(
     val name: String,
     val yearReleased: String?,
     val rating: TitleDetails.Rating?,
-    val poster: TitleDetails.Poster?
+    val image: Image?
 ) : BaseMediaEntityListItemViewModel {
     fun openPosterScreen() {
-        poster ?: return
+        image ?: return
 
         Navigator.navigate(
             Route.PhotoScreen(
                 ImageResizer.resize(
-                    poster.largeUrl,
+                    image.largeUrl,
                     ImageResizer.SIZE_FULL
                 )
             )
@@ -135,31 +136,32 @@ class HeaderViewModel(
     }
 }
 
-class HeaderViewHolder(context: Context) : BaseMediaEntityListItemViewHolder(HeaderView(context).apply {
-    layoutParams = ViewGroup.LayoutParams(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT
-    )
-}) {
+class HeaderViewHolder(context: Context) :
+    BaseMediaEntityListItemViewHolder(HeaderView(context).apply {
+        layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+    }) {
     val view get() = itemView as HeaderView
 
     override fun bind(viewModel: BaseMediaEntityListItemViewModel) {
         if (viewModel !is HeaderViewModel) return
 
-        if (viewModel.poster == null) {
+        if (viewModel.image == null) {
             view.imageViewPoster.visibility = View.GONE
         } else {
             view.imageViewPoster.visibility = View.VISIBLE
             val posterHint = Glide.with(view)
-                .load(viewModel.poster.hintUrl)
+                .load(viewModel.image.hintUrl)
 
             Glide.with(view)
-                .load(viewModel.poster.largeUrl)
+                .load(viewModel.image.largeUrl)
                 .thumbnail(posterHint)
                 .into(view.imageViewBackground)
 
             Glide.with(view)
-                .load(viewModel.poster.thumbnailUrl)
+                .load(viewModel.image.thumbnailUrl)
                 .thumbnail(posterHint)
                 .into(view.imageViewPoster)
 

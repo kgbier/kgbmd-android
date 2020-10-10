@@ -12,11 +12,14 @@ import com.kgbier.kgbmd.view.ui.mediaentitydetails.MediaEntityDetailsView
 import com.kgbier.kgbmd.view.viewmodel.MediaEntityDetailsViewModel
 
 @SuppressLint("ViewConstructor")
-class MediaEntityDetailsList(context: MainActivity, titleId: String) : MediaEntityDetailsView(context) {
+class MediaEntityDetailsList(context: MainActivity, titleId: String) :
+    MediaEntityDetailsView(context) {
 
     private val disposeBag = LiveDataDisposeBag()
 
-    private val mediaEntityDetailsViewModel: MediaEntityDetailsViewModel by context.viewModels(titleId) {
+    private val mediaEntityDetailsViewModel: MediaEntityDetailsViewModel by context.viewModels(
+        titleId
+    ) {
         object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T =

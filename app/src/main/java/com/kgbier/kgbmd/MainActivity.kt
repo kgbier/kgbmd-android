@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Lifecyc
 
     override fun onDestroy() {
         super.onDestroy()
+        Navigator.mainActivity = null
         cancel()
     }
 }
