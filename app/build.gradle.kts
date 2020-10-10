@@ -64,13 +64,12 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.core:core-ktx:1.3.1")
+    implementation("androidx.core:core-ktx:1.3.2")
     implementation("androidx.activity:activity-ktx:1.1.0")
 
     val lifecycleVersion = "2.2.0"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
     kapt("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
 
     val coroutinesVersion = "1.3.9"
@@ -79,18 +78,18 @@ dependencies {
 
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.2")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.transition:transition:1.3.1")
 
     implementation("com.google.android.material:material:1.2.1")
 
-    val okhttpVersion = "4.8.1"
+    val okhttpVersion = "4.9.0"
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     debugImplementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
 
-    val moshiVersion = "1.10.0"
+    val moshiVersion = "1.11.0"
     implementation("com.squareup.moshi:moshi:$moshiVersion")
     implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
