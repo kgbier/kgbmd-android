@@ -1,14 +1,16 @@
 package com.kgbier.kgbmd.data.imdb.operation
 
+import com.kgbier.kgbmd.data.imdb.model.NameInfo
 import com.kgbier.kgbmd.data.imdb.model.TitleInfo
 import okio.BufferedSource
 import okio.ByteString
 import okio.ByteString.Companion.encodeUtf8
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import org.jsoup.nodes.Node
 import org.jsoup.parser.Parser
 
-class TitleInfoParser(private val source: BufferedSource) {
+class MediaEntityInfoParser(private val source: BufferedSource) {
 
     companion object {
         val START_START_TAG by lazy { "<".encodeUtf8() }
@@ -23,11 +25,17 @@ class TitleInfoParser(private val source: BufferedSource) {
         val IMG by lazy { "<img".encodeUtf8() }
         val ATTRIBUTE_VALUE_DELIMETER by lazy { "\"".encodeUtf8() }
 
+        // Name
+
+        val OVERVIEW_SECTION_SEEK by lazy { "id=\"name-overview-widget-layout".encodeUtf8() }
+        val OVERVIEW_NAME_SPAN_SEEK by lazy { "<span".encodeUtf8() }
+
+        // Title
         val RATING_SECTION_SEEK by lazy { "class=\"ratingValue".encodeUtf8() }
         val RATING_VALUE_SEEK by lazy { "itemprop=\"ratingValue".encodeUtf8() }
         val RATING_BEST_SEEK by lazy { "itemprop=\"bestRating".encodeUtf8() }
-        val RATING_COUNT_SEEK by lazy { "itemprop=\"ratingCount".encodeUtf8() }
 
+        val RATING_COUNT_SEEK by lazy { "itemprop=\"ratingCount".encodeUtf8() }
         val TITLE_SECTION_SEEK by lazy { "class=\"title_wrapper".encodeUtf8() }
         val TITLE_YEAR_SEEK by lazy { "id=\"titleYear".encodeUtf8() }
         val TITLE_DURATION_SEEK by lazy { "<time datetime".encodeUtf8() }
@@ -58,9 +66,9 @@ class TitleInfoParser(private val source: BufferedSource) {
         skipOver(TITLE_SECTION_SEEK) ?: return null
         skipOver(H1) ?: return null
 
-        val titleName = getBetween(END_START_TAG, START_START_TAG)?.let {
-            it.trim().trimTrailingNbsp()
-        } ?: return null
+        val titleName = getBetween(END_START_TAG, START_START_TAG)
+            ?.trim()?.trimTrailingNbsp()
+            ?: return null
 
         val titleYear = skipOver(TITLE_YEAR_SEEK)?.let {
             skipOver(ANCHOR)
@@ -95,22 +103,9 @@ class TitleInfoParser(private val source: BufferedSource) {
                 }
         }
 
-        val cast = mutableListOf<TitleInfo.CastMember>()
-        skipOver(CAST_SECTION_SEEK)?.let {
+        val cast = skipOver(CAST_SECTION_SEEK)?.let {
             getBetween(CAST_SECTION_START, CAST_SECTION_END)
-        }?.let { Parser.parseXmlFragment(it, "") }?.let { table ->
-            cast += table.asSequence()
-                .filterIsInstance<Element>()
-                .map { it.getElementsByTag("td") }
-                .filter { it.size == 4 }
-                .map {
-                    TitleInfo.CastMember(
-                        it[0].getElementsByTag("img").firstOrNull()?.attr("loadlate") ?: "",
-                        it[1].text() ?: "",
-                        it[3].text() ?: ""
-                    )
-                }.toList()
-        }
+        }?.let(::parseCastList) ?: emptyList()
 
         return TitleInfo(
             ratingValue,
@@ -122,7 +117,48 @@ class TitleInfoParser(private val source: BufferedSource) {
             posterUrl,
             summaryText,
             creditSummary,
-            cast
+            cast,
+        )
+    }
+
+    private fun parseCastList(fragment: String): List<TitleInfo.CastMember>? {
+        val nodes: MutableList<Node> = Parser.parseXmlFragment(fragment, "") ?: return null
+        return nodes.filterIsInstance<Element>()
+            .map { it.getElementsByTag("td") }
+            .filter { it.size == 4 }
+            .map {
+                TitleInfo.CastMember(
+                    it[0].getElementsByTag("img").firstOrNull()?.attr("loadlate") ?: "",
+                    it[1].text() ?: "",
+                    it[3].text() ?: ""
+                )
+            }
+    }
+
+    private fun parseCreditSummary(fragment: String): TitleInfo.Credit? {
+        var str = stripMarkup(fragment)
+        val pipeIndex = str.indexOf("|")
+        if (pipeIndex > 0) str = str.dropLast(str.length - pipeIndex)
+        val typedList = str.split(":")
+        val creditList = typedList[1].split(",")
+
+        return TitleInfo.Credit(typedList.first().trim(), creditList.map { it.trim() })
+    }
+
+    fun getNameInfo(): NameInfo? {
+
+        skipOver(OVERVIEW_SECTION_SEEK) ?: return null
+        skipOver(H1) ?: return null
+        skipOver(OVERVIEW_NAME_SPAN_SEEK) ?: return null
+
+        val name = getBetween(END_START_TAG, START_START_TAG)?.trim()
+            ?: return null
+
+        return NameInfo(
+            name,
+            null,
+            null,
+            emptyList(),
         )
     }
 
@@ -162,16 +198,6 @@ class TitleInfoParser(private val source: BufferedSource) {
     }
 
     private fun stripMarkup(fragment: String): String = Jsoup.parseBodyFragment(fragment).text()
-
-    private fun parseCreditSummary(fragment: String): TitleInfo.Credit? {
-        var str = stripMarkup(fragment)
-        val pipeIndex = str.indexOf("|")
-        if (pipeIndex > 0) str = str.dropLast(str.length - pipeIndex)
-        val typedList = str.split(":")
-        val creditList = typedList[1].split(",")
-
-        return TitleInfo.Credit(typedList.first().trim(), creditList.map { it.trim() })
-    }
 
     private fun String.trimTrailingNbsp(): String {
         if (indexOf("&n") == -1) return this

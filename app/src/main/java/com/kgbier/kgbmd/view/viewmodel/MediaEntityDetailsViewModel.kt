@@ -5,39 +5,39 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kgbier.kgbmd.domain.model.TitleDetails
 import com.kgbier.kgbmd.domain.repo.MediaInfoRepo
-import com.kgbier.kgbmd.view.ui.titledetails.*
+import com.kgbier.kgbmd.view.ui.mediaentitydetails.*
 import kotlinx.coroutines.launch
 
-class TitleDetailsViewModel(titleId: String) : ViewModel() {
+class MediaEntityDetailsViewModel(titleId: String) : ViewModel() {
 
-    sealed class TitleDetailsState {
-        object Loading : TitleDetailsState()
-        data class Error(val message: String) : TitleDetailsState()
-        data class Loaded(val details: List<BaseTitlesViewModel>) : TitleDetailsState()
+    sealed class DetailsState {
+        object Loading : DetailsState()
+        data class Error(val message: String) : DetailsState()
+        data class Loaded(val details: List<BaseMediaEntityListItemViewModel>) : DetailsState()
     }
 
-    val titleDetails: MutableLiveData<TitleDetailsState> = MutableLiveData()
-    val titleHeading: MutableLiveData<String> = MutableLiveData()
+    val state: MutableLiveData<DetailsState> = MutableLiveData()
+    val heading: MutableLiveData<String> = MutableLiveData()
 
     init {
         load(titleId)
     }
 
     private fun load(titleId: String) = viewModelScope.launch {
-        titleDetails.postValue(TitleDetailsState.Loading)
+        state.postValue(DetailsState.Loading)
         runCatching {
-            MediaInfoRepo.getMovieDetails(titleId) ?: throw Throwable()
+            MediaInfoRepo.getTitleDetails(titleId) ?: throw Throwable()
         }.onSuccess {
-            titleDetails.postValue(TitleDetailsState.Loaded(transformDetails(it)))
+            state.postValue(DetailsState.Loaded(transformDetails(it)))
         }.onFailure {
-            titleDetails.postValue(TitleDetailsState.Error(it.message ?: "Error"))
+            state.postValue(DetailsState.Error(it.message ?: "Error"))
         }
     }
 
-    private fun transformDetails(titleDetails: TitleDetails): List<BaseTitlesViewModel> {
-        val list = mutableListOf<BaseTitlesViewModel>()
+    private fun transformDetails(titleDetails: TitleDetails): List<BaseMediaEntityListItemViewModel> {
+        val list = mutableListOf<BaseMediaEntityListItemViewModel>()
         with(titleDetails) {
-            titleHeading.value = name
+            heading.value = name
 
             list.add(HeaderViewModel(name, yearReleased, rating, poster))
             directedBy?.let { list.add(TitledTextViewModel("Directed by", it)) }

@@ -5,7 +5,7 @@ import com.kgbier.kgbmd.data.imdb.model.RatingResponse
 import com.kgbier.kgbmd.data.imdb.model.SuggestionResponse
 import com.kgbier.kgbmd.data.imdb.model.TitleInfo
 import com.kgbier.kgbmd.data.imdb.operation.HotListParser
-import com.kgbier.kgbmd.data.imdb.operation.TitleInfoParser
+import com.kgbier.kgbmd.data.imdb.operation.MediaEntityInfoParser
 import com.kgbier.kgbmd.data.operation.JsonP
 import com.kgbier.kgbmd.service.Services
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +35,7 @@ object ImdbService {
         .build()
 
     // https://www.imdb.com/title/tt2527336/
-    private fun buildMovieDetailsUrl(ttid: String) = HttpUrl.Builder()
+    private fun buildTitleDetailsUrl(ttid: String) = HttpUrl.Builder()
         .scheme("https")
         .host("www.imdb.com")
         .addPathSegments("title")
@@ -88,11 +88,11 @@ object ImdbService {
         Services.moshi.adapter(RatingResponse::class.java).fromJson(validatedJson)!!
     }
 
-    suspend fun getMovieDetails(ttid: String): TitleInfo? = withContext(Dispatchers.IO) {
-        val url = buildMovieDetailsUrl(ttid)
+    suspend fun getTitleDetails(ttid: String): TitleInfo? = withContext(Dispatchers.IO) {
+        val url = buildTitleDetailsUrl(ttid)
         val request = Request.Builder().url(url).build()
 
         val response = Services.client.newCall(request).execute()
-        TitleInfoParser(response.body?.source()!!).getTitleInfo()
+        MediaEntityInfoParser(response.body?.source()!!).getTitleInfo()
     }
 }

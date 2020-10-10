@@ -8,26 +8,26 @@ import com.kgbier.kgbmd.util.LiveDataDisposeBag
 import com.kgbier.kgbmd.util.bind
 import com.kgbier.kgbmd.util.disposeBy
 import com.kgbier.kgbmd.util.viewModels
-import com.kgbier.kgbmd.view.ui.titledetails.TitleDetailsView
-import com.kgbier.kgbmd.view.viewmodel.TitleDetailsViewModel
+import com.kgbier.kgbmd.view.ui.mediaentitydetails.MediaEntityDetailsView
+import com.kgbier.kgbmd.view.viewmodel.MediaEntityDetailsViewModel
 
 @SuppressLint("ViewConstructor")
-class TitleDetailsList(context: MainActivity, titleId: String) : TitleDetailsView(context) {
+class MediaEntityDetailsList(context: MainActivity, titleId: String) : MediaEntityDetailsView(context) {
 
     private val disposeBag = LiveDataDisposeBag()
 
-    private val titleDetailsViewModel: TitleDetailsViewModel by context.viewModels(titleId) {
+    private val mediaEntityDetailsViewModel: MediaEntityDetailsViewModel by context.viewModels(titleId) {
         object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                TitleDetailsViewModel(titleId) as T
+                MediaEntityDetailsViewModel(titleId) as T
         }
     }
 
     init {
-        titleDetailsViewModel.titleDetails.bind(context) {
-            if (it is TitleDetailsViewModel.TitleDetailsState.Loaded) {
-                titlesAdapter.submitList(it.details)
+        mediaEntityDetailsViewModel.state.bind(context) {
+            if (it is MediaEntityDetailsViewModel.DetailsState.Loaded) {
+                detailsAdapter.submitList(it.details)
             }
         }.disposeBy(disposeBag)
     }

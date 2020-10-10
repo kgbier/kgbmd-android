@@ -1,4 +1,4 @@
-package com.kgbier.kgbmd.view.ui.titledetails
+package com.kgbier.kgbmd.view.ui.mediaentitydetails
 
 import android.content.Context
 import android.view.ViewGroup
@@ -8,10 +8,10 @@ import com.kgbier.kgbmd.util.dp
 import com.kgbier.kgbmd.view.ui.CastMemberView
 
 class CastMemberViewModel(val name: String, val role: String?, val avatarUrl: String?) :
-    BaseTitlesViewModel
+    BaseMediaEntityListItemViewModel
 
 class CastMemberViewHolder(context: Context) :
-    BaseTitlesViewHolder(CastMemberView(context).apply {
+    BaseMediaEntityListItemViewHolder(CastMemberView(context).apply {
         layoutParams = ViewGroup.MarginLayoutParams(
             LayoutParams.MATCH_PARENT,
             LayoutParams.WRAP_CONTENT
@@ -21,7 +21,7 @@ class CastMemberViewHolder(context: Context) :
     }) {
     val view get() = itemView as CastMemberView
 
-    override fun bind(viewModel: BaseTitlesViewModel) {
+    override fun bind(viewModel: BaseMediaEntityListItemViewModel) {
         if (viewModel !is CastMemberViewModel) return
 
         view.setText(viewModel.name, viewModel.role)

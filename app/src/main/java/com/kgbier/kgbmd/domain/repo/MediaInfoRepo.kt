@@ -22,6 +22,6 @@ object MediaInfoRepo {
     suspend fun getRating(id: String): String? =
         ImdbService.getRating(id)?.run(::transformRatingResponse)
 
-    suspend fun getMovieDetails(id: String): TitleDetails? =
-        ImdbService.getMovieDetails(id)?.run(::transformTitleInfo)
+    suspend fun getTitleDetails(id: String): TitleDetails? =
+        ImdbService.getTitleDetails(id)?.run(::transformTitleInfo)
 }

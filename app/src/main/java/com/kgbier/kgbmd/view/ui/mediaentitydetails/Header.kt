@@ -1,4 +1,4 @@
-package com.kgbier.kgbmd.view.ui.titledetails
+package com.kgbier.kgbmd.view.ui.mediaentitydetails
 
 import android.content.Context
 import android.view.View
@@ -120,7 +120,7 @@ class HeaderViewModel(
     val yearReleased: String?,
     val rating: TitleDetails.Rating?,
     val poster: TitleDetails.Poster?
-) : BaseTitlesViewModel {
+) : BaseMediaEntityListItemViewModel {
     fun openPosterScreen() {
         poster ?: return
 
@@ -135,7 +135,7 @@ class HeaderViewModel(
     }
 }
 
-class HeaderViewHolder(context: Context) : BaseTitlesViewHolder(HeaderView(context).apply {
+class HeaderViewHolder(context: Context) : BaseMediaEntityListItemViewHolder(HeaderView(context).apply {
     layoutParams = ViewGroup.LayoutParams(
         ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT
@@ -143,7 +143,7 @@ class HeaderViewHolder(context: Context) : BaseTitlesViewHolder(HeaderView(conte
 }) {
     val view get() = itemView as HeaderView
 
-    override fun bind(viewModel: BaseTitlesViewModel) {
+    override fun bind(viewModel: BaseMediaEntityListItemViewModel) {
         if (viewModel !is HeaderViewModel) return
 
         if (viewModel.poster == null) {

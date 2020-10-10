@@ -1,4 +1,4 @@
-package com.kgbier.kgbmd.view.ui.titledetails
+package com.kgbier.kgbmd.view.ui.mediaentitydetails
 
 import android.content.Context
 import android.graphics.Rect
@@ -10,14 +10,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kgbier.kgbmd.util.dp
 
-open class TitleDetailsView(context: Context) : RecyclerView(context) {
-    val titlesAdapter = TitlesAdapter()
+open class MediaEntityDetailsView(context: Context) : RecyclerView(context) {
+    val detailsAdapter = MediaEntityDetailsAdapter()
 
     init {
         layoutManager = LinearLayoutManager(context)
-        adapter = titlesAdapter
+        adapter = detailsAdapter
         this.addItemDecoration(BetweenItemDecoration(12.dp))
 
+        @Suppress("LeakingThis")
         addOnScrollListener(object : OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 (findViewHolderForAdapterPosition(0) as? HeaderViewHolder)?.let {
@@ -28,21 +29,25 @@ open class TitleDetailsView(context: Context) : RecyclerView(context) {
     }
 }
 
-interface BaseTitlesViewModel
-abstract class BaseTitlesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    abstract fun bind(viewModel: BaseTitlesViewModel)
+interface BaseMediaEntityListItemViewModel
+abstract class BaseMediaEntityListItemViewHolder(itemView: View) :
+    RecyclerView.ViewHolder(itemView) {
+    abstract fun bind(viewModel: BaseMediaEntityListItemViewModel)
 }
 
-class TitlesAdapter : ListAdapter<BaseTitlesViewModel, BaseTitlesViewHolder>(DIFF_CALLBACK) {
+class MediaEntityDetailsAdapter :
+    ListAdapter<BaseMediaEntityListItemViewModel, BaseMediaEntityListItemViewHolder>(DIFF_CALLBACK) {
     companion object {
-        val DIFF_CALLBACK: DiffUtil.ItemCallback<BaseTitlesViewModel> =
-            object : DiffUtil.ItemCallback<BaseTitlesViewModel>() {
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<BaseMediaEntityListItemViewModel> =
+            object : DiffUtil.ItemCallback<BaseMediaEntityListItemViewModel>() {
                 override fun areItemsTheSame(
-                    oldItem: BaseTitlesViewModel, newItem: BaseTitlesViewModel
+                    oldItem: BaseMediaEntityListItemViewModel,
+                    newItem: BaseMediaEntityListItemViewModel
                 ): Boolean = oldItem == newItem // TODO: improve this
 
                 override fun areContentsTheSame(
-                    oldItem: BaseTitlesViewModel, newItem: BaseTitlesViewModel
+                    oldItem: BaseMediaEntityListItemViewModel,
+                    newItem: BaseMediaEntityListItemViewModel
                 ): Boolean = oldItem.hashCode() == newItem.hashCode()
             }
 
@@ -60,7 +65,10 @@ class TitlesAdapter : ListAdapter<BaseTitlesViewModel, BaseTitlesViewHolder>(DIF
         else -> throw NotImplementedError()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseTitlesViewHolder =
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseMediaEntityListItemViewHolder =
         when (viewType) {
             VIEW_TYPE_HEADER -> HeaderViewHolder(parent.context)
             VIEW_TYPE_SECTION_HEADER -> SectionHeadingViewHolder(parent.context)
@@ -69,7 +77,7 @@ class TitlesAdapter : ListAdapter<BaseTitlesViewModel, BaseTitlesViewHolder>(DIF
             else -> throw NotImplementedError()
         }
 
-    override fun onBindViewHolder(holder: BaseTitlesViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: BaseMediaEntityListItemViewHolder, position: Int) =
         holder.bind(getItem(position))
 }
 

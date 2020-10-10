@@ -20,9 +20,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.kgbier.kgbmd.*
 import com.kgbier.kgbmd.util.*
 import com.kgbier.kgbmd.view.behaviour.ScrollBehaviour
-import com.kgbier.kgbmd.view.component.TitleDetailsList
+import com.kgbier.kgbmd.view.component.MediaEntityDetailsList
 import com.kgbier.kgbmd.view.ui.ToolbarView
-import com.kgbier.kgbmd.view.viewmodel.TitleDetailsViewModel
+import com.kgbier.kgbmd.view.viewmodel.MediaEntityDetailsViewModel
 
 @SuppressLint("ViewConstructor")
 class DetailLayout(context: MainActivity) :
@@ -31,17 +31,17 @@ class DetailLayout(context: MainActivity) :
 
     private val disposeBag = LiveDataDisposeBag()
 
-    private val titleDetailsViewModel: TitleDetailsViewModel by context.viewModels(route.titleId) {
+    private val mediaEntityDetailsViewModel: MediaEntityDetailsViewModel by context.viewModels(route.titleId) {
         object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                TitleDetailsViewModel(route.titleId) as T
+                MediaEntityDetailsViewModel(route.titleId) as T
         }
     }
 
     val toolbar: ToolbarView
     val progressBar: ProgressBar
-    val titleDetailsList: TitleDetailsList
+    val titleDetailsList: MediaEntityDetailsList
 
     init {
         id = R.id.detailLayout
@@ -50,7 +50,7 @@ class DetailLayout(context: MainActivity) :
             setBackgroundColor(it)
         }
 
-        titleDetailsList = TitleDetailsList(context, route.titleId).apply {
+        titleDetailsList = MediaEntityDetailsList(context, route.titleId).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             visibility = View.GONE
 
@@ -94,15 +94,15 @@ class DetailLayout(context: MainActivity) :
             visibility = View.VISIBLE
         }.also(::addView)
 
-        titleDetailsViewModel.titleHeading.bind(context) {
+        mediaEntityDetailsViewModel.heading.bind(context) {
             toolbar.title = it
         }.disposeBy(disposeBag)
 
-        titleDetailsViewModel.titleDetails.bind(context) {
+        mediaEntityDetailsViewModel.state.bind(context) {
             when (it) {
-                is TitleDetailsViewModel.TitleDetailsState.Loaded -> showDetails()
-                is TitleDetailsViewModel.TitleDetailsState.Error -> showError(it.message)
-                TitleDetailsViewModel.TitleDetailsState.Loading -> showLoading()
+                is MediaEntityDetailsViewModel.DetailsState.Loaded -> showDetails()
+                is MediaEntityDetailsViewModel.DetailsState.Error -> showError(it.message)
+                MediaEntityDetailsViewModel.DetailsState.Loading -> showLoading()
             }
         }.disposeBy(disposeBag)
     }
