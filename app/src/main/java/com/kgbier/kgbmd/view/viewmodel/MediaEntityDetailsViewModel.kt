@@ -3,6 +3,7 @@ package com.kgbier.kgbmd.view.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kgbier.kgbmd.domain.model.FilmographicCategory
 import com.kgbier.kgbmd.domain.model.MediaEntityDetails
 import com.kgbier.kgbmd.domain.model.NameDetails
 import com.kgbier.kgbmd.domain.model.TitleDetails
@@ -66,11 +67,28 @@ class MediaEntityDetailsViewModel(entityId: String) : ViewModel() {
 
     private fun transformNameDetails(nameDetails: NameDetails): List<BaseMediaEntityListItemViewModel> {
         val list = mutableListOf<BaseMediaEntityListItemViewModel>()
+        fun buildFilmographySection(heading: String, titles: List<NameDetails.Title>) {
+            list.add(SectionHeadingViewModel(heading))
+            titles.forEach {
+                list.add(TitledTextViewModel(it.year ?: "", it.name ?: ""))
+            }
+        }
         with(nameDetails) {
             heading.value = name
 
             list.add(HeaderViewModel(name, null, null, headshot))
-            description?.let { list.add(TitledTextViewModel("Description", it)) }
+            filmography[FilmographicCategory.ACTOR]?.let {
+                buildFilmographySection("Actor", it)
+            }
+            filmography[FilmographicCategory.ACTRESS]?.let {
+                buildFilmographySection("Actress", it)
+            }
+            filmography[FilmographicCategory.DIRECTOR]?.let {
+                buildFilmographySection("Director", it)
+            }
+            filmography[FilmographicCategory.COMPOSER]?.let {
+                buildFilmographySection("Composer", it)
+            }
         }
         return list
     }

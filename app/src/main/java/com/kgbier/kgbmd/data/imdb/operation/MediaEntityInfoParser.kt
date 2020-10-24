@@ -22,13 +22,24 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
         val TD by lazy { "<td".encodeUtf8() }
         val H4 by lazy { "<h4".encodeUtf8() }
         val ANCHOR by lazy { "<a".encodeUtf8() }
+        val BOLD by lazy { "<b".encodeUtf8() }
         val IMG by lazy { "<img".encodeUtf8() }
         val ATTRIBUTE_VALUE_DELIMETER by lazy { "\"".encodeUtf8() }
 
-        // Name
+        val ATTRIBUTE_SRC by lazy { "src=".encodeUtf8() }
+        val ATTRIBUTE_ID by lazy { "id=".encodeUtf8() }
 
+        // Name
         val OVERVIEW_SECTION_SEEK by lazy { "id=\"name-overview-widget-layout".encodeUtf8() }
         val OVERVIEW_NAME_SPAN_SEEK by lazy { "<span".encodeUtf8() }
+        val NAME_POSTER_SECTION_SEEK by lazy { "id=\"name-poster".encodeUtf8() }
+
+        val FILMOGRAPHY_SECTION_SEEK by lazy { "id=\"filmography\"".encodeUtf8() }
+        val FILMOGRAPHY_DATA_CATEGORY by lazy { "data-category=".encodeUtf8() }
+        val FILMOGRAPHY_ROW_SEEK by lazy { "class=\"filmo-row".encodeUtf8() }
+        val FILMOGRAPHY_ROW_START by lazy { END_START_TAG }
+        val FILMOGRAPHY_ROW_END by lazy { "</div".encodeUtf8() }
+        val FILMOGRAPHY_YEAR_SPAN_SEEK by lazy { "class=\"year_column".encodeUtf8() }
 
         // Title
         val RATING_SECTION_SEEK by lazy { "class=\"ratingValue".encodeUtf8() }
@@ -39,10 +50,9 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
         val TITLE_SECTION_SEEK by lazy { "class=\"title_wrapper".encodeUtf8() }
         val TITLE_YEAR_SEEK by lazy { "id=\"titleYear".encodeUtf8() }
         val TITLE_DURATION_SEEK by lazy { "<time datetime".encodeUtf8() }
-        val TITLE_RELEASE_DATE_SEEK by lazy { "releaseinfo?ref_=tt_ov_inf".encodeUtf8() }
 
-        val POSTER_SECTION_SEEK by lazy { "class=\"poster".encodeUtf8() }
-        val POSTER_ATTRIBUTE_SRC by lazy { "src=".encodeUtf8() }
+        val TITLE_RELEASE_DATE_SEEK by lazy { "releaseinfo?ref_=tt_ov_inf".encodeUtf8() }
+        val TITLE_POSTER_SECTION_SEEK by lazy { "class=\"poster".encodeUtf8() }
 
         val SUMMARY_SECTION_SEEK by lazy { "class=\"plot_summary".encodeUtf8() }
         val SUMMARY_TEXT_SEEK by lazy { "class=\"summary_text".encodeUtf8() }
@@ -67,7 +77,7 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
         skipOver(H1) ?: return null
 
         val titleName = getBetween(END_START_TAG, START_START_TAG)
-            ?.trim()?.trimTrailingNbsp()
+            ?.trim()?.stripNbsp()
             ?: return null
 
         val titleYear = skipOver(TITLE_YEAR_SEEK)?.let {
@@ -80,10 +90,10 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
             getBetween(ATTRIBUTE_VALUE_DELIMETER, ATTRIBUTE_VALUE_DELIMETER)
         }
 
-        val posterUrl = skipOver(POSTER_SECTION_SEEK)?.let {
+        val posterUrl = skipOver(TITLE_POSTER_SECTION_SEEK)?.let {
             skipOver(IMG)
         }?.let {
-            skipOver(POSTER_ATTRIBUTE_SRC)
+            skipOver(ATTRIBUTE_SRC)
         }?.let {
             getBetween(ATTRIBUTE_VALUE_DELIMETER, ATTRIBUTE_VALUE_DELIMETER)
         }
@@ -154,13 +164,54 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
         val name = getBetween(END_START_TAG, START_START_TAG)?.trim()
             ?: return null
 
+        val headshotUrl = skipOver(NAME_POSTER_SECTION_SEEK)?.let {
+            skipOver(ATTRIBUTE_SRC)
+        }?.let {
+            getBetween(ATTRIBUTE_VALUE_DELIMETER, ATTRIBUTE_VALUE_DELIMETER)
+        }
+
+        skipOver(FILMOGRAPHY_SECTION_SEEK)
+
+        val filmography = mutableListOf<NameInfo.Title>()
+        while (findIndex(FILMOGRAPHY_ROW_SEEK) != null) {
+            parseNameFilmographyRow()?.let {
+                filmography.add(it)
+            }
+        }
+
         return NameInfo(
             name,
+            headshotUrl,
             null,
-            null,
-            emptyList(),
+            filmography,
         )
     }
+
+    private fun parseNameFilmographyRow(): NameInfo.Title? {
+        skipOver(FILMOGRAPHY_ROW_SEEK) ?: return null
+        skipOver(ATTRIBUTE_ID) ?: return null
+        val rowMeta =
+            getBetween(ATTRIBUTE_VALUE_DELIMETER, ATTRIBUTE_VALUE_DELIMETER) ?: return null
+        val (category, titleId) = runCatching { rowMeta.split("-") }
+            .mapCatching { Pair(it[0], it[1]) }.getOrNull()
+            ?: return null
+
+        skipOver(FILMOGRAPHY_YEAR_SPAN_SEEK) ?: return null
+        val year = getElementValue()?.trim()?.stripNbsp()?.takeIf { it.isNotBlank() }
+
+        skipOver(BOLD) ?: return null
+        skipOver(ANCHOR) ?: return null
+        val name = getElementValue() ?: return null
+
+        return NameInfo.Title(
+            category,
+            titleId,
+            name,
+            year,
+            null,
+        )
+    }
+
 
     private fun findIndex(byteString: ByteString, fromIndex: Long = 0L): Long? {
         val result = source.indexOf(byteString, fromIndex)
@@ -199,7 +250,7 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
 
     private fun stripMarkup(fragment: String): String = Jsoup.parseBodyFragment(fragment).text()
 
-    private fun String.trimTrailingNbsp(): String {
+    private fun String.stripNbsp(): String {
         if (indexOf("&n") == -1) return this
         return replace("&nbsp;", "")
     }

@@ -1,6 +1,7 @@
 package com.kgbier.kgbmd.data.imdb.model
 
 import com.kgbier.kgbmd.domain.imdb.operation.ImageResizer
+import com.kgbier.kgbmd.domain.model.FilmographicCategory
 import com.kgbier.kgbmd.domain.model.NameDetails
 import com.kgbier.kgbmd.domain.model.TitleDetails
 
@@ -12,7 +13,13 @@ data class NameInfo(
     val description: String?,
     val filmography: List<Title>,
 ) : MediaEntityInfo() {
-    data class Title(val name: String, val role: String)
+    data class Title(
+        val category: String,
+        val titleId: String,
+        val name: String,
+        val year: String?,
+        val role: String?,
+    )
 }
 
 fun transformNameInfo(nameInfo: NameInfo): NameDetails? = with(nameInfo) {
@@ -24,15 +31,32 @@ fun transformNameInfo(nameInfo: NameInfo): NameDetails? = with(nameInfo) {
     )
 }
 
-fun transformFilmography(title: List<NameInfo.Title>): List<NameDetails.Title> = title.mapNotNull {
-    if (it.name.isBlank() && it.role.isBlank()) {
-        null
-    } else {
-        NameDetails.Title(
-            it.name.ifBlank { null },
-            it.role.ifBlank { null },
-        )
+fun transformFilmography(filmography: List<NameInfo.Title>): Map<FilmographicCategory, List<NameDetails.Title>> {
+    val categoryMap = mutableMapOf<FilmographicCategory, MutableList<NameDetails.Title>>()
+    fun insertTitle(category: FilmographicCategory, title: NameDetails.Title) {
+        val list = categoryMap.getOrPut(category) { mutableListOf() }
+        list.add(title)
     }
+
+    filmography.forEach {
+        val title = NameDetails.Title(
+            it.name,
+            it.year?.ifBlank { null },
+            it.role?.ifBlank { null },
+        )
+        val category = when (it.category) {
+            "actor" -> FilmographicCategory.ACTOR
+            "actress" -> FilmographicCategory.ACTRESS
+            "director" -> FilmographicCategory.DIRECTOR
+            "composer" -> FilmographicCategory.COMPOSER
+            "self" -> FilmographicCategory.SELF
+            "archive_footage" -> FilmographicCategory.ARCHIVE_FOOTAGE
+            "soundtrack" -> FilmographicCategory.SOUNDTRACK
+            else -> return@forEach
+        }
+        insertTitle(category, title)
+    }
+    return categoryMap
 }
 
 data class TitleInfo(
