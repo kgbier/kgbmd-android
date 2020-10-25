@@ -6,14 +6,14 @@ data class Suggestion(
     val type: SearchSuggestionType?,
     val year: String?,
     val tidbit: String?,
-    val thumbnailUrl: String?
+    val thumbnailUrl: String?,
 )
 
 enum class SearchSuggestionType {
     MOVIE,      //  q: "feature", "TV movie"
     TV_SHOW,    //  q: "TV mini-series", "TV series"
     CAST_CREW,  // id: "nm0000000"
-    GAME        //  q: ""
+    GAME,       //  q: ""
 }
 
 fun getSuggestionType(id: String, type: String?): SearchSuggestionType? = when (type) {

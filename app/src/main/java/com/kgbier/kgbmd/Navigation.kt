@@ -45,7 +45,7 @@ sealed class Route(val id: Id) : LayoutRoute {
         ROUTE_MAIN_POSTER_SCREEN,
         ROUTE_SEARCH_SCREEN,
         ROUTE_DETAIL_SCREEN,
-        ROUTE_PHOTO_SCREEN
+        ROUTE_PHOTO_SCREEN,
     }
 
     companion object {

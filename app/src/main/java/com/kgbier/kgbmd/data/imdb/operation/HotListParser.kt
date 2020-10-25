@@ -3,71 +3,18 @@ package com.kgbier.kgbmd.data.imdb.operation
 import com.kgbier.kgbmd.data.imdb.model.HotListItem
 import okio.BufferedSource
 
-
-/**
-<tr>
-
-<td class="posterColumn">
-<span name="rk" data-value="1"></span>
-<span name="ir" data-value="8.8"></span>
-<span name="us" data-value="1.5672096E12"></span>
-<span name="nv" data-value="432428"></span>
-<span name="ur" data-value="-2.1999999999999993"></span>
-<a href="/title/tt7286456/?pf_rd_m=A2FGELUUNOQJNL&amp;pf_rd_p=ea4e08e1-c8a3-47b5-ac3a-75026647c16e&amp;pf_rd_r=WRCYJ3D4CYSB0QRRDWBP&amp;pf_rd_s=center-1&amp;pf_rd_t=15506&amp;pf_rd_i=moviemeter&amp;ref_=chtmvm_tt_1"> <img src="https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_UY67_CR0,0,45,67_AL_.jpg" width="45" height="67" alt="Joker">
-</a>
-
-</td>
-<td class="titleColumn">
-<a href="/title/tt7286456/?pf_rd_m=A2FGELUUNOQJNL&amp;pf_rd_p=ea4e08e1-c8a3-47b5-ac3a-75026647c16e&amp;pf_rd_r=WRCYJ3D4CYSB0QRRDWBP&amp;pf_rd_s=center-1&amp;pf_rd_t=15506&amp;pf_rd_i=moviemeter&amp;ref_=chtmvm_tt_1" title="Todd Phillips (dir.), Joaquin Phoenix, Robert De Niro">Joker</a>
-<span class="secondaryInfo">(2019)</span>
-<div class="velocity">1
-(no change)
-</div>
-</td>
-
-<td class="ratingColumn imdbRating">
-<strong title="8.8 based on 432,428 user ratings">8.8</strong>
-</td>
-
-<td class="ratingColumn">
-<div class="seen-widget seen-widget-tt7286456" data-titleid="tt7286456">
-<div class="boundary">
-<div class="popover">
-<span class="delete">&nbsp;</span><ol><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li></ol>            </div>
-</div>
-<div class="inline">
-<div class="pending"></div>
-<div class="unseeable">NOT YET RELEASED</div>
-<div class="unseen"> </div>
-<div class="rating"></div>
-<div class="seen">Seen</div>
-</div>
-</div>
-</td>
-
-<td class="watchlistColumn">
-<div class="wlb_ribbon" data-tconst="tt7286456" data-recordmetrics="true" style="position: relative;"><div class="wl-ribbon standalone not-inWL" title="Click to add to watchlist"></div></div>
-</td>
-
-</tr>
- */
-
 class HotListParser(private val source: BufferedSource) {
 
     private companion object {
-        // <span name="ir" data-value="8.8"></span>
         const val RATING_LOWER = "data-value=\""
         const val RATING_UPPER = "\""
 
-        // <a href="/title/tt7286456/?pf_r...
         const val TTID_LOWER = "title/"
         const val TTID_UPPER = "/"
 
-        // <a href="/title/tt7286456/?pf_r[...]_tt_1"> <img src="https://m.media-amazon.com/images/M/M[...]L_.jpg" width="45" height="67" alt="Joker">
         const val POSTER_IMAGE_LOWER = "<img src=\""
         const val POSTER_IMAGE_UPPER = "\""
 
-        // ...er" >Terminator: Dark Fate</a>
         const val NAME_LOWER = ">"
         const val NAME_UPPER = "<"
     }

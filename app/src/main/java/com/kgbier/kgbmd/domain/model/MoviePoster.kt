@@ -6,5 +6,5 @@ data class MoviePoster(
     val rating: String?,
     val thumbnailUrl: String,
     val posterUrlSmall: String,
-    val posterUrlLarge: String
+    val posterUrlLarge: String,
 )
