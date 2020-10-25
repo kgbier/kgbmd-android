@@ -72,7 +72,12 @@ data class TitleInfo(
     val cast: List<CastMember>,
 ) : MediaEntityInfo() {
     data class Credit(val type: String, val names: List<String>)
-    data class CastMember(val image: String, val name: String, val role: String)
+    data class CastMember(
+        val image: String,
+        val name: String,
+        val role: String,
+        val link: String,
+    )
 }
 
 fun transformTitleInfo(title: TitleInfo): TitleDetails? = with(title) {
@@ -102,6 +107,9 @@ fun transformCast(cast: List<TitleInfo.CastMember>): List<TitleDetails.CastMembe
                     ?.let { ImageResizer.resize(it, ImageResizer.SIZE_WIDTH_THUMBNAIL) },
                 it.name.ifBlank { null },
                 it.role.ifBlank { null },
+                it.link.ifBlank { null }?.let {
+                    it.split("/")[2]
+                }?.takeIf { it.startsWith("nm") }
             )
         }
     }

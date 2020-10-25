@@ -140,7 +140,8 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
                 TitleInfo.CastMember(
                     it[0].getElementsByTag("img").firstOrNull()?.attr("loadlate") ?: "",
                     it[1].text() ?: "",
-                    it[3].text() ?: ""
+                    it[3].text() ?: "",
+                    it[1].getElementsByTag("a").attr("href"),
                 )
             }
     }

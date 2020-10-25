@@ -59,7 +59,7 @@ class MediaEntityDetailsViewModel(entityId: String) : ViewModel() {
                 list.add(SectionHeadingViewModel("Cast"))
             }
             castMembers.forEach {
-                list.add(CastMemberViewModel(it.name ?: "", it.role, it.thumbnailUrl))
+                list.add(CastMemberViewModel(it.name ?: "", it.role, it.thumbnailUrl, it.nameId))
             }
         }
         return list
