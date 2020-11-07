@@ -38,9 +38,9 @@ android {
 
     flavorDimensions("distribution")
     productFlavors {
-        create("prod") { setDimension("distribution") }
+        create("prod") { dimension = "distribution" }
         create("internal") {
-            setDimension("distribution")
+            dimension = "distribution"
 
             applicationIdSuffix = ".internal"
             versionNameSuffix = "-internal"
@@ -72,13 +72,13 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     kapt("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
 
-    val coroutinesVersion = "1.3.9"
+    val coroutinesVersion = "1.4.0"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.transition:transition:1.3.1")
