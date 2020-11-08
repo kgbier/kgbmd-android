@@ -16,7 +16,13 @@ open class MediaEntityDetailsView(context: Context) : RecyclerView(context) {
     init {
         layoutManager = LinearLayoutManager(context)
         adapter = detailsAdapter
-        this.addItemDecoration(BetweenItemDecoration(12.dp))
+        this.addItemDecoration(BetweenItemDecoration(12.dp) {
+            when (it) {
+                is TitledTextViewHolder,
+                is SectionHeadingViewHolder -> true
+                else -> false
+            }
+        })
 
         @Suppress("LeakingThis")
         addOnScrollListener(object : OnScrollListener() {
@@ -81,8 +87,16 @@ class MediaEntityDetailsAdapter :
         holder.bind(getItem(position))
 }
 
-class BetweenItemDecoration(private val spacing: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
-        if (itemPosition != 0) outRect.set(0, spacing, 0, 0)
+class BetweenItemDecoration(
+    private val spacing: Int,
+    private val decorateBefore: (viewHolder: RecyclerView.ViewHolder) -> Boolean = { true },
+) : RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        val shouldDecorate = parent.findContainingViewHolder(view)
+            ?.let(decorateBefore)
+            ?: false
+        if (shouldDecorate) {
+            outRect.set(0, spacing, 0, 0)
+        }
     }
 }
