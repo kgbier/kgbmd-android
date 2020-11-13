@@ -8,7 +8,12 @@ data class NameDetails(
     val description: String?,
     val filmography: Map<FilmographicCategory, List<Title>>,
 ) : MediaEntityDetails() {
-    data class Title(val name: String?, val year: String?, val role: String?)
+    data class Title(
+        val id: String,
+        val name: String?,
+        val year: String?,
+        val role: String?,
+    )
 }
 
 data class TitleDetails(

@@ -40,6 +40,7 @@ fun transformFilmography(filmography: List<NameInfo.Title>): Map<FilmographicCat
 
     filmography.forEach {
         val title = NameDetails.Title(
+            it.titleId,
             it.name,
             it.year?.ifBlank { null },
             it.role?.ifBlank { null },
