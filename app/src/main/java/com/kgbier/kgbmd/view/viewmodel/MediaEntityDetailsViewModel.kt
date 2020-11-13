@@ -70,7 +70,7 @@ class MediaEntityDetailsViewModel(entityId: String) : ViewModel() {
         fun buildFilmographySection(heading: String, titles: List<NameDetails.Title>) {
             list.add(SectionHeadingViewModel(heading))
             titles.forEach {
-                list.add(TitledTextViewModel(it.year ?: "", it.name ?: ""))
+                list.add(FilmographyViewModel(it.name ?: "", it.year, it.role, null))
             }
         }
         with(nameDetails) {

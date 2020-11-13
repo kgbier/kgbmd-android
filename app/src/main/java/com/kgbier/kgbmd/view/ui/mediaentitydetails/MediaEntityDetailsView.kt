@@ -61,6 +61,7 @@ class MediaEntityDetailsAdapter :
         const val VIEW_TYPE_SECTION_HEADER = 1
         const val VIEW_TYPE_TITLED_TEXT = 2
         const val VIEW_TYPE_CAST_MEMBER = 3
+        const val VIEW_TYPE_FILMOGRAPHY = 4
     }
 
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
@@ -68,6 +69,7 @@ class MediaEntityDetailsAdapter :
         is SectionHeadingViewModel -> VIEW_TYPE_SECTION_HEADER
         is TitledTextViewModel -> VIEW_TYPE_TITLED_TEXT
         is CastMemberViewModel -> VIEW_TYPE_CAST_MEMBER
+        is FilmographyViewModel -> VIEW_TYPE_FILMOGRAPHY
         else -> throw NotImplementedError()
     }
 
@@ -80,6 +82,7 @@ class MediaEntityDetailsAdapter :
             VIEW_TYPE_SECTION_HEADER -> SectionHeadingViewHolder(parent.context)
             VIEW_TYPE_TITLED_TEXT -> TitledTextViewHolder(parent.context)
             VIEW_TYPE_CAST_MEMBER -> CastMemberViewHolder(parent.context)
+            VIEW_TYPE_FILMOGRAPHY -> FilmographyViewHolder(parent.context)
             else -> throw NotImplementedError()
         }
 
@@ -91,7 +94,12 @@ class BetweenItemDecoration(
     private val spacing: Int,
     private val decorateBefore: (viewHolder: RecyclerView.ViewHolder) -> Boolean = { true },
 ) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
         val shouldDecorate = parent.findContainingViewHolder(view)
             ?.let(decorateBefore)
             ?: false

@@ -7,41 +7,39 @@ import androidx.core.view.updatePaddingRelative
 import com.kgbier.kgbmd.Navigator
 import com.kgbier.kgbmd.Route
 import com.kgbier.kgbmd.util.dp
-import com.kgbier.kgbmd.view.ui.CastMemberView
+import com.kgbier.kgbmd.view.ui.FilmographyView
 
-class CastMemberViewModel(
-    val name: String,
+class FilmographyViewModel(
+    val title: String,
+    val year: String?,
     val role: String?,
-    val avatarUrl: String?,
-    val nameId: String?,
+    val titleId: String?,
 ) : BaseMediaEntityListItemViewModel {
-    fun showCastmemberDetails() {
-        nameId?.let { Navigator.navigate(Route.DetailScreen(it)) }
+    fun showTitleDetails() {
+        titleId?.let { Navigator.navigate(Route.DetailScreen(it)) }
     }
 }
 
-class CastMemberViewHolder(context: Context) :
-    BaseMediaEntityListItemViewHolder(CastMemberView(context).apply {
+class FilmographyViewHolder(context: Context) :
+    BaseMediaEntityListItemViewHolder(FilmographyView(context).apply {
         layoutParams = ViewGroup.MarginLayoutParams(
             LayoutParams.MATCH_PARENT,
             LayoutParams.WRAP_CONTENT
         )
         updatePaddingRelative(start = 16.dp, top = 4.dp, end = 16.dp, bottom = 4.dp)
     }) {
-    val view get() = itemView as CastMemberView
+    val view get() = itemView as FilmographyView
 
     override fun bind(viewModel: BaseMediaEntityListItemViewModel) {
-        if (viewModel !is CastMemberViewModel) return
+        if (viewModel !is FilmographyViewModel) return
 
-        view.setText(viewModel.name, viewModel.role)
-        view.setAvatarUrl(viewModel.avatarUrl)
+        view.setText(viewModel.title, viewModel.year, viewModel.role)
 
-        if (viewModel.nameId == null) {
-            view.setOnClickListener(null)
+        if (viewModel.titleId == null) {
             view.isClickable = false
             view.showAction(false)
         } else {
-            view.setOnClickListener { viewModel.showCastmemberDetails() }
+            view.setOnClickListener { viewModel.showTitleDetails() }
             view.showAction(true)
         }
     }
