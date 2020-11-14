@@ -7,16 +7,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.text.toSpannable
 import com.kgbier.kgbmd.R
-import com.kgbier.kgbmd.util.dp
-import com.kgbier.kgbmd.util.resolveAttribute
-import com.kgbier.kgbmd.util.setTextColorAttr
-import com.kgbier.kgbmd.util.setTextStyleAttr
+import com.kgbier.kgbmd.util.*
 
 class FilmographyView(context: Context) : LinearLayout(context) {
     val imageViewOpenInNew: ImageView
 
-    val textViewYear: TextView
     val textViewTitle: TextView
     val textViewRole: TextView
 
@@ -32,14 +29,6 @@ class FilmographyView(context: Context) : LinearLayout(context) {
                     gravity = Gravity.CENTER_VERTICAL
                 }
             orientation = VERTICAL
-
-            textViewYear = TextView(context).apply {
-                layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                setTextStyleAttr(R.attr.textAppearanceCaption)
-                setTextColorAttr(android.R.attr.textColorSecondary)
-
-                visibility = View.GONE
-            }.also(::addView)
 
             textViewTitle = TextView(context).apply {
                 layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
@@ -68,13 +57,20 @@ class FilmographyView(context: Context) : LinearLayout(context) {
     }
 
     fun setText(title: String, year: String?, role: String?) {
-        textViewTitle.text = title
-        if (year == null) {
-            textViewYear.visibility = View.GONE
-        } else {
-            textViewYear.visibility = View.VISIBLE
-            textViewYear.text = year
-        }
+        textViewTitle.text = spannableStringBuilder(context) {
+            append(title)
+            year?.let { _ ->
+                append("\u00A0") // non-breaking space
+
+                withTextAppearance(
+                    style = R.style.TextAppearance_MaterialComponents_Caption,
+                    colour = resolveAttribute(android.R.attr.textColorSecondary)
+                ) {
+                    append("($year)")
+                }
+            }
+        }.toSpannable()
+
         if (role == null) {
             textViewRole.visibility = View.GONE
         } else {

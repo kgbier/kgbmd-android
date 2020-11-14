@@ -26,7 +26,7 @@ class CastMemberViewHolder(context: Context) :
             LayoutParams.MATCH_PARENT,
             LayoutParams.WRAP_CONTENT
         )
-        updatePaddingRelative(start = 16.dp, top = 4.dp, end = 16.dp, bottom = 4.dp)
+        updatePaddingRelative(start = 16.dp, top = 6.dp, end = 16.dp, bottom = 6.dp)
     }) {
     val view get() = itemView as CastMemberView
 
