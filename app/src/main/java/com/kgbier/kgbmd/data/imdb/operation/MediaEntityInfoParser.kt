@@ -23,6 +23,7 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
         val H4 by lazy { "<h4".encodeUtf8() }
         val ANCHOR by lazy { "<a".encodeUtf8() }
         val BOLD by lazy { "<b".encodeUtf8() }
+        val BREAK by lazy { "<br".encodeUtf8() }
         val IMG by lazy { "<img".encodeUtf8() }
         val ATTRIBUTE_VALUE_DELIMETER by lazy { "\"".encodeUtf8() }
 
@@ -198,18 +199,21 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
             ?: return null
 
         skipOver(FILMOGRAPHY_YEAR_SPAN_SEEK) ?: return null
-        val year = getElementValue()?.trim()?.stripNbsp()?.takeIf { it.isNotBlank() }
+        val year = getElementValue()?.trim()?.stripNbsp()?.takeIf { it.isNotEmpty() }
 
         skipOver(BOLD) ?: return null
         skipOver(ANCHOR) ?: return null
         val name = getElementValue() ?: return null
+
+        skipOver(BREAK) ?: return null
+        val role = getElementValue()?.trim()?.takeIf { it.isNotEmpty() }
 
         return NameInfo.Title(
             category,
             titleId,
             name,
             year,
-            null,
+            role,
         )
     }
 
