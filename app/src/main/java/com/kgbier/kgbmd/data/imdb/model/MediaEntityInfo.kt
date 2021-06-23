@@ -49,10 +49,16 @@ fun transformFilmography(filmography: List<NameInfo.Title>): Map<FilmographicCat
             "actor" -> FilmographicCategory.ACTOR
             "actress" -> FilmographicCategory.ACTRESS
             "director" -> FilmographicCategory.DIRECTOR
+            "writer" -> FilmographicCategory.WRITER
+            "producer" -> FilmographicCategory.PRODUCER
             "composer" -> FilmographicCategory.COMPOSER
             "self" -> FilmographicCategory.SELF
+            "stunts" -> FilmographicCategory.STUNTS
+            "music_department" -> FilmographicCategory.MUSIC_DEPARTMENT
             "archive_footage" -> FilmographicCategory.ARCHIVE_FOOTAGE
             "soundtrack" -> FilmographicCategory.SOUNDTRACK
+            "thanks" -> FilmographicCategory.THANKS
+            "miscellaneous" -> FilmographicCategory.MISC
             else -> return@forEach
         }
         insertTitle(category, title)

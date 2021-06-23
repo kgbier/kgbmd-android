@@ -10,6 +10,9 @@ enum class FilmographicCategory {
     WRITER,
     THANKS,
     SELF,
+    STUNTS,
     ARCHIVE_FOOTAGE,
+    MUSIC_DEPARTMENT,
     CAMERA_AND_ELECTRICAL_DEPARTMENT,
+    MISC,
 }
