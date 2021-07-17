@@ -25,6 +25,7 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
         val BOLD by lazy { "<b".encodeUtf8() }
         val BREAK by lazy { "<br".encodeUtf8() }
         val IMG by lazy { "<img".encodeUtf8() }
+        val SPAN by lazy { "<span".encodeUtf8() }
         val ATTRIBUTE_VALUE_DELIMETER by lazy { "\"".encodeUtf8() }
 
         val ATTRIBUTE_SRC by lazy { "src=".encodeUtf8() }
@@ -43,17 +44,16 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
         val FILMOGRAPHY_YEAR_SPAN_SEEK by lazy { "class=\"year_column".encodeUtf8() }
 
         // Title
-        val RATING_SECTION_SEEK by lazy { "class=\"ratingValue".encodeUtf8() }
-        val RATING_VALUE_SEEK by lazy { "itemprop=\"ratingValue".encodeUtf8() }
-        val RATING_BEST_SEEK by lazy { "itemprop=\"bestRating".encodeUtf8() }
+        val TITLE_SECTION_SEEK by lazy { "class=\"TitleHeader__TitleText".encodeUtf8() }
+        val TITLE_YEAR_SEEK by lazy { "/releaseinfo".encodeUtf8() }
 
-        val RATING_COUNT_SEEK by lazy { "itemprop=\"ratingCount".encodeUtf8() }
-        val TITLE_SECTION_SEEK by lazy { "class=\"title_wrapper".encodeUtf8() }
-        val TITLE_YEAR_SEEK by lazy { "id=\"titleYear".encodeUtf8() }
+        val RATING_VALUE_SEEK by lazy { "AggregateRatingButton__RatingScore".encodeUtf8() }
+
+        val RATING_COUNT_SEEK by lazy { "AggregateRatingButton__TotalRatingAmount".encodeUtf8() }
         val TITLE_DURATION_SEEK by lazy { "<time datetime".encodeUtf8() }
 
         val TITLE_RELEASE_DATE_SEEK by lazy { "releaseinfo?ref_=tt_ov_inf".encodeUtf8() }
-        val TITLE_POSTER_SECTION_SEEK by lazy { "class=\"poster".encodeUtf8() }
+        val TITLE_POSTER_SECTION_SEEK by lazy { "Media__MediaParent".encodeUtf8() }
 
         val SUMMARY_SECTION_SEEK by lazy { "class=\"plot_summary".encodeUtf8() }
         val SUMMARY_TEXT_SEEK by lazy { "class=\"summary_text".encodeUtf8() }
@@ -69,27 +69,26 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
 
     fun getTitleInfo(): TitleInfo? {
 
-        skipOver(RATING_SECTION_SEEK)
-        val ratingValue = skipOver(RATING_VALUE_SEEK)?.let { getElementValue() }
-        val ratingBest = skipOver(RATING_BEST_SEEK)?.let { getElementValue() }
-        val ratingCount = skipOver(RATING_COUNT_SEEK)?.let { getElementValue() }
-
         skipOver(TITLE_SECTION_SEEK) ?: return null
-        skipOver(H1) ?: return null
 
         val titleName = getBetween(END_START_TAG, START_START_TAG)
-            ?.trim()?.stripNbsp()
+            ?.trim()
+            ?.stripNbsp()
+            ?.stripMarkup()
             ?: return null
 
         val titleYear = skipOver(TITLE_YEAR_SEEK)?.let {
-            skipOver(ANCHOR)
-        }?.let {
             getElementValue()
         }
 
-        val duration = skipOver(TITLE_DURATION_SEEK)?.let {
-            getBetween(ATTRIBUTE_VALUE_DELIMETER, ATTRIBUTE_VALUE_DELIMETER)
-        }
+        val duration = null
+//        val duration = skipOver(TITLE_DURATION_SEEK)?.let {
+//            getBetween(ATTRIBUTE_VALUE_DELIMETER, ATTRIBUTE_VALUE_DELIMETER)
+//        }
+
+        val ratingValue = skipOver(RATING_VALUE_SEEK)?.let { getElementValue() }
+        val ratingBest = skipOver(SPAN)?.let { getElementValue()?.filter { it.isDigit() } }
+        val ratingCount = skipOver(RATING_COUNT_SEEK)?.let { getElementValue() }
 
         val posterUrl = skipOver(TITLE_POSTER_SECTION_SEEK)?.let {
             skipOver(IMG)
@@ -103,7 +102,7 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
             findIndex(SUMMARY_TEXT_SEEK)
         }?.let {
             getBetween(SUMMARY_TEXT_START, SUMMARY_TEXT_END)
-        }?.let(::stripMarkup)?.trim()
+        }?.stripMarkup()?.trim()
 
         val creditSummary = mutableListOf<TitleInfo.Credit>()
         while (findIndex(SUMMARY_CREDIT_START) != null) {
@@ -148,7 +147,7 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
     }
 
     private fun parseCreditSummary(fragment: String): TitleInfo.Credit? {
-        var str = stripMarkup(fragment)
+        var str = fragment.stripMarkup()
         val pipeIndex = str.indexOf("|")
         if (pipeIndex > 0) str = str.dropLast(str.length - pipeIndex)
         val typedList = str.split(":")
@@ -253,7 +252,7 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
         return source.readUtf8(upper - skipBy)
     }
 
-    private fun stripMarkup(fragment: String): String = Jsoup.parseBodyFragment(fragment).text()
+    private fun String.stripMarkup(): String = Jsoup.parseBodyFragment(this).text()
 
     private fun String.stripNbsp(): String {
         if (indexOf("&n") == -1) return this
