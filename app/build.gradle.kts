@@ -50,29 +50,29 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.activity:activity-ktx:1.1.0")
+    implementation("androidx.appcompat:appcompat:1.3.0")
+    implementation("androidx.core:core-ktx:1.6.0")
+    implementation("androidx.activity:activity-ktx:1.2.3")
 
-    val lifecycleVersion = "2.2.0"
+    val lifecycleVersion = "2.3.1"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     kapt("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
 
-    val coroutinesVersion = "1.4.0"
+    val coroutinesVersion = "1.5.1"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.recyclerview:recyclerview:1.1.0")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.transition:transition:1.3.1")
+    implementation("androidx.transition:transition:1.4.1")
 
-    implementation("com.google.android.material:material:1.2.1")
+    implementation("com.google.android.material:material:1.4.0")
 
-    val okhttpVersion = "4.9.0"
+    val okhttpVersion = "4.9.1"
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     debugImplementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
 
@@ -81,13 +81,13 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
 
-    val glideVersion = "4.11.0"
+    val glideVersion = "4.12.0"
     implementation("com.github.bumptech.glide:glide:$glideVersion")
     kapt("com.github.bumptech.glide:compiler:$glideVersion")
 
     implementation("org.jsoup:jsoup:1.13.1")
 
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.4")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.6")
     debugImplementation("com.jakewharton.timber:timber:4.7.1")
 
     testImplementation(kotlin("test-junit5"))
