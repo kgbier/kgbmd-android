@@ -8,7 +8,7 @@ import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
 import com.kgbier.kgbmd.view.*
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.lang.ref.WeakReference
 
 interface RouteEventObserver {
