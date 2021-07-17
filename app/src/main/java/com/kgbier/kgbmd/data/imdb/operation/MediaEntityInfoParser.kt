@@ -55,7 +55,7 @@ class MediaEntityInfoParser(private val source: BufferedSource) {
         val TITLE_RELEASE_DATE_SEEK by lazy { "releaseinfo?ref_=tt_ov_inf".encodeUtf8() }
         val TITLE_POSTER_SECTION_SEEK by lazy { "Media__MediaParent".encodeUtf8() }
 
-        val SUMMARY_SECTION_SEEK by lazy { "GenresAndPlot__TextContainer".encodeUtf8() }
+        val SUMMARY_SECTION_SEEK by lazy { "GenresAndPlot__TextContainerBreakpointXL".encodeUtf8() }
         val SUMMARY_TEXT_SEEK by lazy { "class=\"summary_text".encodeUtf8() }
         val SUMMARY_TEXT_START by lazy { "<div class=\"summary_text\">".encodeUtf8() }
         val SUMMARY_TEXT_END by lazy { "</div>".encodeUtf8() }
