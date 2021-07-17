@@ -1,6 +1,3 @@
-import com.android.build.gradle.internal.dsl.SigningConfig
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -8,28 +5,14 @@ plugins {
     kotlin("kapt")
 }
 
-tasks.withType(KotlinCompile::class).all {
-    kotlinOptions {
-        // Enable Experimental Inline Classes support
-        freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
-    }
-}
-
 android {
-    compileSdkVersion(29)
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
+    compileSdkVersion(30)
 
     defaultConfig {
         applicationId = "com.kgbier.kgbmd"
         minSdkVersion(21)
-        targetSdkVersion(29)
-        buildToolsVersion = "29.0.3"
+        targetSdkVersion(30)
+        buildToolsVersion = "30.0.2"
         versionCode = 1
         versionName = "1.0"
 
@@ -89,7 +72,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     debugImplementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
 
-    val moshiVersion = "1.11.0"
+    val moshiVersion = "1.12.0"
     implementation("com.squareup.moshi:moshi:$moshiVersion")
     implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
