@@ -66,7 +66,7 @@ object ImdbService {
     suspend fun search(query: String): SuggestionResponse? = withContext(Dispatchers.IO) {
         val validatedQuery = query
             .trim()
-            .toLowerCase(Locale.ROOT)
+            .lowercase()
             .replace(" ", "_")
 
         if (validatedQuery.isEmpty()) return@withContext null

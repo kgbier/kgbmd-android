@@ -4,7 +4,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
-inline class LiveDataDisposable(private val removeObserverClosure: () -> Unit) {
+@JvmInline
+value class LiveDataDisposable(private val removeObserverClosure: () -> Unit) {
     fun dispose() = removeObserverClosure.invoke()
 }
 

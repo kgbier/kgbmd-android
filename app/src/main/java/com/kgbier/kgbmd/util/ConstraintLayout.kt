@@ -9,7 +9,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
 
-inline class Reference(@IdRes val id: Int)
+@JvmInline
+value class Reference(@IdRes val id: Int)
 
 inline val Reference.start get() = Edge(this, Side(ConstraintSet.START))
 inline val Reference.end get() = Edge(this, Side(ConstraintSet.END))
@@ -23,7 +24,8 @@ inline val ConstrainingScope.top get() = Edge(ref, Side(ConstraintSet.TOP))
 inline val ConstrainingScope.bottom get() = Edge(ref, Side(ConstraintSet.BOTTOM))
 inline val ConstrainingScope.baseline get() = Edge(ref, Side(ConstraintSet.BASELINE))
 
-inline class Side(val facing: Int)
+@JvmInline
+value class Side(val facing: Int)
 
 class Edge(val ref: Reference, val side: Side)
 
