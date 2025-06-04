@@ -24,7 +24,7 @@ class CastMemberView(context: Context) : LinearLayout(context) {
     init {
         orientation = HORIZONTAL
 
-        background = resolveAttribute(R.attr.selectableItemBackground)
+        background = resolveAttribute(android.R.attr.selectableItemBackground)
             ?.let { ContextCompat.getDrawable(context, it) }
 
         imageViewAvatar = ImageView(context).apply {
@@ -43,13 +43,13 @@ class CastMemberView(context: Context) : LinearLayout(context) {
 
             textViewName = TextView(context).apply {
                 layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                setTextStyleAttr(R.attr.textAppearanceBody1)
+                setTextStyleAttr(com.google.android.material.R.attr.textAppearanceBody1)
                 setTextColorAttr(android.R.attr.textColorPrimary)
             }.also(::addView)
 
             textViewRole = TextView(context).apply {
                 layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                setTextStyleAttr(R.attr.textAppearanceBody1)
+                setTextStyleAttr(com.google.android.material.R.attr.textAppearanceBody1)
                 setTextColorAttr(android.R.attr.textColorSecondary)
 
                 visibility = View.GONE

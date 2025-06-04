@@ -26,7 +26,7 @@ fun developerMenuNotificationTask(context: Context) {
         .setContentTitle("Developer menu")
         .setContentText("Open the developer menu")
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        .setContentIntent(PendingIntent.getActivity(context, 0, intent, 0))
+        .setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE))
 
     with(NotificationManagerCompat.from(context)) {
         notify(NOTIFICATION_ID, devNotificationBuilder.build())

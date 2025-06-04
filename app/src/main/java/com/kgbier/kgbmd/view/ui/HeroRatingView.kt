@@ -23,14 +23,14 @@ open class HeroRatingView(context: Context) : ConstraintLayout(context) {
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT
             )
-            setTextStyleAttr(R.attr.textAppearanceHeadline4)
+            setTextStyleAttr(com.google.android.material.R.attr.textAppearanceHeadline4)
             setTextColorAttr(android.R.attr.textColorPrimary)
             setLines(1)
         }.also(::addView)
 
         ratingStarView = RatingStarView(context).apply {
             id = View.generateViewId()
-            textViewRating.setTextStyleAttr(R.attr.textAppearanceSubtitle1)
+            textViewRating.setTextStyleAttr(com.google.android.material.R.attr.textAppearanceSubtitle1)
             textViewRating.setTextColorAttr(android.R.attr.textColorSecondary)
         }.also(::addView)
 
@@ -40,7 +40,7 @@ open class HeroRatingView(context: Context) : ConstraintLayout(context) {
                 LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT
             )
-            setTextStyleAttr(R.attr.textAppearanceCaption)
+            setTextStyleAttr(com.google.android.material.R.attr.textAppearanceCaption)
             setTextColorAttr(android.R.attr.textColorSecondary)
             setLines(1)
         }.also(::addView)

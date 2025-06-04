@@ -47,7 +47,7 @@ class ShimmerDrawable : Drawable() {
         canvas.drawRect(rect, shimmerPaint)
     }
 
-    override fun onBoundsChange(bounds: Rect?) {
+    override fun onBoundsChange(bounds: Rect) {
         boundsRectangle = bounds
         super.onBoundsChange(bounds)
     }

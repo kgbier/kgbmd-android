@@ -20,7 +20,7 @@ class SectionHeadingViewHolder(context: Context) :
         ).apply {
             updateMarginsRelative(start = 16.dp, end = 16.dp)
         }
-        setTextStyleAttr(R.attr.textAppearanceHeadline6)
+        setTextStyleAttr(com.google.android.material.R.attr.textAppearanceHeadline6)
         setTextColorAttr(android.R.attr.textColorPrimary)
     }) {
     val view get() = itemView as TextView

@@ -20,7 +20,7 @@ class TitledTextView(context: Context) : LinearLayout(context) {
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT
             )
-            setTextStyleAttr(R.attr.textAppearanceOverline)
+            setTextStyleAttr(com.google.android.material.R.attr.textAppearanceOverline)
             setTextColorAttr(android.R.attr.textColorSecondary)
         }.also(::addView)
 
@@ -29,7 +29,7 @@ class TitledTextView(context: Context) : LinearLayout(context) {
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT
             )
-            setTextStyleAttr(R.attr.textAppearanceBody2)
+            setTextStyleAttr(com.google.android.material.R.attr.textAppearanceBody2)
             setTextColorAttr(android.R.attr.textColorPrimary)
         }.also(::addView)
     }

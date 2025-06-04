@@ -22,7 +22,7 @@ class MediaEntityDetailsList(context: MainActivity, titleId: String) :
     ) {
         object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+            override fun <T : ViewModel> create(modelClass: Class<T>): T =
                 MediaEntityDetailsViewModel(titleId) as T
         }
     }

@@ -23,7 +23,7 @@ class ReadOnlySearchBar(context: MainActivity) : SearchBarView(context) {
         editTextSearch.movementMethod = null
         editTextSearch.keyListener = null
 
-        foreground = resolveAttribute(R.attr.selectableItemBackground)
+        foreground = resolveAttribute(android.R.attr.selectableItemBackground)
             ?.let { ContextCompat.getDrawable(context, it) }
         stateListAnimator = ElevateCardViewStateListAnimator(context, 4f.dp, 8f.dp)
 

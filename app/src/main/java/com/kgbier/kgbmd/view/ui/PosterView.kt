@@ -28,7 +28,7 @@ class PosterView(context: Context) : CardView(context) {
     init {
         layoutParams = MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         radius = 4f.dp
-        resolveAttribute(R.attr.selectableItemBackground)?.let {
+        resolveAttribute(android.R.attr.selectableItemBackground)?.let {
             foreground = ResourcesCompat.getDrawable(resources, it, context.theme)
             isClickable = true
         }
@@ -50,7 +50,7 @@ class PosterView(context: Context) : CardView(context) {
 
             textViewTitle = TextView(context).apply {
                 visibility = View.INVISIBLE
-                setTextStyleAttr(R.attr.textAppearanceCaption)
+                setTextStyleAttr(com.google.android.material.R.attr.textAppearanceCaption)
                 setTextColor(Color.WHITE)
                 textAlignment = TextView.TEXT_ALIGNMENT_VIEW_END
             }.also(::addView)
@@ -63,7 +63,7 @@ class PosterView(context: Context) : CardView(context) {
             }.also(::addView)
 
             ratingStarView = RatingStarView(context).apply {
-                textViewRating.setTextStyleAttr(R.attr.textAppearanceCaption)
+                textViewRating.setTextStyleAttr(com.google.android.material.R.attr.textAppearanceCaption)
                 textViewRating.setTextColor(Color.WHITE)
             }.also(::addView)
             ratingStarView.visibility = View.INVISIBLE

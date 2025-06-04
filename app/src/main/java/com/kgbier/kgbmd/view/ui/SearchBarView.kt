@@ -2,6 +2,7 @@ package com.kgbier.kgbmd.view.ui
 
 import android.annotation.SuppressLint
 import android.text.InputType
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.animation.DecelerateInterpolator
@@ -39,11 +40,13 @@ open class SearchBarView(context: MainActivity) : CardView(context), ScrollBehav
             orientation = LinearLayout.HORIZONTAL
             layoutParams = LayoutParams(
                 LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT
+                LayoutParams.MATCH_PARENT,
             )
 
             imageViewKeyIcon = makeKeyIcon(context).apply {
                 updateLayoutParams<LayoutParams> {
+                    width = 48.dp
+                    height = MATCH_PARENT
                     updateMarginsRelative(end = 4.dp)
                 }
             }.also(::addView)
@@ -58,7 +61,7 @@ open class SearchBarView(context: MainActivity) : CardView(context), ScrollBehav
                     marginEnd = 12.dp
                 }
 
-                setTextStyleAttr(R.attr.textAppearanceSubtitle1)
+                setTextStyleAttr(com.google.android.material.R.attr.textAppearanceSubtitle1)
                 inputType = InputType.TYPE_CLASS_TEXT
                 background = null
                 maxLines = 1
@@ -69,7 +72,7 @@ open class SearchBarView(context: MainActivity) : CardView(context), ScrollBehav
     fun makeKeyIcon(context: MainActivity) = ImageView(context).apply {
         layoutParams = LayoutParams(
             48.dp,
-            48.dp
+            48.dp,
         )
         scaleType = ImageView.ScaleType.CENTER_INSIDE
         setImageResource(R.drawable.ic_search)
@@ -90,7 +93,7 @@ open class SearchBarView(context: MainActivity) : CardView(context), ScrollBehav
                         MATCH_PARENT
                     ).apply {
                         updateMarginsRelative(top = 8.dp, bottom = 8.dp)
-                        resolveColorAttribute(R.attr.colorControlNormal)?.let(::setBackgroundColor)
+                        resolveColorAttribute(android.R.attr.colorControlNormal)?.let(::setBackgroundColor)
                     }
                 }.also(layout::addView)
                 layout.addView(it)
@@ -107,13 +110,9 @@ open class SearchBarView(context: MainActivity) : CardView(context), ScrollBehav
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
         scrollBehaviourTopTranslationLimit = (measuredHeight + marginTop + 8.dp) * -1f
         updateCornerRadius(measuredHeight)
-        imageViewKeyIcon.updateLayoutParams<LinearLayout.LayoutParams> {
-            height = measuredHeight
-            width = measuredHeight
-        }
+        super.onLayout(changed, left, top, right, bottom)
     }
 
     override fun scrollBehaviourResetPosition() {

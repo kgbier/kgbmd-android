@@ -67,7 +67,7 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
             }
 
             titleCategoryToggle = makeKeyIcon(context).apply {
-                resolveAttribute(R.attr.actionBarItemBackground)?.let(::setBackgroundResource)
+                resolveAttribute(android.R.attr.actionBarItemBackground)?.let(::setBackgroundResource)
                 setOnClickListener { movieListViewModel.toggleTitleCategory() }
             }
             barAddons = listOf(titleCategoryToggle)
@@ -76,8 +76,8 @@ class MainLayout(context: MainActivity) : CoordinatorLayout(context) {
         // Setup Movie List
         swipeRefreshLayout = SwipeRefreshLayout(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            resolveAttribute(R.attr.colorPrimaryDark)?.let { primaryDark ->
-                resolveAttribute(R.attr.colorPrimary)?.let { primary ->
+            resolveAttribute(android.R.attr.colorPrimaryDark)?.let { primaryDark ->
+                resolveAttribute(android.R.attr.colorPrimary)?.let { primary ->
                     setColorSchemeResources(primaryDark, primary)
                 }
             }
