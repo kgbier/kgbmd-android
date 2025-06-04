@@ -1,14 +1,14 @@
 package com.kgbier.kgbmd.data.imdb.model
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class RatingResponse(
-    @Json(name = "resource")
+    @SerialName("resource")
     val ratingInfo: RatingInfo
 ) {
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class RatingInfo(
         val id: String,
         val title: String,

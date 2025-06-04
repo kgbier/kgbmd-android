@@ -1,10 +1,11 @@
 package com.kgbier.kgbmd.domain.repo
 
 import com.kgbier.kgbmd.data.imdb.ImdbService
-import com.kgbier.kgbmd.data.imdb.model.transformHotListItem
-import com.kgbier.kgbmd.data.imdb.model.transformNameInfo
+import com.kgbier.kgbmd.data.imdb.graphql.MostPopularListQuery
+import com.kgbier.kgbmd.data.imdb.graphql.toMoviePoster
+import com.kgbier.kgbmd.data.imdb.graphql.toNameDetails
+import com.kgbier.kgbmd.data.imdb.graphql.toTitleDetails
 import com.kgbier.kgbmd.data.imdb.model.transformSuggestionResponse
-import com.kgbier.kgbmd.data.imdb.model.transformTitleInfo
 import com.kgbier.kgbmd.domain.model.MediaEntityDetails
 import com.kgbier.kgbmd.domain.model.MoviePoster
 import com.kgbier.kgbmd.domain.model.Suggestion
@@ -15,10 +16,10 @@ object MediaInfoRepo {
     private const val TITLE_ID_PREFIX = "tt"
 
     suspend fun getMovieHotListPosters(): List<MoviePoster> =
-        ImdbService.getHotMovies().map(::transformHotListItem)
+        ImdbService.getHotMovies().transform()
 
     suspend fun getTvShowHotListPosters(): List<MoviePoster> =
-        ImdbService.getHotShows().map(::transformHotListItem)
+        ImdbService.getHotShows().transform()
 
     suspend fun getSearchResults(query: String): List<Suggestion> =
         ImdbService.search(query).run(::transformSuggestionResponse)
@@ -27,8 +28,10 @@ object MediaInfoRepo {
         ImdbService.getRating(id)?.run(::transformRatingResponse)
 
     suspend fun getMediaEntityDetails(id: String): MediaEntityDetails? = when {
-        id.startsWith(NAME_ID_PREFIX) -> ImdbService.getNameDetails(id)?.run(::transformNameInfo)
-        id.startsWith(TITLE_ID_PREFIX) -> ImdbService.getTitleDetails(id)?.run(::transformTitleInfo)
+        id.startsWith(NAME_ID_PREFIX) -> ImdbService.getNameDetails(id).name.toNameDetails()
+        id.startsWith(TITLE_ID_PREFIX) -> ImdbService.getTitleDetails(id).title.toTitleDetails()
         else -> null
     }
+
+    fun MostPopularListQuery.Result.transform() = chartTitles.edges.map { it.toMoviePoster() }
 }

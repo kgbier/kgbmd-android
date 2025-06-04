@@ -8,8 +8,14 @@ import com.kgbier.kgbmd.domain.model.MediaEntityDetails
 import com.kgbier.kgbmd.domain.model.NameDetails
 import com.kgbier.kgbmd.domain.model.TitleDetails
 import com.kgbier.kgbmd.domain.repo.MediaInfoRepo
-import com.kgbier.kgbmd.view.ui.mediaentitydetails.*
+import com.kgbier.kgbmd.view.ui.mediaentitydetails.BaseMediaEntityListItemViewModel
+import com.kgbier.kgbmd.view.ui.mediaentitydetails.CastMemberViewModel
+import com.kgbier.kgbmd.view.ui.mediaentitydetails.FilmographyViewModel
+import com.kgbier.kgbmd.view.ui.mediaentitydetails.HeaderViewModel
+import com.kgbier.kgbmd.view.ui.mediaentitydetails.SectionHeadingViewModel
+import com.kgbier.kgbmd.view.ui.mediaentitydetails.TitledTextViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MediaEntityDetailsViewModel(entityId: String) : ViewModel() {
 
@@ -34,6 +40,7 @@ class MediaEntityDetailsViewModel(entityId: String) : ViewModel() {
         }.onSuccess {
             state.postValue(DetailsState.Loaded(it))
         }.onFailure {
+            Timber.e(it)
             state.postValue(DetailsState.Error(it.message ?: "Error"))
         }
     }
