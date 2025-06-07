@@ -34,7 +34,7 @@ class DetailLayout(context: MainActivity) :
     private val mediaEntityDetailsViewModel: MediaEntityDetailsViewModel by context.viewModels(route.titleId) {
         object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+            override fun <T : ViewModel> create(modelClass: Class<T>): T =
                 MediaEntityDetailsViewModel(route.titleId) as T
         }
     }

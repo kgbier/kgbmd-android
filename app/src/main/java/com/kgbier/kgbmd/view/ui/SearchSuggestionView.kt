@@ -29,7 +29,7 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
         setPadding(16.dp, 8.dp, 16.dp, 8.dp)
 
-        resolveAttribute(R.attr.selectableItemBackground)?.let {
+        resolveAttribute(android.R.attr.selectableItemBackground)?.let {
             background = ResourcesCompat.getDrawable(resources, it, context.theme)
             isClickable = true
         }
@@ -79,7 +79,7 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                         LayoutParams.WRAP_CONTENT,
                         1f
                     )
-                    setTextStyleAttr(R.attr.textAppearanceSubtitle1)
+                    setTextStyleAttr(com.google.android.material.R.attr.textAppearanceSubtitle1)
                     setTextColorAttr(android.R.attr.textColorPrimary)
                     ellipsize = TextUtils.TruncateAt.END
                     isSingleLine = true
@@ -93,7 +93,7 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
                         ).apply {
                             marginStart = 4.dp
                         }
-                    setTextStyleAttr(R.attr.textAppearanceCaption)
+                    setTextStyleAttr(com.google.android.material.R.attr.textAppearanceCaption)
                     setTextColorAttr(android.R.attr.textColorSecondary)
                     setLines(1)
                 }.also(::addView)
@@ -102,7 +102,7 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
         ratingStarView = RatingStarView(context).apply {
             id = View.generateViewId()
-            textViewRating.setTextStyleAttr(R.attr.textAppearanceSubtitle2)
+            textViewRating.setTextStyleAttr(com.google.android.material.R.attr.textAppearanceSubtitle2)
             textViewRating.setTextColorAttr(android.R.attr.textColorPrimary)
         }.also(::addView)
 
@@ -127,7 +127,7 @@ open class SearchSuggestionView(context: Context) : ConstraintLayout(context) {
 
         textViewTidbit = TextView(context).apply {
             id = View.generateViewId()
-            setTextStyleAttr(R.attr.textAppearanceBody2)
+            setTextStyleAttr(com.google.android.material.R.attr.textAppearanceBody2)
             setTextColorAttr(android.R.attr.textColorSecondary)
         }.also(::addView)
 

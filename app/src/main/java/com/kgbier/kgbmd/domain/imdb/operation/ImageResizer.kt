@@ -29,8 +29,8 @@ object ImageResizer {
     ): String {
         val suffix = when (size) {
             SIZE_FULL -> ".jpg"
-            SIZE_WIDTH_THUMBNAIL_CDN -> "_UY67_CR0,0,45,67_AL_.jpg"
-            else -> "_UX$size.jpg"
+            SIZE_WIDTH_THUMBNAIL_CDN -> "_QL75_UX140_CR0,0,140,207_.jpg"
+            else -> "_QL75_UX$size.jpg"
         }
         return imageUrl.replaceAfter(CLIPPER_DELIMITER, suffix)
     }

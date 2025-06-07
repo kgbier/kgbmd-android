@@ -22,7 +22,7 @@ class RatingStarView(context: Context) : LinearLayout(context) {
 
         textViewRating = TextView(context).apply {
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-            setTextStyleAttr(R.attr.textAppearanceCaption)
+            setTextStyleAttr(com.google.android.material.R.attr.textAppearanceCaption)
             includeFontPadding = false
         }.also(::addView)
 

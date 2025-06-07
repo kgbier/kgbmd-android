@@ -11,7 +11,7 @@ import com.kgbier.kgbmd.util.*
 class TitleHeading(context: Context) : AppCompatTextView(context) {
 
     init {
-        setTextStyleAttr(R.attr.textAppearanceHeadline5)
+        setTextStyleAttr(com.google.android.material.R.attr.textAppearanceHeadline5)
         setTextColorAttr(android.R.attr.textColorPrimary)
     }
 
@@ -22,7 +22,7 @@ class TitleHeading(context: Context) : AppCompatTextView(context) {
                 append("\u00A0") // non-breaking space
 
                 withTextAppearance(
-                    style = R.style.TextAppearance_MaterialComponents_Subtitle1,
+                    style = com.google.android.material.R.style.TextAppearance_MaterialComponents_Subtitle1,
                     colour = resolveAttribute(android.R.attr.textColorSecondary)
                 ) {
                     append("($subscript)")

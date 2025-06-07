@@ -3,39 +3,39 @@ package com.kgbier.kgbmd.data.imdb.model
 import com.kgbier.kgbmd.domain.imdb.operation.ImageResizer
 import com.kgbier.kgbmd.domain.model.Suggestion
 import com.kgbier.kgbmd.domain.model.getSuggestionType
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class SuggestionResponse(
-    @Json(name = "d")
+    @SerialName("d")
     val data: List<Result>?,
-    @Json(name = "q")
+    @SerialName("q")
     val query: String,
-    @Json(name = "v")
-    val version: Int
+    @SerialName("v")
+    val version: Int,
 ) {
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class Result(
-        @Json(name = "id")
+        @SerialName("id")
         val id: String,
-        @Json(name = "l")
+        @SerialName("l")
         val title: String,
-        @Json(name = "i")
+        @SerialName("i")
         val image: Image?,
-        @Json(name = "q")
+        @SerialName("q")
         val type: String?,
         val rank: Int?,
-        @Json(name = "s")
+        @SerialName("s")
         val tidbit: String?,
-        @Json(name = "y")
-        val year: String?
+        @SerialName("y")
+        val year: String?,
     ) {
-        @JsonClass(generateAdapter = true)
+        @Serializable
         data class Image(
             val width: Int?,
             val height: Int?,
-            val imageUrl: String
+            val imageUrl: String,
         )
     }
 }
@@ -49,8 +49,8 @@ fun transformSuggestionResult(result: SuggestionResponse.Result) = with(result) 
         tidbit,
         image?.imageUrl?.let {
             ImageResizer.resize(
-                it,
-                ImageResizer.SIZE_WIDTH_THUMBNAIL
+                imageUrl = it,
+                size = ImageResizer.SIZE_WIDTH_THUMBNAIL,
             )
         }
     )

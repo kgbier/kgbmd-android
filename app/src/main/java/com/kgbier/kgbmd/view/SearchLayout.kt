@@ -48,8 +48,8 @@ class SearchLayout(context: MainActivity) :
             radius = 0f
 
             imageViewKeyIcon.apply {
-                resolveAttribute(R.attr.homeAsUpIndicator)?.let(::setImageResource)
-                resolveAttribute(R.attr.actionBarItemBackground)?.let(::setBackgroundResource)
+                resolveAttribute(android.R.attr.homeAsUpIndicator)?.let(::setImageResource)
+                resolveAttribute(android.R.attr.actionBarItemBackground)?.let(::setBackgroundResource)
                 setOnClickListener { context.navigateBack() }
 
                 updateLayoutParams<LayoutParams> {
